@@ -10,6 +10,8 @@ import matplotlib.pyplot as plt
 from matplotlib.pyplot import savefig
 #从excel中加载excel文件,目录自行修改
 df = pd.read_excel('G:\Seafile\临时\positive.xlsx')
+#按ppm筛选所需数据
+df = df[(df.ppm>-1.2) & (df.ppm<1.2)]
 #读取数据的所有化合物类，先剔除掉重复项，再将剩下的列举出来
 y=df['class']
 y=y.drop_duplicates()
