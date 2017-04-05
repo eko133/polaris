@@ -10,6 +10,8 @@ import matplotlib.pyplot as plt
 import os
 #从excel中加载excel文件,目录自行修改
 df = pd.read_excel(r'G:\Seafile\临时\正离子excel\1.xlsx')
+#将intensity转换为float类型
+df['intensity']=df['intensity'].astype(float)
 #按ppm筛选所需数据
 df = df[(df.ppm>-1.2) & (df.ppm<1.2)]
 #读取数据的所有化合物类，先剔除掉重复项，再将剩下的列举出来
@@ -19,9 +21,9 @@ y=y.reset_index()
 m=len(y)
 i=0
 specie=0
+#创建文件保存位置
 script_dir = os.path.dirname(__file__)
 results_dir = os.path.join(script_dir, '正1/')
-
 if not os.path.isdir(results_dir):
     os.makedirs(results_dir)
 #遍历上述操作找到的所有化合物类，分别绘制图谱
