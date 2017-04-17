@@ -3,37 +3,37 @@
 Created on Sat Apr  1 10:06:23 2017
 @author: samuel
 """
-#自动查找文件-自动绘制所有化合物的气泡图
-#加载所需模块，pandas提供excel支持，matplotlib.pyplot提供plt支持
+#脳脭露炉虏茅脮脪脦脛录镁-脳脭露炉禄忙脰脝脣霉脫脨禄炉潞脧脦茂碌脛脝酶脜脻脥录
+#录脫脭脴脣霉脨猫脛拢驴茅拢卢pandas脤谩鹿漏excel脰搂鲁脰拢卢matplotlib.pyplot脤谩鹿漏plt脰搂鲁脰
 import pandas as pd
 import matplotlib.pyplot as plt
 import os
-#从excel中加载excel文件,目录自行修改
+#麓脫excel脰脨录脫脭脴excel脦脛录镁,脛驴脗录脳脭脨脨脨脼赂脛
 n=1
 fignum=0
 while n<18:
-    os.chdir("G:\Seafile\临时\Biodegradation of sulfur-rich oil\负离子excel")
+    os.chdir("G:\Seafile\脕脵脢卤\Biodegradation of sulfur-rich oil\璐熺瀛恊xcel")
     os.makedirs(str(n))
     data = pd.read_excel(str(n)+'.xlsx')
-    #将intensity转换为float类型
+    #陆芦intensity脳陋禄禄脦陋float脌脿脨脥
     data['intensity']=data['intensity'].astype(float)
-    #按ppm筛选所需数据
+    #掳麓ppm脡赂脩隆脣霉脨猫脢媒戮脻
     data = data[(data.ppm>-2) & (data.ppm<2)]
-    #读取数据的所有化合物类，先剔除掉重复项，再将剩下的列举出来
+    #露脕脠隆脢媒戮脻碌脛脣霉脫脨禄炉潞脧脦茂脌脿拢卢脧脠脤脼鲁媒碌么脰脴赂麓脧卯拢卢脭脵陆芦脢拢脧脗碌脛脕脨戮脵鲁枚脌麓
     y=data['class']
     y=y.drop_duplicates()
     y=y.reset_index()
     m=len(y)
     i=0
     specie=0
-    #遍历上述操作找到的所有化合物类，分别绘制图谱
+    #卤茅脌煤脡脧脢枚虏脵脳梅脮脪碌陆碌脛脣霉脫脨禄炉潞脧脦茂脌脿拢卢路脰卤冒禄忙脰脝脥录脝脳
     while i<m:
         specie=y.loc[i,'class']
         x=data[data['class']==specie]
         x['normalized']=x['intensity']/x['intensity'].sum()
-        #分别绘图
+        #路脰卤冒禄忙脥录
         plt.figure(fignum)
-        #设置图片格式
+        #脡猫脰脙脥录脝卢赂帽脢陆
         font = {'family' : 'serif',  
                 'color'  : 'black',  
                 'weight' : 'normal',  
@@ -45,8 +45,8 @@ while n<18:
         plt.text(1,14,s=specie,fontdict=font)
         plt.scatter(x['C'],x['DBE'],s=1200*x['normalized'])
         sample_file_name = specie
-        #保存图片
-        path="G:\Seafile\临时\Biodegradation of sulfur-rich oil\负离子excel"+"\\"+str(n)
+        #卤拢麓忙脥录脝卢
+        path="G:\Seafile\脕脵脢卤\Biodegradation of sulfur-rich oil\赂潞脌毛脳脫excel"+"\\"+str(n)
         filename=specie+'.png'
         plt.savefig(os.path.join(path,filename),dpi=600)
         i=i+1
