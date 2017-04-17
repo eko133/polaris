@@ -3,6 +3,7 @@
 Created on Sat Apr  1 10:06:23 2017
 @author: samuel
 """
+#自动查找文件-自动绘制所有化合物的气泡图
 #加载所需模块，pandas提供excel支持，matplotlib.pyplot提供plt支持
 import pandas as pd
 import matplotlib.pyplot as plt
