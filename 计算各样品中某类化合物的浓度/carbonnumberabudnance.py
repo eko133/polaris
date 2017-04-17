@@ -11,9 +11,9 @@ import numpy as np
 #从excel中加载excel文件,目录自行修改
 n=0
 fignum=0
-std_list=[316137184,325182048,303093312,238507440,188629136,225205872,216088384,218022192,244597184,1,232608720,209771232,210359648,223166784,218055088,1,54703948,216615344]
+std_list=[316137184,325182048,303093312,238507440,188629136,225205872,216088384,218022192,244597184,1,232608720,209771232,210359648,223166784,218055088,1,226342880,216615344]
 variation_column = pd.DataFrame(np.arange(36*18).reshape(36,18)).astype(float)
-variation_column.index=variation_column.index+15
+variation_column.index=variation_column.index+10
 while n<18:
     os.chdir("G:\Seafile\临时\Biodegradation of sulfur-rich oil\负离子excel")
     if os.path.isfile(str(n)+'.xlsx') == True:
