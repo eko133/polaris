@@ -8,34 +8,36 @@ import matplotlib.pyplot as plt
 import os
 n=0
 fignum=0
-std_list=[316137184,325182048,303093312,238507440,188629136,225205872,216088384,218022192,244597184,1,232608720,209771232,210359648,223166784,218055088,1,226342880,216615344]
 while n<18:
-    os.chdir("G:\Seafile\临时\Biodegradation of sulfur-rich oil\负离子excel")
+    os.chdir("G:\Seafile\临时\Biodegradation of sulfur-rich oil\正离子excel")
     if os.path.exists(str(n))==False:
         os.makedirs(str(n))
     if os.path.isfile(str(n)+'.xlsx') == True:
         data = pd.read_excel(str(n)+'.xlsx')
         data['intensity']=data['intensity'].astype(float)
         data = data[(data.ppm>-2) & (data.ppm<2)]
+        data = data[(data['class'] == 'O1S1') | (data['class'] == 'O2S1')| (data['class'] == 'O3S1')| (data['class'] == 'O4S1')]
+        data['H'] = 2*(data['C']+1-data['DBE'])
+        data['H/C'] = data['H']/data['C']
+        data['O'] = data['class'].str.get(1)
+        data['O'] = data['O'].astype(float)
+        data['O/C'] = data['O']/data['C']
         sum = data['intensity'].sum()
-        specie='O2'
-        x=data[data['class']==specie]
-        x['normalized']=x['intensity']/sum
+        data['normalized'] = data['intensity']/sum
         plt.figure(fignum)
         font = {'family' : 'serif',  
                 'color'  : 'black',  
                 'weight' : 'normal',  
                 'size'   : 14,  
                 } 
-        plt.axis([0,60,0,16])
-        plt.xlabel("Carbon Number",fontdict=font)
-        plt.ylabel("DBE",fontdict=font)
-        plt.text(1,14,s=specie,fontdict=font)
-        plt.text(53,14,s='Z-'+str(n),fontdict=font)
-        plt.scatter(x['C'],x['DBE'],s=10000*x['normalized'],edgecolors='white',alpha=0.8)
+        plt.axis([0,0.4,0,2])
+        plt.xlabel("O/C",fontdict=font)
+        plt.ylabel("H/C",fontdict=font)
+        plt.text(53,14,s=str(n)+'w',fontdict=font)
+        plt.scatter(data['O/C'],data['H/C'],s=1000*data['normalized'], alpha=0.8)
         path="G:\Seafile\临时\Biodegradation of sulfur-rich oil\负离子excel"+"\\"+str(n)
-        filename=specie+'.png'
-        plt.savefig(os.path.join(path,filename),dpi=600)
+        filename=str(n)+'S.png'
+        plt.savefig(os.path.join(path,filename), dpi=600)
         fignum=fignum+1
         n=n+1
     else:
