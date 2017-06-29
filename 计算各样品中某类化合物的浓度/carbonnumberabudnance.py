@@ -15,20 +15,20 @@ std_1=[888471808,1,676252608,704567360,683203776,5,580047808,7,639557376,9,10,11
 variation_column = pd.DataFrame().astype(float)
 variation_column.index=variation_column.index+10
 while n<18:
-    os.chdir("G:\Seafile\临时\Biodegradation of sulfur-rich oil\正离子excel")
+    os.chdir("G:\Seafile\临时\Biodegradation of sulfur-rich oil\负离子excel")
     if os.path.isfile(str(n)+'.xlsx') == True:
         data = pd.read_excel(str(n)+'.xlsx')
         data = data[(data.ppm>-2) & (data.ppm<2)]
         data['intensity']=data['intensity'].astype(float)
         sum = data['intensity'].sum()
-        data = data[data['class']=='S1']
+        data = data[data['class']=='O2']
         data = data[data.DBE == 1]
         CN_count=10
         while CN_count<45:
             x=data[data.C == CN_count]
             variation_column.loc[CN_count,n]=x['intensity'].sum()
             CN_count=CN_count+1
-        variation_column[n]=variation_column[n]/sum
+        variation_column[n]=variation_column[n]/std_1[n]
         n=n+1
     else:
         n=n+1

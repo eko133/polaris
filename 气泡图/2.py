@@ -18,7 +18,7 @@ while n<18:
         data['intensity']=data['intensity'].astype(float)
         data = data[(data.ppm>-2) & (data.ppm<2)]
         sum = data['intensity'].sum()
-        specie='O2'
+        specie='O4S1'
         x=data[data['class']==specie]
         x['normalized']=x['intensity']/sum
         plt.figure(fignum)
@@ -32,7 +32,7 @@ while n<18:
         plt.ylabel("DBE",fontdict=font)
         plt.text(1,14,s=specie,fontdict=font)
         plt.text(53,14,s='Z-'+str(n),fontdict=font)
-        plt.scatter(x['C'],x['DBE'],s=10000*x['normalized'],edgecolors='white',alpha=0.8)
+        plt.scatter(x['C'],x['DBE'],s=50000*x['normalized'],edgecolors='white',alpha=0.8)
         path="G:\Seafile\临时\Biodegradation of sulfur-rich oil\负离子excel"+"\\"+str(n)
         filename=specie+'.png'
         plt.savefig(os.path.join(path,filename),dpi=600)

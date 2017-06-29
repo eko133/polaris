@@ -5,6 +5,7 @@ Created on Sat Apr  1 10:06:23 2017
 """
 import pandas as pd
 import matplotlib.pyplot as plt
+import matplotlib
 import os
 n=0
 fignum=0
@@ -30,11 +31,12 @@ while n<18:
                 'weight' : 'normal',  
                 'size'   : 14,  
                 } 
-        plt.axis([0,0.4,0,2])
+        plt.axis([0,0.4,0,2.1])
         plt.xlabel("O/C",fontdict=font)
         plt.ylabel("H/C",fontdict=font)
-        plt.text(53,14,s=str(n)+'w',fontdict=font)
-        plt.scatter(data['O/C'],data['H/C'],s=1000*data['normalized'], alpha=0.8)
+        plt.text(0.365,1.9,s='Z-'+str(n),fontdict=font)
+        norm = matplotlib.colors.Normalize(vmax=0.001)
+        plt.scatter(data['O/C'],data['H/C'], s=5, c=data['normalized'],cmap='jet', norm=norm, edgecolors='none')
         path="G:\Seafile\临时\Biodegradation of sulfur-rich oil\负离子excel"+"\\"+str(n)
         filename=str(n)+'S.png'
         plt.savefig(os.path.join(path,filename), dpi=600)

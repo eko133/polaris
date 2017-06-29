@@ -12,7 +12,7 @@ n=0
 fignum=0
 variation_column=pd.DataFrame().astype(float)
 while n<18:
-    os.chdir("G:\Seafile\临时\Biodegradation of sulfur-rich oil\负离子excel")
+    os.chdir("C:\Users\samuel\Desktop")
     if os.path.isfile(str(n)+'.xlsx') == True:
         data = pd.read_excel(str(n)+'.xlsx')
         data['intensity']=data['intensity'].astype(float)
