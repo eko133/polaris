@@ -112,7 +112,12 @@ for root, dirs, files in os.walk(data_dir):
             data = data[(data.ppm>-2.0) & (data.ppm<2.0)]
             data['normalized'] = data['intensity']/data['intensity'].sum()
             # 选择所需进行的操作
-            operation = input("data successfully loaded, now specify the operation: 1. drawing the bubble plots; 2. calculate the relative abundance of different compound classes; 3. calculate the relative abundance of specie with different DBE; 4. calculate the relative abundance of the specific specie with different carbon numbers")
+            operation = input('''data successfully loaded, now specify the operation:
+1. drawing the bubble plots;
+2. calculate the relative abundance of different compound classes;
+3. calculate the relative abundance of specie with different DBE;
+4. calculate the relative abundance of the specific specie with different carbon numbers
+''')
             if operation == '1':
                 bubble_plot(data)
             elif operation == '2':
