@@ -40,16 +40,14 @@ for column in raw_data:
 mw_max = raw_data['m/z'].max()
 mw_min = raw_data['m/z'].min()
 cmax = int(mw_max/12)
-for N in range(6):
-    for O in range(6):
-        for S in range(6):
-            cmax = int((mw_max-14*N-16*O-32*S)/12)
-            for C in range(1,cmax+1):
-                hmax = int(mw_max)-12*C-14*N-16*O-32*S+1
-                for H in range(hmax+1):
-                    molecule = compound(C,H,O,N,S)
-                    if isMolecule(molecule):
-                        compound_list.append(molecule)
+for N,S,O in itertools.product(range(6),range(6),range(6)):
+    cmax = int((mw_max-14*N-16*O-32*S)/12)
+    for C in range(1,cmax+1):
+        hmax = int(mw_max)-12*C-14*N-16*O-32*S+1
+        for H in range(hmax+1):
+            molecule = compound(C,H,O,N,S)
+            if isMolecule(molecule):
+                compound_list.append(molecule)
 boundary = 0.0015*14.01565/14
 for molecule in compound_list:
     raw_data1 = raw_data[(raw_data['m/z']>=(molecule.mw-boundary)) & (raw_data['m/z']<=(molecule.mw+boundary))]
