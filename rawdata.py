@@ -47,13 +47,12 @@ for N,S,O in itertools.product(range(6),range(6),range(6)):
         for H in range(hmax+1):
             molecule = compound(C,H,O,N,S)
             if isMolecule(molecule):
-                compound_list.append(molecule)
-boundary = 0.0015*14.01565/14
-for molecule in compound_list:
-    raw_data1 = raw_data[(raw_data['m/z']>=(molecule.mw-boundary)) & (raw_data['m/z']<=(molecule.mw+boundary))]
-    if not raw_data1.empty:
-        molecule.intensity = raw_data1['I'].max()
-        raw_data1 = raw_data1[raw_data1['I']==molecule.intensity]
-        raw_data1 = raw_data1['m/z'].tolist()
-        molecule.memw = raw_data1[0]
-        print(molecule.mw, molecule.memw)
+                boundary = 0.0015*14.01565/14
+                data_test = raw_data[(raw_data['m/z']>=(molecule.mw-boundary)) & (raw_data['m/z']<=(molecule.mw+boundary))]
+                if not data_test.empty:
+                    molecule.intensity = data_test['I'].max()
+                    data_test = data_test[data_test['I']==molecule.intensity]
+                    data_test = data_test['m/z'].tolist()
+                    molecule.memw = data_test[0]
+                    compound_list.append(molecule)
+print(len(compound_list))
