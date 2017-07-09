@@ -36,16 +36,10 @@ def isMolecule(a):
                     if a.mw>=mw_min:
                         return True
 
-
-def processing_rawdata(data):
-    compound_list=[]
-    
-    
-
-
-
-
 class MenuBar(Menu):
+    data = pd.DataFrame()
+    folder_path=0   
+    
     def __init__(self,parent):
         Menu.__init__(self,parent)
         
@@ -54,37 +48,64 @@ class MenuBar(Menu):
         fileMenu.add_command(label='import from clipboard', command=self.readClipboard)
         fileMenu.add_command(label='import from excel', command=self.readExcel)
         fileMenu.add_command(label='import from folder',command=self.readFolder)
-        
+   
     def readClipboard(self):
-        data = pd.read_clipboard().astype(float)
+        MenuBar.data = pd.read_clipboard().astype(float)
     
     def readExcel(self):
         excel_path=filedialog.askopenfilename(defaultextension='.xlsx', filetypes=(('Excel', '*.xlsx'), ('2003 Excel', '*.xls'), ('CSV', '*.csv'), ('All Files', '*.*')))
         if os.path.splitext(excel_path)[1] == '.xlsx' or 'xls':
-            data = pd.read_excel(excel_path).astype(float)
+            MenuBar.data = pd.read_excel(excel_path).astype(float)
         elif os.path.splitext(excel_path)[1] == '.csv':
-            data = pd.read_csv(excel_path).astype(float)
+            MenuBar.data = pd.read_csv(excel_path).astype(float)
     
     def readFolder(self):
-        folder_path=filedialog.askdirectory()
-        return folder_path
-
+        MenuBar.folder_path=filedialog.askdirectory()
+        
 class ParametersInput:
-    def __init__(self,master,name,row,column):
-        self.name=name
+    def __init__(self,master,entry_name,var_name,row,column):
+        self.entry_name=entry_name
+        self.var_name=var_name
         self.row=row
         self.column=column
         
-        self.label=Label(master, text=self.name).grid(row=self.row, column=self.column)
-        self.entry=Entry(master).grid(row=self.row, column=self.column+1)
+        self.label=Label(master, text=self.entry_name).grid(row=self.row, column=self.column)
+        self.entry=Entry(master,textvariable=self.var_name).grid(row=self.row, column=self.column+1)
+        
+class RawDataButton():
+    def __init__(self,parent,data,row,column):
+        self.data = data
+        self.row=row
+        self.column=column
+        
+        self.button=Button(parent, text='Process raw data', command = self.ProcessRawData).grid(row=self.row,column=self.column)
+    
+    def ProcessRawData(self):
+        print(self.data)
         
 class App(Tk):
     def __init__(self):
         Tk.__init__(self)
         menubar = MenuBar(self)
         self.config(menu=menubar)
-        S_N=ParametersInput(self,'S/N',0,0)
-        ppm=ParametersInput(self,'ppm',0,2)
+
+        SignalToNoiseRatio_var=StringVar()
+        ppm_var=StringVar()
+        N_var=StringVar()
+        S_var=StringVar()
+        O_var=StringVar()
+        SignalToNoiseRatio = ParametersInput(self,'S/N',SignalToNoiseRatio_var,0,0)
+        ppm = ParametersInput(self,'error(ppm)',ppm_var,0,2)
+        N = ParametersInput(self,'N',N_var,0,4)
+        S = ParametersInput(self,'S',S_var,0,6)
+        O = ParametersInput(self,'O',O_var,0,8)
+    #       rawdatabutton=RawDataButton(self,menubar.data,0,10)
+
+
+
+
+
+
         
 if __name__ == '__main__':
     app=App()
