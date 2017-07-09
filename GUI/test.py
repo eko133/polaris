@@ -63,38 +63,41 @@ class MenuBar(Menu):
         global folder_path
         folder_path=filedialog.askdirectory()
         
-class ParametersInput:
-    def __init__(self,master,entry_name,var_name,row,column):
-        self.entry_name=entry_name
-        self.var_name=var_name
-        self.row=row
-        self.column=column
+class topFrame:
+    def __init__(self,parent):
+        self.frame=Frame(parent)
+        self.frame.pack()
         
-        self.label=Label(master, text=self.entry_name).grid(row=self.row, column=self.column)
-        self.entry=Entry(master,textvariable=self.var_name)
-        self.entry.grid(row=self.row, column=self.column+1)
+        self.snLabel=Label(self.frame, text='S/N')
+        self.snLabel.grid(row=0,column=0)
+        self.snEntry=Entry(self.frame)
+        self.snEntry.grid(row=0,column=1)
         
-    def getVar(self):
-        return self.entry.get()
+        self.ppmLabel=Label(self.frame, text='error(ppm)')
+        self.ppmLabel.grid(row=0,column=2)
+        self.ppmEntry=Entry(self.frame)
+        self.ppmEntry.grid(row=0,column=3)
         
+        self.nLabel=Label(self.frame, text='N')
+        self.nLabel.grid(row=0,column=4)
+        self.nEntry=Entry(self.frame)
+        self.nEntry.grid(row=0,column=5)
         
-class RawDataButton(MenuBar):
-    
-    def __init__(self,parent,SignalToNoiseRatio, ppm, N, O, S,row,column):
-        self.row=row
-        self.column=column
-        self.SignalToNoiseRatio=SignalToNoiseRatio
-        self.ppm = ppm
-        self.N=N
-        self.O=O
-        self.S=S
+        self.oLabel=Label(self.frame, text='O')
+        self.oLabel.grid(row=0,column=6)
+        self.oEntry=Entry(self.frame)
+        self.oEntry.grid(row=0,column=7)
         
-        self.button=Button(parent, text='Process raw data', command = self.ProcessRawData).grid(row=self.row,column=self.column)
-    
-    def ProcessRawData(self):
-        global data
-        print(self.SignalToNoiseRatio)
-        #data = data[data['S/N']>self.SignalToNoiseRatio]
+        self.sLabel=Label(self.frame, text='S')
+        self.sLabel.grid(row=0,column=8)
+        self.sEntry=Entry(self.frame)
+        self.sEntry.grid(row=0,column=9)
+        
+        self.processButton=Button(self.frame, text='OK and process data', command=self.processData)
+        self.processButton.grid(row=0,column=10)
+        
+    def processData(self):
+        print(self.snEntry.get())
         
                 
 class App(Tk):
@@ -102,21 +105,7 @@ class App(Tk):
         Tk.__init__(self)
         menubar = MenuBar(self)
         self.config(menu=menubar)
-
-        SignalToNoiseRatio_var=StringVar()
-        ppm_var=StringVar()
-        N_var=StringVar()
-        S_var=StringVar()
-        O_var=StringVar()
-        SignalToNoiseRatio = ParametersInput(self,'S/N',SignalToNoiseRatio_var,0,0)
-        SignalToNoiseRatio_var=SignalToNoiseRatio.getVar()
-        ppm = ParametersInput(self,'error(ppm)',ppm_var,0,2)
-        N = ParametersInput(self,'N',N_var,0,4)
-        S = ParametersInput(self,'S',S_var,0,6)
-        O = ParametersInput(self,'O',O_var,0,8)
-        
-        button=RawDataButton(self,SignalToNoiseRatio_var,ppm_var,N_var,S_var,O_var,0,10)
-
+        frame =topFrame(self)
 
         
 if __name__ == '__main__':
