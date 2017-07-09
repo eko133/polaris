@@ -13,6 +13,7 @@ import os
 import itertools
 
 atomic_mass = {'C':12.0107, 'H':1.007825, 'N':14.003074, 'O':15.9949146, 'S':31.972071, 'e':0.0005485799, 'CH2':14.01565}
+mass_tolerance=0.0015*14.01565/14
 
 class Compound:
     def __init__(self,c,h,n,o,s):
@@ -64,6 +65,7 @@ class MenuBar(Menu):
         folder_path=filedialog.askdirectory()
         
 class topFrame:
+    
     def __init__(self,parent):
         self.frame=Frame(parent)
         self.frame.pack()
@@ -97,8 +99,28 @@ class topFrame:
         self.processButton.grid(row=0,column=10)
         
     def processData(self):
-        print(self.snEntry.get())
-        
+        compound_list = []
+        global data
+        data = data[data['S/N']>=int(self.snEntry.get())]
+        for column in data:
+            if column != 'm/z' and column != 'I':
+                del data[column]
+        mw_max=data['m/z'].max()
+        mw_min=data['m/z'].min()
+        for N,O,S in itertools.product(range(int(self.nEntry.get())+1), range(int(self.oEntry.get())+1),range(int(self.sEntry.get())+1)):
+            c_max=int((mw_max-14*N-16*O-32*S)/12)
+            for C in range(1,c_max+1):
+                h_max=int(mw_max)-12*C-14*N-16*O-32*S+1
+                for H in range(1,h_max+1):
+                    molecule=Compound(C,H,N,O,S)
+                    if isMolecule(molecule):
+                        data_test=data[[(data['m/z']>=(molecule.mw-mass_tolerance)) & (data['m/z']<=(molecule.mw+mass_tolerance))]]
+                        if not data_test.empty:
+                            molecule.intensity = data_test['I'].max()
+                            data_test = data_test[data_test['I']==molecule.intensity]
+                            data_test = data_test['m/z'].tolist()
+                            molecule.memw = data_test[0]
+                            compound_list.append(molecule)
                 
 class App(Tk):
     def __init__(self):
