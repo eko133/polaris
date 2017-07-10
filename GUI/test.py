@@ -11,6 +11,7 @@ import pandas as pd
 from tkinter import filedialog
 import os
 import itertools
+from tkinter import messagebox
 
 atomic_mass = {'C':12.0107, 'H':1.007825, 'N':14.003074, 'O':15.9949146, 'S':31.972071, 'e':0.0005485799, 'CH2':14.01565}
 mass_tolerance=0.0015*14.01565/14
@@ -48,28 +49,30 @@ class MenuBar(Menu):
         fileMenu.add_command(label='import from excel', command=self.readExcel)
         fileMenu.add_command(label='import from folder',command=self.readFolder)
         
+        self.data=parent.data
+        self.folderpath=parent.folderpath
+        
     def readClipboard(self):
-        global data
-        data = pd.read_clipboard().astype(float)
-    
+        self.data = pd.read_clipboard().astype(float)
+        parent.data=self.data
+
+        
     def readExcel(self):
-        global data
         excel_path=filedialog.askopenfilename(defaultextension='.xlsx', filetypes=(('Excel', '*.xlsx'), ('2003 Excel', '*.xls'), ('CSV', '*.csv'), ('All Files', '*.*')))
         if os.path.splitext(excel_path)[1] == '.xlsx' or 'xls':
-            data = pd.read_excel(excel_path).astype(float)
+            self.data = pd.read_excel(excel_path).astype(float)
         elif os.path.splitext(excel_path)[1] == '.csv':
-            data = pd.read_csv(excel_path).astype(float)
+            self.data = pd.read_csv(excel_path).astype(float)
     
     def readFolder(self):
-        global folder_path
-        folder_path=filedialog.askdirectory()
-        
+        self.folder_path=filedialog.askdirectory()
+                
 class topFrame:
     
     def __init__(self,parent):
         self.frame=Frame(parent)
         self.frame.pack()
-        
+                
         self.snLabel=Label(self.frame, text='S/N')
         self.snLabel.grid(row=0,column=0)
         self.snEntry=Entry(self.frame)
@@ -98,15 +101,19 @@ class topFrame:
         self.processButton=Button(self.frame, text='OK and process data', command=self.processData)
         self.processButton.grid(row=0,column=10)
         
+        self.text_widget=parent.text_widget
+        self.data=parent.data
+        
     def processData(self):
         compound_list = []
-        global data
-        data = data[data['S/N']>=int(self.snEntry.get())]
-        for column in data:
+        self.text_widget.delete('1.0',END)
+        self.text_widget.insert(END,self.data)
+        self.data = self.data[self.data['S/N']>=int(self.snEntry.get())]
+        for column in self.data:
             if column != 'm/z' and column != 'I':
-                del data[column]
-        mw_max=data['m/z'].max()
-        mw_min=data['m/z'].min()
+                del self.data[column]
+        mw_max=self.data['m/z'].max()
+        mw_min=self.data['m/z'].min()
         for N,O,S in itertools.product(range(int(self.nEntry.get())+1), range(int(self.oEntry.get())+1),range(int(self.sEntry.get())+1)):
             c_max=int((mw_max-14*N-16*O-32*S)/12)
             for C in range(1,c_max+1):
@@ -114,20 +121,27 @@ class topFrame:
                 for H in range(1,h_max+1):
                     molecule=Compound(C,H,N,O,S)
                     if isMolecule(molecule,mw_min):
-                        data_test=data[(data['m/z']>=(molecule.mw-mass_tolerance)) & (data['m/z']<=(molecule.mw+mass_tolerance))]
+                        data_test=self.data[(self.data['m/z']>=(molecule.mw-mass_tolerance)) & (self.data['m/z']<=(molecule.mw+mass_tolerance))]
                         if not data_test.empty:
                             molecule.intensity = data_test['I'].max()
                             data_test = data_test[data_test['I']==molecule.intensity]
                             data_test = data_test['m/z'].tolist()
                             molecule.memw = data_test[0]
                             compound_list.append(molecule)
-                            print(len(compound_list))
-                
+                                                                      
 class App(Tk):
     def __init__(self):
         Tk.__init__(self)
+        
+        self.data=pd.DataFrame()
+        self.folderpath=StringVar()
+        
         menubar = MenuBar(self)
         self.config(menu=menubar)
+        self.text_widget = Text(self)
+        self.text_widget.pack()
+        
+        
         frame =topFrame(self)
 
         
