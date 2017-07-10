@@ -49,13 +49,15 @@ class MenuBar(Menu):
         fileMenu.add_command(label='import from excel', command=self.readExcel)
         fileMenu.add_command(label='import from folder',command=self.readFolder)
         
-        self.data=parent.data
-        self.folderpath=parent.folderpath
+        self.text_widget=parent.text_widget
+        
+        self.data=pd.DataFrame()
+        self.folderpath=StringVar()
         
     def readClipboard(self):
         self.data = pd.read_clipboard().astype(float)
-        parent.data=self.data
-
+        self.text_widget.delete('1.0',END)
+        self.text_widget.insert(END,self.data)
         
     def readExcel(self):
         excel_path=filedialog.askopenfilename(defaultextension='.xlsx', filetypes=(('Excel', '*.xlsx'), ('2003 Excel', '*.xls'), ('CSV', '*.csv'), ('All Files', '*.*')))
@@ -69,9 +71,11 @@ class MenuBar(Menu):
                 
 class topFrame:
     
-    def __init__(self,parent):
+    def __init__(self,parent,menubar):
         self.frame=Frame(parent)
         self.frame.pack()
+        
+        self.menubar=menubar
                 
         self.snLabel=Label(self.frame, text='S/N')
         self.snLabel.grid(row=0,column=0)
@@ -102,12 +106,10 @@ class topFrame:
         self.processButton.grid(row=0,column=10)
         
         self.text_widget=parent.text_widget
-        self.data=parent.data
         
     def processData(self):
+        self.data=self.menubar.data
         compound_list = []
-        self.text_widget.delete('1.0',END)
-        self.text_widget.insert(END,self.data)
         self.data = self.data[self.data['S/N']>=int(self.snEntry.get())]
         for column in self.data:
             if column != 'm/z' and column != 'I':
@@ -132,17 +134,13 @@ class topFrame:
 class App(Tk):
     def __init__(self):
         Tk.__init__(self)
-        
-        self.data=pd.DataFrame()
-        self.folderpath=StringVar()
-        
-        menubar = MenuBar(self)
-        self.config(menu=menubar)
         self.text_widget = Text(self)
         self.text_widget.pack()
+        menubar = MenuBar(self)
+        self.config(menu=menubar)
         
         
-        frame =topFrame(self)
+        frame =topFrame(self,menubar)
 
         
 if __name__ == '__main__':
