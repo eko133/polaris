@@ -22,14 +22,14 @@ class Compound:
         self.o=o
         self.n=n
         self.s=s
-        self.mw=12 * C + atomic_mass['N'] * N + atomic_mass['S'] * S + atomic_mass['O'] * O + atomic_mass['H']* h + atomic_mass['e']
+        self.mw=12 * c + atomic_mass['N'] * n + atomic_mass['S'] * s + atomic_mass['O'] * o + atomic_mass['H']* h + atomic_mass['e']
         self.dbe=(2*c+1+n-h)/2
         self.km=self.mw/atomic_mass['CH2']*14
         self.kmd=int(self.km)+1-self.km
         self.measured_mw=0
         self.intensity=0 
 
-def isMolecule(a):
+def isMolecule(a,mw_min):
     if 0.3<=a.h/a.c<=3.0:
         if a.o/a.c<=3.0 and a.n/a.c<=0.5:
             if a.h<=1+2*a.c+a.n:
@@ -113,14 +113,15 @@ class topFrame:
                 h_max=int(mw_max)-12*C-14*N-16*O-32*S+1
                 for H in range(1,h_max+1):
                     molecule=Compound(C,H,N,O,S)
-                    if isMolecule(molecule):
-                        data_test=data[[(data['m/z']>=(molecule.mw-mass_tolerance)) & (data['m/z']<=(molecule.mw+mass_tolerance))]]
+                    if isMolecule(molecule,mw_min):
+                        data_test=data[(data['m/z']>=(molecule.mw-mass_tolerance)) & (data['m/z']<=(molecule.mw+mass_tolerance))]
                         if not data_test.empty:
                             molecule.intensity = data_test['I'].max()
                             data_test = data_test[data_test['I']==molecule.intensity]
                             data_test = data_test['m/z'].tolist()
                             molecule.memw = data_test[0]
                             compound_list.append(molecule)
+                            print(len(compound_list))
                 
 class App(Tk):
     def __init__(self):
