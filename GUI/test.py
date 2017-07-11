@@ -72,10 +72,17 @@ def excelSave(excelFile):
         writer=pd.ExcelWriter(path, engine = 'xlsxwriter')
     excelFile.to_excel(writer,'Sheet1')
     writer.save()
-        
 
-class MenuBar(Menu):
-        
+def readAllExcel(path):
+    excelFile=[]
+    for files in os.walk(path):
+        for excel in files:
+            if os.path.splitext(excel)[1] == '.xlsx':
+                excelFile.append(path+excel)
+    return excelFile
+
+class MenuBar(Menu):       
+    
     def __init__(self,parent):
         Menu.__init__(self,parent)
         
@@ -87,25 +94,65 @@ class MenuBar(Menu):
         
         self.text_widget=parent.text_widget
         
-        self.data=pd.DataFrame()
-        self.folderpath=StringVar()
+        self.data=pd.DataFrame().astype(float)
+        self.folder_path=0
+        self.excelName=0
+        
+        calMenu=Menu(self)
+        self.add_cascade(label='Calculate', menu=calMenu)
+        calMenu.add_command(label='Class abundance from excel', command=self.calAbundance)
+        calMenu.add_command(label='Class abundance from folder', command=self.calAbundanceFile)
+        
+        
+        
+        
+        
         
     def readClipboard(self):
-        self.data = pd.read_clipboard().astype(float)
+        self.data = pd.read_clipboard()
+        self.excelName='Clipboard'
         self.text_widget.delete('1.0',END)
         self.text_widget.insert(END,self.data)
         
     def readExcel(self):
         excel_path=filedialog.askopenfilename(defaultextension='.xlsx', filetypes=(('Excel', '*.xlsx'), ('2003 Excel', '*.xls'), ('CSV', '*.csv'), ('All Files', '*.*')))
         if os.path.splitext(excel_path)[1] == '.xlsx' or 'xls':
-            self.data = pd.read_excel(excel_path).astype(float)
+            self.data = pd.read_excel(excel_path)
         elif os.path.splitext(excel_path)[1] == '.csv':
-            self.data = pd.read_csv(excel_path).astype(float)
-    
+            self.data = pd.read_csv(excel_path)
+        excelName=os.path.splitext(excel_path)[0]
+        self.excelName=excelName.split('\\')[-1]
+        self.text_widget.delete('1.0',END)
+        self.text_widget.insert(END,self.data)
+        
     def readFolder(self):
         self.folder_path=filedialog.askdirectory()
+        
+    def calAbundance(self):     
+        data=self.data
+        if not 'normalized' in data.columns:
+            data['normalized']=data['intensity']/data['intensity'].sum()        
+        species=data['class']
+        species=species.drop_duplicates()
+        abundance=pd.DataFrame().astype(float)
+        for specie in species:
+            data_specie=data[data['class'] == specie]
+            abundance.loc[specie,self.excelName] = data_specie['normalized'].sum()
+        self.text_widget.delete('1.0',END)
+        self.text_widget.insert(END,abundance)
+        excelSave(abundance)
+        
+    def calAbundanceFile(self):
+        excelFile=readAllExcel(self.folder_path)
+        for excel in excelFile:
+            self.excelName=excel
+            self.data=pd.read_excel(excel)
+            self.calAbundance()
                 
-class topFrame:
+
+        
+        
+class RawDataFrame:
     
     def __init__(self,parent,menubar):
         self.frame=Frame(parent)
@@ -191,7 +238,17 @@ class topFrame:
         self.text_widget.delete('1.0',END)
         self.text_widget.insert(END,saveExcel)
         excelSave(saveExcel)
+ 
+class DataFrame:
+    
+    def __init__(self,parent,menubar):
+        self.frame=Frame(parent)
+        self.frame.pack()
         
+        
+
+
+       
         
 class App(Tk):
     def __init__(self):
@@ -199,10 +256,12 @@ class App(Tk):
         self.text_widget = Text(self)
         self.text_widget.pack()
         menubar = MenuBar(self)
+        
         self.config(menu=menubar)
         
         
-        frame =topFrame(self,menubar)
+        rawdataframe =RawDataFrame(self,menubar)
+        dataframe=DataFrame(self,menubar)
 
         
 if __name__ == '__main__':
