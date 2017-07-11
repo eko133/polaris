@@ -74,12 +74,12 @@ def excelSave(excelFile):
     writer.save()
 
 def readAllExcel(path):
-    excelFile=[]
-    for files in os.walk(path):
+    excelFilePath=[]
+    for root,dirs,files in os.walk(path):
         for excel in files:
             if os.path.splitext(excel)[1] == '.xlsx':
-                excelFile.append(path+excel)
-    return excelFile
+                excelFilePath.append(path+'/'+excel)
+    return excelFilePath
 
 class MenuBar(Menu):       
     
@@ -127,6 +127,11 @@ class MenuBar(Menu):
         
     def readFolder(self):
         self.folder_path=filedialog.askdirectory()
+        self.text_widget.delete('1.0',END)
+        path=readAllExcel(self.folder_path)
+        self.text_widget.insert(END,'These are the Excels found in the path: \n')
+        for paths in path:
+            self.text_widget.insert(END,paths+'\n')
         
     def calAbundance(self):     
         data=self.data
