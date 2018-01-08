@@ -12,16 +12,16 @@ n=0
 fignum=0
 variation_column=pd.DataFrame().astype(float)
 while n<18:
-    os.chdir("C:\Users\samuel\Desktop")
+    os.chdir(r"C:\Users\samuel\Dropbox\3-Data\准西油样_胜利油田_2017\负ESI数据\处理\p60.xlsx")
     if os.path.isfile(str(n)+'.xlsx') == True:
         data = pd.read_excel(str(n)+'.xlsx')
         data['intensity']=data['intensity'].astype(float)
         sum = data['intensity'].sum()
-        data = data[data['class']=='O2S1']
+        data = data[data['class']=='O1S1']
         data['intensity']=data['intensity'].astype(float)
         data = data[(data.ppm>-2) & (data.ppm<2)]
         DBE_count=0
-        while DBE_count<15:
+        while DBE_count<20:
             x=data[data['DBE']==DBE_count]
             variation_column.loc[DBE_count,n]=x['intensity'].sum()
             DBE_count=DBE_count+1

@@ -26,7 +26,8 @@ class Compound:
         self.s=s
         self.mode=mode
         self.mw=self.mw()
-        self.dbe=(2*c+1+n-h)/2
+        self.realh=self.realh()
+        self.dbe=(2*c+2+n-self.realh)/2
         self.km=self.mw/atomic_mass['CH2']*14
         self.kmd=int(self.km)+1-self.km
         self.memw=0
@@ -40,7 +41,14 @@ class Compound:
         elif self.mode=='-':
             a=12 * self.c + atomic_mass['N'] *self. n + atomic_mass['S'] *self. s + atomic_mass['O'] * self.o + atomic_mass['H']*self. h + atomic_mass['e']
         return a
-    
+
+    def realh(self):
+        if self.mode=='+':
+            b=self.h-1
+        if self.mode=='-':
+            b=self.h+1
+        return b
+        
     def specie(self):
         specie_n=''
         specie_o=''
@@ -210,7 +218,7 @@ class RawDataFrame:
     def processData(self):
         
         saveExcel=pd.DataFrame()
-        for i in ('m/z','ppm','class','C','H','O','N','S','intensity'):
+        for i in ('m/z','ppm','class','C','H','O','N','S','DBE','intensity'):
             saveExcel.loc[0,i]=i
             i+=i
         count=0
@@ -236,7 +244,7 @@ class RawDataFrame:
                             molecule.memw = data_test[0]
                             molecule.ppm = abs(1000000*(molecule.mw-molecule.memw)/molecule.mw)
                             if molecule.ppm <= float(self.ppmEntry.get()):
-                                stringTovar={'m/z':molecule.mw,'ppm':molecule.ppm,'class':molecule.specie,'C':molecule.c,'H':molecule.h,'O':molecule.o,'N':molecule.n,'S':molecule.s,'intensity':molecule.intensity}
+                                stringTovar={'m/z':molecule.mw,'ppm':molecule.ppm,'class':molecule.specie,'C':molecule.c,'H':molecule.realh,'O':molecule.o,'N':molecule.n,'S':molecule.s,'DBE':molecule.dbe,'intensity':molecule.intensity}
                                 for column in saveExcel:
                                     saveExcel.loc[count,column]=stringTovar[column]
                                 count+=1
