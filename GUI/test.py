@@ -110,6 +110,7 @@ class MenuBar(Menu):
         self.add_cascade(label='Calculate', menu=calMenu)
         calMenu.add_command(label='Class abundance from excel', command=self.calAbundance)
         calMenu.add_command(label='Class abundance from folder', command=self.calAbundanceFile)
+        calMenu.add_command(label='Class DBE abundance from excel', command=self.caldbeAbundance)
         
         
         
@@ -161,8 +162,24 @@ class MenuBar(Menu):
             self.excelName=excel
             self.data=pd.read_excel(excel)
             self.calAbundance()
-                
-
+            
+    def caldbeAbundance(self):     
+        data=self.data
+        if not 'normalized' in data.columns:
+            data['normalized']=data['intensity']/data['intensity'].sum()        
+        species=data['class']
+        species=species.drop_duplicates()
+        abundance=pd.DataFrame().astype(float)
+        dbe = 0 
+        for specie in species:
+            data_specie=data[data['class'] == specie]
+            for dbe in range(0,20):
+                data_dbe=data_specie[data_specie['DBE'] == dbe]
+                abundance.loc[specie,dbe] = data_dbe['normalized'].sum()
+        self.text_widget.delete('1.0',END)
+        self.text_widget.insert(END,abundance)
+        excelSave(abundance)
+        
         
         
 class RawDataFrame:
