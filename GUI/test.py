@@ -12,6 +12,7 @@ from tkinter import filedialog
 import os
 import itertools
 from tkinter import messagebox
+import matplotlib.pyplot as plt
 
 
 atomic_mass = {'C':12.0107, 'H':1.007825, 'N':14.003074, 'O':15.9949146, 'S':31.972071, 'e':0.0005485799, 'CH2':14.01565}
@@ -112,6 +113,10 @@ class MenuBar(Menu):
         calMenu.add_command(label='Class abundance from folder', command=self.calAbundanceFile)
         calMenu.add_command(label='Class DBE abundance from excel', command=self.caldbeAbundance)
         
+        plotMenu=Menu(self)
+        self.add_cascade(label='Plot', menu=plotMenu)
+        plotMenu.add_command(label='Bar plot from excel', command=self.barplot)
+        
         
         
         
@@ -179,8 +184,12 @@ class MenuBar(Menu):
         self.text_widget.delete('1.0',END)
         self.text_widget.insert(END,abundance)
         excelSave(abundance)
-        
-        
+    
+    def barplot(self):
+        data=self.data
+        plt.figure(figsize=(15,10))
+        plt.bar(data.index,data.iloc[:,0],align='center', alpha=0.5)
+        plt.show()
         
 class RawDataFrame:
     
