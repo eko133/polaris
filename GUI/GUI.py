@@ -118,7 +118,9 @@ class MenuBar(Menu):
         self.add_cascade(label='Plot', menu=plotMenu)
         plotMenu.add_command(label='Bar plot from excel', command=self.barplot)
         
-        
+        aboutMenu=Menu(self)
+        self.add_cascade(label='Help', menu=aboutMenu)
+        aboutMenu.add_command(label='About', command=self.aboutMessage)
         
         
         
@@ -211,6 +213,9 @@ class MenuBar(Menu):
         plt.figure(figsize=(15,10))
         plt.bar(data.index,data.iloc[:,0],align='center', alpha=0.5)
         plt.show()
+        
+    def aboutMessage(self):
+        messagebox.showinfo(title='About', message='FT–ICR MS Data Handler\nLicensed under the terms of the Apache License 2.0\n\nDeveloped and maintained by Weimin Liu\n\nFor bug reports and feature requests, please go to my Github website')
         
 class RawDataFrame:
     
