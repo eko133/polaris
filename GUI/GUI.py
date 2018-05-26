@@ -9,11 +9,12 @@ from tkinter import *
 from tkinter import ttk
 import pandas as pd
 from tkinter import filedialog
+from tkinter import simpledialog
 import os
 import itertools
 from tkinter import messagebox
 import matplotlib.pyplot as plt
-
+import numpy as np
 
 atomic_mass = {'C':12.0107, 'H':1.007825, 'N':14.003074, 'O':15.9949146, 'S':31.972071, 'e':0.0005485799, 'CH2':14.01565}
 mass_tolerance=0.0015*14.01565/14
@@ -117,6 +118,7 @@ class MenuBar(Menu):
         plotMenu=Menu(self)
         self.add_cascade(label='Plot', menu=plotMenu)
         plotMenu.add_command(label='Bar plot from excel', command=self.barplot)
+        plotMenu.add_command(label='Bubble plot from folder', command=self.bubbleplot)
         
         aboutMenu=Menu(self)
         self.add_cascade(label='Help', menu=aboutMenu)
@@ -213,6 +215,42 @@ class MenuBar(Menu):
         plt.figure(figsize=(15,10))
         plt.bar(data.index,data.iloc[:,0],align='center', alpha=0.5)
         plt.show()
+    
+    def bubbleplot(self):
+        os.chdir(self.folder_path)
+        excelFile=readAllExcel(self.folder_path)
+        species=simpledialog.askstring('Required classes','e.g., N1,O2')
+        species=species.split(',')
+        for specie in species:
+            if os.path.exists(specie)==False:
+                os.makedirs(specie)
+        for excel in excelFile:
+            data=pd.read_excel(excel)
+            data=data[data['DBE']>0]
+            excelName=os.path.split(excel)[1]
+            excelName=os.path.splitext(excelName)[0]
+            data['intensity']=data['intensity'].astype(float)
+            for specie in species:
+                data_specie=data[data['class']==specie]
+                sum=data_specie['intensity'].sum()
+                data_specie['normalized']=data_specie['intensity']/sum
+                plt.figure(figsize=(6,5))
+                font = {'family' : 'arial',  
+                        'color'  : 'black',  
+                        'weight' : 'normal',  
+                        'size'   : 20,  
+                        } 
+                plt.axis([0,50,0,25])
+                plt.xlabel("Carbon Number",fontdict=font)
+                plt.ylabel("DBE",fontdict=font)
+                plt.xticks(fontsize=16,fontname='arial')
+                plt.yticks(np.arange(0,26,5),fontsize=16,fontname='arial')
+                plt.text(1,23,s=specie,fontdict=font)
+                plt.text(43,23,s=excelName,fontdict=font)
+                plt.scatter(data_specie['C'],data_specie['DBE'],s=1000*data_specie['normalized'],edgecolors='black',linewidth=0.1)
+                path=self.folder_path+"\\"+specie
+                filename=excelName+'.png'
+                plt.savefig(os.path.join(path,filename),dpi=600)
         
     def aboutMessage(self):
         messagebox.showinfo(title='About', message='FT–ICR MS Data Handler\nLicensed under the terms of the Apache License 2.0\n\nDeveloped and maintained by Weimin Liu\n\nFor bug reports and feature requests, please go to my Github website')
@@ -224,49 +262,51 @@ class RawDataFrame:
         self.frame.pack()
         
         self.menubar=menubar
+        
+        self.rawlabel=Label(self.frame, text='RAW DATA\t')
+        self.rawlabel.grid(row=0,column=0)
                 
         self.snLabel=Label(self.frame, text='S/N')
-        self.snLabel.grid(row=0,column=0)
+        self.snLabel.grid(row=0,column=1)
         self.snEntry=Entry(self.frame)
         self.snEntry.insert(END,'6')
-        self.snEntry.grid(row=0,column=1)
+        self.snEntry.grid(row=0,column=2)
         
         self.ppmLabel=Label(self.frame, text='error(ppm)')
-        self.ppmLabel.grid(row=0,column=2)
+        self.ppmLabel.grid(row=0,column=3)
         self.ppmEntry=Entry(self.frame)
         self.ppmEntry.insert(END,'1.2')
-        self.ppmEntry.grid(row=0,column=3)
+        self.ppmEntry.grid(row=0,column=4)
         
         self.nLabel=Label(self.frame, text='N')
-        self.nLabel.grid(row=0,column=4)
+        self.nLabel.grid(row=0,column=5)
         self.nEntry=Entry(self.frame)
         self.nEntry.insert(END,'5')
-        self.nEntry.grid(row=0,column=5)
+        self.nEntry.grid(row=0,column=6)
         
         self.oLabel=Label(self.frame, text='O')
-        self.oLabel.grid(row=0,column=6)
+        self.oLabel.grid(row=0,column=7)
         self.oEntry=Entry(self.frame)
         self.oEntry.insert(END,'5')
-        self.oEntry.grid(row=0,column=7)
+        self.oEntry.grid(row=0,column=8)
         
         self.sLabel=Label(self.frame, text='S')
-        self.sLabel.grid(row=0,column=8)
+        self.sLabel.grid(row=0,column=9)
         self.sEntry=Entry(self.frame)
         self.sEntry.insert(END,'5')
-        self.sEntry.grid(row=0,column=9)
+        self.sEntry.grid(row=0,column=10)
         
         self.modeLabel=Label(self.frame, text='ESI mode(+,-)')
-        self.modeLabel.grid(row=0,column=10)
+        self.modeLabel.grid(row=0,column=11)
         self.modeEntry=Entry(self.frame)
         self.modeEntry.insert(END,'+')
-        self.modeEntry.grid(row=0,column=11)
+        self.modeEntry.grid(row=0,column=12)
         
-        self.processButton=Button(self.frame, text='OK and process data', command=self.processData)
-        self.processButton.grid(row=0,column=12)
+        self.processButton=Button(self.frame, text='Process', command=self.processData)
+        self.processButton.grid(row=0,column=13)
         
         self.text_widget=parent.text_widget
-        
-        
+                
     def processData(self):
         
         saveExcel=pd.DataFrame()
