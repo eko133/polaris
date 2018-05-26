@@ -6,22 +6,35 @@ Created on Sat Apr  1 10:06:23 2017
 import pandas as pd
 import matplotlib.pyplot as plt
 import os
-n=0
+import numpy as np
+
+def readAllExcel(path):
+    excelFilePath=[]
+    for root,dirs,files in os.walk(path):
+        for excel in files:
+            if os.path.splitext(excel)[1] == '.xlsx':
+                excelFilePath.append(path+'/'+excel)
+    return excelFilePath
+
+
+os.chdir(r"D:\MQ\EXCEL")
+excelFile=readAllExcel(r"D:\MQ\EXCEL")
+species=['O1','O2','O3','O4','O5','N1','N1O1','N1O2','N1O3']
 fignum=0
-while n<18:
-    os.chdir(r"G:\Gdrive\Archived\Biodegradation of sulfur-rich oil\负离子excel")
-    if os.path.exists(str(n))==False:
-        os.makedirs(str(n))
-    if os.path.isfile(str(n)+'.xlsx') == True:
-        data = pd.read_excel(str(n)+'.xlsx')
-        data['intensity']=data['intensity'].astype(float)
-        data = data[(data.ppm>-2) & (data.ppm<2)]
-        data = data[(data['DBE']>0) ]
-        specie='O2S3'
-        x=data[data['class']==specie]
-        sum=x['intensity'].sum()
-        x['normalized']=x['intensity']/sum
-        
+for specie in species:
+    if os.path.exists(specie)==False:
+        os.makedirs(specie)
+for excel in excelFile:
+    data=pd.read_excel(excel)
+    data=data[data['DBE']>0]
+    excelName=os.path.split(excel)[1]
+    excelName=os.path.splitext(excelName)[0]
+    
+    data['intensity']=data['intensity'].astype(float)
+    for specie in species:
+        data_specie=data[data['class']==specie]
+        sum=data_specie['intensity'].sum()
+        data_specie['normalized']=data_specie['intensity']/sum
         plt.figure(fignum)
         plt.figure(figsize=(6,5))
         font = {'family' : 'arial',  
@@ -29,18 +42,16 @@ while n<18:
                 'weight' : 'normal',  
                 'size'   : 20,  
                 } 
-        plt.axis([0,60,0,16])
+        plt.axis([0,50,0,25])
         plt.xlabel("Carbon Number",fontdict=font)
         plt.ylabel("DBE",fontdict=font)
         plt.xticks(fontsize=16,fontname='arial')
-        plt.yticks(fontsize=16,fontname='arial')
-        plt.text(1,14,s=specie,fontdict=font)
-        plt.text(53,14,s='Z-'+str(n),fontdict=font)
-        plt.scatter(x['C'],x['DBE'],s=500*x['normalized'],edgecolors='black',linewidth=0.1)
-        path=r"G:\Gdrive\Archived\Biodegradation of sulfur-rich oil\负离子excel"+"\\"+str(n)
-        filename=specie+'.png'
-        plt.savefig(os.path.join(path,filename),dpi=1000)
+        plt.yticks(np.arange(0,26,5),fontsize=16,fontname='arial')
+        plt.text(1,23,s=specie,fontdict=font)
+        plt.text(43,23,s=excelName,fontdict=font)
+        plt.scatter(data_specie['C'],data_specie['DBE'],s=1000*data_specie['normalized'],edgecolors='black',linewidth=0.1)
+        path=r"D:\MQ\EXCEL"+"\\"+specie
+        filename=excelName+'.png'
+        plt.savefig(os.path.join(path,filename),dpi=600)
         fignum=fignum+1
-        n=n+1
-    else:
-        n=n+1
+

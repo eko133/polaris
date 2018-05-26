@@ -265,7 +265,7 @@ class RawDataFrame:
     def processData(self):
         
         saveExcel=pd.DataFrame()
-        for i in ('m/z','ppm','class','C','H','O','N','S','DBE','intensity'):
+        for i in ('measured m/z','m/z','ppm','class','C','H','O','N','S','DBE','intensity'):
             saveExcel.loc[0,i]=i
             i+=i
         count=0
@@ -291,7 +291,7 @@ class RawDataFrame:
                             molecule.memw = data_test[0]
                             molecule.ppm = abs(1000000*(molecule.mw-molecule.memw)/molecule.mw)
                             if molecule.ppm <= float(self.ppmEntry.get()):
-                                stringTovar={'m/z':molecule.mw,'ppm':molecule.ppm,'class':molecule.specie,'C':molecule.c,'H':molecule.realh,'O':molecule.o,'N':molecule.n,'S':molecule.s,'DBE':molecule.dbe,'intensity':molecule.intensity}
+                                stringTovar={'measured m/z':molecule.memw,'m/z':molecule.mw,'ppm':molecule.ppm,'class':molecule.specie,'C':molecule.c,'H':molecule.realh,'O':molecule.o,'N':molecule.n,'S':molecule.s,'DBE':molecule.dbe,'intensity':molecule.intensity}
                                 for column in saveExcel:
                                     saveExcel.loc[count,column]=stringTovar[column]
                                 count+=1
