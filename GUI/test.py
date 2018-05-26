@@ -112,6 +112,7 @@ class MenuBar(Menu):
         calMenu.add_command(label='Class abundance from excel', command=self.calAbundance)
         calMenu.add_command(label='Class abundance from folder', command=self.calAbundanceFile)
         calMenu.add_command(label='Class DBE abundance from excel', command=self.caldbeAbundance)
+        calMenu.add_command(label='Class DBE abundance from folder', command=self.caldbeAbundanceFile)
         
         plotMenu=Menu(self)
         self.add_cascade(label='Plot', menu=plotMenu)
@@ -163,10 +164,23 @@ class MenuBar(Menu):
         
     def calAbundanceFile(self):
         excelFile=readAllExcel(self.folder_path)
+        abundance=pd.DataFrame().astype(float)
         for excel in excelFile:
-            self.excelName=excel
+            self.excelName=os.path.split(excel)[1]
+            self.excelName=os.path.splitext(self.excelName)[0]
             self.data=pd.read_excel(excel)
-            self.calAbundance()
+            data=self.data
+            if not 'normalized' in data.columns:
+                data['normalized']=data['intensity']/data['intensity'].sum()        
+            species=data['class']
+            species=species.drop_duplicates()
+            for specie in species:
+                data_specie=data[data['class'] == specie]
+                abundance.loc[specie,self.excelName] = data_specie['normalized'].sum()
+            self.text_widget.delete('1.0',END)
+            self.text_widget.insert(END,abundance)
+        excelSave(abundance)
+            
             
     def caldbeAbundance(self):     
         data=self.data
@@ -184,6 +198,13 @@ class MenuBar(Menu):
         self.text_widget.delete('1.0',END)
         self.text_widget.insert(END,abundance)
         excelSave(abundance)
+ 
+    def caldbeAbundanceFile(self):
+        excelFile=readAllExcel(self.folder_path)
+        for excel in excelFile:
+            self.excelName=excel
+            self.data=pd.read_excel(excel)
+            self.caldbeAbundance()
     
     def barplot(self):
         data=self.data
