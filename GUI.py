@@ -97,10 +97,10 @@ class MenuBar(Menu):
         Menu.__init__(self,parent)
         
         fileMenu=Menu(self)
-        self.add_cascade(label='File', menu=fileMenu)
-        fileMenu.add_command(label='import from clipboard', command=self.readClipboard)
-        fileMenu.add_command(label='import from excel', command=self.readExcel)
-        fileMenu.add_command(label='import from folder',command=self.readFolder)
+        self.add_cascade(label='Import', menu=fileMenu)
+        fileMenu.add_command(label='From clipboard', command=self.readClipboard)
+        fileMenu.add_command(label='From excel', command=self.readExcel)
+        fileMenu.add_command(label='From folder',command=self.readFolder)
         
         self.text_widget=parent.text_widget
         
@@ -129,6 +129,8 @@ class MenuBar(Menu):
         
     def readClipboard(self):
         self.data = pd.read_clipboard()
+        if not ('m/z' or 'I' or 'S/N') in self.data.columns:
+            messagebox.showerror('Error',"Wrong data format!\nMUST include 'm/z', 'I', and 'S/N'")
         self.excelName='Clipboard'
         self.text_widget.delete('1.0',END)
         self.text_widget.insert(END,self.data)
@@ -152,106 +154,125 @@ class MenuBar(Menu):
         for paths in path:
             self.text_widget.insert(END,paths+'\n')
         
-    def calAbundance(self):     
-        data=self.data
-        if not 'normalized' in data.columns:
-            data['normalized']=data['intensity']/data['intensity'].sum()        
-        species=data['class']
-        species=species.drop_duplicates()
-        abundance=pd.DataFrame().astype(float)
-        for specie in species:
-            data_specie=data[data['class'] == specie]
-            abundance.loc[specie,self.excelName] = data_specie['normalized'].sum()
-        self.text_widget.delete('1.0',END)
-        self.text_widget.insert(END,abundance)
-        excelSave(abundance)
-        
-    def calAbundanceFile(self):
-        excelFile=readAllExcel(self.folder_path)
-        abundance=pd.DataFrame().astype(float)
-        for excel in excelFile:
-            self.excelName=os.path.split(excel)[1]
-            self.excelName=os.path.splitext(self.excelName)[0]
-            self.data=pd.read_excel(excel)
+    def calAbundance(self):
+        try:
             data=self.data
             if not 'normalized' in data.columns:
                 data['normalized']=data['intensity']/data['intensity'].sum()        
             species=data['class']
             species=species.drop_duplicates()
+            abundance=pd.DataFrame().astype(float)
             for specie in species:
                 data_specie=data[data['class'] == specie]
                 abundance.loc[specie,self.excelName] = data_specie['normalized'].sum()
             self.text_widget.delete('1.0',END)
             self.text_widget.insert(END,abundance)
-        excelSave(abundance)
+            excelSave(abundance)
+        except:
+            messagebox.showerror('Error', 'Please import data first!')
+
+        
+    def calAbundanceFile(self):
+        try: 
+            excelFile=readAllExcel(self.folder_path)
+            abundance=pd.DataFrame().astype(float)
+            for excel in excelFile:
+                self.excelName=os.path.split(excel)[1]
+                self.excelName=os.path.splitext(self.excelName)[0]
+                self.data=pd.read_excel(excel)
+                data=self.data
+                if not 'normalized' in data.columns:
+                    data['normalized']=data['intensity']/data['intensity'].sum()        
+                species=data['class']
+                species=species.drop_duplicates()
+                for specie in species:
+                    data_specie=data[data['class'] == specie]
+                    abundance.loc[specie,self.excelName] = data_specie['normalized'].sum()
+                self.text_widget.delete('1.0',END)
+                self.text_widget.insert(END,abundance)
+            excelSave(abundance)
+        except:
+            messagebox.showerror('Error', 'Please import data first!')
             
-            
-    def caldbeAbundance(self):     
-        data=self.data
-        if not 'normalized' in data.columns:
-            data['normalized']=data['intensity']/data['intensity'].sum()        
-        species=data['class']
-        species=species.drop_duplicates()
-        abundance=pd.DataFrame().astype(float)
-        dbe = 0 
-        for specie in species:
-            data_specie=data[data['class'] == specie]
-            for dbe in range(0,20):
-                data_dbe=data_specie[data_specie['DBE'] == dbe]
-                abundance.loc[specie,dbe] = data_dbe['normalized'].sum()
-        self.text_widget.delete('1.0',END)
-        self.text_widget.insert(END,abundance)
-        excelSave(abundance)
+    def caldbeAbundance(self):
+        try: 
+            data=self.data
+            if not 'normalized' in data.columns:
+                data['normalized']=data['intensity']/data['intensity'].sum()        
+            species=data['class']
+            species=species.drop_duplicates()
+            abundance=pd.DataFrame().astype(float)
+            dbe = 0 
+            for specie in species:
+                data_specie=data[data['class'] == specie]
+                for dbe in range(0,20):
+                    data_dbe=data_specie[data_specie['DBE'] == dbe]
+                    abundance.loc[specie,dbe] = data_dbe['normalized'].sum()
+            self.text_widget.delete('1.0',END)
+            self.text_widget.insert(END,abundance)
+            excelSave(abundance)
+        except:
+            messagebox.showerror('Error', 'Please import data first!')
  
     def caldbeAbundanceFile(self):
-        excelFile=readAllExcel(self.folder_path)
-        for excel in excelFile:
-            self.excelName=excel
-            self.data=pd.read_excel(excel)
-            self.caldbeAbundance()
+        try:
+            excelFile=readAllExcel(self.folder_path)
+            for excel in excelFile:
+                self.excelName=excel
+                self.data=pd.read_excel(excel)
+                self.caldbeAbundance()
+        except:
+            messagebox.showerror('Error', 'Please import data first!')
     
     def barplot(self):
-        data=self.data
-        plt.figure(figsize=(15,10))
-        plt.bar(data.index,data.iloc[:,0],align='center', alpha=0.5)
-        plt.show()
-    
+        try:
+            data=self.data
+            plt.figure(figsize=(15,10))
+            plt.bar(data.index,data.iloc[:,0],align='center', alpha=0.5)
+            plt.show()
+        except:
+            messagebox.showerror('Error', 'Please import data first!')
+
     def bubbleplot(self):
-        os.chdir(self.folder_path)
-        excelFile=readAllExcel(self.folder_path)
-        species=simpledialog.askstring('Required classes','e.g., N1,O2')
-        species=species.split(',')
-        for specie in species:
-            if os.path.exists(specie)==False:
-                os.makedirs(specie)
-        for excel in excelFile:
-            data=pd.read_excel(excel)
-            data=data[data['DBE']>0]
-            excelName=os.path.split(excel)[1]
-            excelName=os.path.splitext(excelName)[0]
-            data['intensity']=data['intensity'].astype(float)
+        try:
+            os.chdir(self.folder_path)
+            excelFile=readAllExcel(self.folder_path)
+            species=simpledialog.askstring('Required classes','e.g., N1,O2')
+            species=species.split(',')
             for specie in species:
-                data_specie=data[data['class']==specie]
-                sum=data_specie['intensity'].sum()
-                data_specie['normalized']=data_specie['intensity']/sum
-                plt.figure(figsize=(6,5))
-                font = {'family' : 'arial',  
-                        'color'  : 'black',  
-                        'weight' : 'normal',  
-                        'size'   : 20,  
-                        } 
-                plt.axis([0,50,0,25])
-                plt.xlabel("Carbon Number",fontdict=font)
-                plt.ylabel("DBE",fontdict=font)
-                plt.xticks(fontsize=16,fontname='arial')
-                plt.yticks(np.arange(0,26,5),fontsize=16,fontname='arial')
-                plt.text(1,23,s=specie,fontdict=font)
-                plt.text(43,23,s=excelName,fontdict=font)
-                plt.scatter(data_specie['C'],data_specie['DBE'],s=1000*data_specie['normalized'],edgecolors='black',linewidth=0.1)
-                path=self.folder_path+"\\"+specie
-                filename=excelName+'.png'
-                plt.savefig(os.path.join(path,filename),dpi=600)
-        
+                if os.path.exists(specie)==False:
+                    os.makedirs(specie)
+            for excel in excelFile:
+                data=pd.read_excel(excel)
+                data=data[data['DBE']>0]
+                excelName=os.path.split(excel)[1]
+                excelName=os.path.splitext(excelName)[0]
+                data['intensity']=data['intensity'].astype(float)
+                for specie in species:
+                    data_specie=data[data['class']==specie]
+                    sum=data_specie['intensity'].sum()
+                    data_specie['normalized']=data_specie['intensity']/sum
+                    plt.figure(figsize=(6,5))
+                    font = {'family' : 'arial',  
+                            'color'  : 'black',  
+                            'weight' : 'normal',  
+                            'size'   : 20,  
+                            } 
+                    plt.axis([0,50,0,25])
+                    plt.xlabel("Carbon Number",fontdict=font)
+                    plt.ylabel("DBE",fontdict=font)
+                    plt.xticks(fontsize=16,fontname='arial')
+                    plt.yticks(np.arange(0,26,5),fontsize=16,fontname='arial')
+                    plt.text(1,23,s=specie,fontdict=font)
+                    plt.text(43,23,s=excelName,fontdict=font)
+                    plt.scatter(data_specie['C'],data_specie['DBE'],s=1000*data_specie['normalized'],edgecolors='black',linewidth=0.1)
+                    path=self.folder_path+"\\"+specie
+                    filename=excelName+'.png'
+                    plt.savefig(os.path.join(path,filename),dpi=600)
+            messagebox.showinfo("Complete!", "All plots are stored in the same folder with the excel files")
+        except:
+            messagebox.showerror('Error', 'Please import data first!')
+
     def aboutMessage(self):
         messagebox.showinfo(title='About', message='FT–ICR MS Data Handler\nLicensed under the terms of the Apache License 2.0\n\nDeveloped and maintained by Weimin Liu\n\nFor bug reports and feature requests, please go to my Github website')
         
