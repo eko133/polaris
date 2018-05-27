@@ -91,6 +91,59 @@ def readAllExcel(path):
                 excelFilePath.append(path+'/'+excel)
     return excelFilePath
 
+class ParaDialog(Toplevel):
+    
+    def __init__(self):
+        Toplevel.__init__(self)
+        self.title('PARAMETERS')
+        self.para=[]
+        self.setup_UI()
+        
+    def setup_UI(self):      
+        row1=Frame(self)
+        row1.pack()
+        Label(row1,text='C',width=5).pack(side=LEFT)
+        self.cacstart=IntVar()
+        self.cacstop=IntVar()
+        Entry(row1,textvariable=self.cacstart,width=5).pack(side=LEFT)
+        Label(row1,text='–').pack(side=LEFT)
+        Entry(row1,textvariable=self.cacstop,width=5).pack(side=LEFT)
+        
+        Label(row1,text='DBE',width=5).pack(side=LEFT)
+        self.cadbe=IntVar()
+        Entry(row1, textvariable=self.cadbe,width=5).pack(side=LEFT)
+        
+        Label(row1,text='Mode',width=5).pack(side=LEFT)
+        self.camo=StringVar()
+        Entry(row1,textvariable=self.camo,width=5).pack(side=LEFT)
+        
+        row2=Frame(self)
+        row2.pack()
+        Label(row2,text='N',width=5).pack(side=LEFT)
+        self.can=IntVar()
+        Entry(row2, textvariable=self.can,width=5).pack(side=LEFT)
+        
+        Label(row2,text='O',width=5).pack(side=LEFT)
+        self.cao=IntVar()
+        Entry(row2, textvariable=self.cao,width=5).pack(side=LEFT)
+        
+        Label(row2,text='S',width=5).pack(side=LEFT)
+        self.cas=IntVar()
+        Entry(row2, textvariable=self.cas,width=5).pack(side=LEFT)
+        
+        row3=Frame(self)
+        row3.pack()
+        Button(row3,text='Cancel',command=self.cancel).pack(side=RIGHT)
+        Button(row3,text='OK',command=self.ok).pack(side=RIGHT)
+    
+    def ok(self):
+        self.para=[self.cacstart.get(),self.cacstop.get(),self.cadbe.get(),self.camo.get(),self.can.get(),self.cao.get(),self.cas.get()]
+        self.destroy()
+        
+    def cancel(self):
+        self.para=None
+        self.destroy()
+
 class MenuBar(Menu):       
     
     def __init__(self,parent):
@@ -110,6 +163,7 @@ class MenuBar(Menu):
         
         calMenu=Menu(self)
         self.add_cascade(label='Calculate', menu=calMenu)
+        calMenu.add_command(label='Molecular weight calibration', command=self.mwCa)
         calMenu.add_command(label='Class abundance from excel', command=self.calAbundance)
         calMenu.add_command(label='Class abundance from folder', command=self.calAbundanceFile)
         calMenu.add_command(label='Class DBE abundance from excel', command=self.caldbeAbundance)
@@ -153,7 +207,7 @@ class MenuBar(Menu):
         self.text_widget.insert(END,'These are the Excels found in the path: \n')
         for paths in path:
             self.text_widget.insert(END,paths+'\n')
-        
+         
     def calAbundance(self):
         try:
             data=self.data
@@ -171,6 +225,48 @@ class MenuBar(Menu):
         except:
             messagebox.showerror('Error', 'Please import data first!')
 
+    def setPara(self):
+        para=self.askPara()
+        if para is None: return
+        
+        self.cacstart, self.cacstop,self.cadbe,self.camo,self.can,self.cao,self.cas=para
+        
+        
+    def askPara(self):
+        inputDialog=ParaDialog()
+        self.wait_window(inputDialog)
+        return inputDialog.para
+    
+    def mwCa(self):
+        self.setPara()
+        capath=filedialog.asksaveasfilename(defaultextension='ref')
+        caref=open(capath,'a')
+        if self.camo=='+':
+            for cac in range(self.cacstart,self.cacstop):
+                camolecule=Compound(cac,2*cac+3+self.can-2*self.cadbe,self.can,self.cao,self.cas,'+')
+                caformula='C'+str(cac)+'H'+str(camolecule.h)
+                if not self.can==0:
+                    caformula=caformula+'N'+str(camolecule.n)
+                if not self.cao==0:
+                    caformula=caformula+'O'+str(camolecule.o)
+                if not self.cas==0:
+                    caformula=caformula+'S'+str(camolecule.s)
+                caref.write(caformula+' '+str(camolecule.mw)+' '+'1+')   
+                caref.write('\n')
+                
+        if self.camo=='-':
+            for cac in range(self.cacstart,self.cacstop):
+                camolecule=Compound(cac,2*cac+1+self.can-2*self.cadbe,self.can,self.cao,self.cas,'-')
+                caformula='C'+str(cac)+'H'+str(camolecule.h)
+                if not self.can==0:
+                    caformula=caformula+'N'+str(camolecule.n)
+                if not self.cao==0:
+                    caformula=caformula+'O'+str(camolecule.o)
+                if not self.cas==0:
+                    caformula=caformula+'S'+str(camolecule.s)
+                caref.write(caformula+' '+str(camolecule.mw)+' '+'1-')   
+                caref.write('\n')
+        caref.close()
         
     def calAbundanceFile(self):
         try: 
@@ -364,7 +460,7 @@ class RawDataFrame:
         self.text_widget.delete('1.0',END)
         self.text_widget.insert(END,saveExcel)
         excelSave(saveExcel)
- 
+
 class DataFrame:
     
     def __init__(self,parent,menubar):
