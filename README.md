@@ -56,7 +56,7 @@ On windows, the spyder included in [Anaconda](https://anaconda.org/) is highly r
 
 ### Main interface
 
-![](source\main_interface.png)
+![](source/main_interface.png)
 
 
 
@@ -74,7 +74,7 @@ First, you should import the data that you want to proceed. Currently, this tool
 
 ### Step 2. Deal with data
 
-- Process raw data and get possible chemical formulas: ![](source\raw_data.png)The imported raw data MUST have these information: 'm/z', 'I', and 'S/N'. To process raw data, you have to set some parameters. Adjustable parameters include: 
+- Process raw data and get possible chemical formulas: ![](source/raw_data.png)The imported raw data MUST have these information: 'm/z', 'I', and 'S/N'. To process raw data, you have to set some parameters. Adjustable parameters include: 
 
   - `S/N` only mass peaks that have singal-to-noise ratios above this value are included;
 
@@ -88,7 +88,7 @@ First, you should import the data that you want to proceed. Currently, this tool
 
   - `ESI mode` under which ESI mode is the raw data obtained, '+' or '-'.
 
-  - The processed data is stored in Excel which look like this:![](source\pro_data.png)
+  - The processed data is stored in Excel which look like this:![](source/pro_data.png)
 
     ​
 
