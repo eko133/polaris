@@ -30,6 +30,7 @@ class Compound:
         self.s=s
         self.na=na
         self.mode=mode
+        self.ston=0
         self.mw=self.mw()
         self.realh=self.realh()
         self.dbe=(2*c+2+n-self.realh-self.na)/2
@@ -277,13 +278,13 @@ class MenuBar(Menu):
     def processESIData(self):
         
         saveExcel=pd.DataFrame()
-        for i in ('measured m/z','m/z','ppm','class','C','H','O','N','S','Na','DBE','intensity'):
+        for i in ('measured m/z','m/z','ppm','S/N','class','C','H','O','N','S','Na','DBE','intensity'):
             saveExcel.loc[0,i]=i
             i+=i
         count=0
         self.data = self.data[self.data['S/N']>=int(self.rawdataframe.snEntry.get())]
         for column in self.data:
-            if column != 'm/z' and column != 'I':
+            if column != 'm/z' and column != 'I' and column != 'S/N':
                 del self.data[column]
         mw_max=self.data['m/z'].max()
         mw_min=self.data['m/z'].min()
@@ -299,14 +300,17 @@ class MenuBar(Menu):
                             if not data_test.empty:
                                 molecule.intensity = data_test['I'].max()
                                 data_test = data_test[data_test['I']==molecule.intensity]
-                                data_test = data_test['m/z'].tolist()
-                                molecule.memw = data_test[0]
+                                data_test1 = data_test['m/z'].tolist()
+                                molecule.memw = data_test1[0]
+                                data_test2 = data_test['S/N'].tolist()
+                                molecule.ston = data_test2[0]
                                 molecule.ppm = abs(1000000*(molecule.mw-molecule.memw)/molecule.mw)
                                 if molecule.ppm <= float(self.rawdataframe.ppmEntry.get()):
-                                    stringTovar={'measured m/z':molecule.memw,'m/z':molecule.mw,'ppm':molecule.ppm,'class':molecule.specie,'C':molecule.c,'H':molecule.realh,'O':molecule.o,'N':molecule.n,'S':molecule.s,'Na':molecule.na,'DBE':molecule.dbe,'intensity':molecule.intensity}
+                                    stringTovar={'measured m/z':molecule.memw,'m/z':molecule.mw,'ppm':molecule.ppm,'S/N':molecule.ston,'class':molecule.specie,'C':molecule.c,'H':molecule.realh,'O':molecule.o,'N':molecule.n,'S':molecule.s,'Na':molecule.na,'DBE':molecule.dbe,'intensity':molecule.intensity}
                                     for column in saveExcel:
                                         saveExcel.loc[count,column]=stringTovar[column]
                                     count+=1
+
         elif int(self.rawdataframe.naEntry.get())!=0:
             for N,O,S,Na in itertools.product(range(int(self.rawdataframe.nEntry.get())+1), range(int(self.rawdataframe.oEntry.get())+1),range(int(self.rawdataframe.sEntry.get())+1),int(self.rawdataframe.naEntry.get())+1):
                 c_max=int((mw_max-14*N-16*O-32*S-23*Na)/12)
@@ -319,11 +323,13 @@ class MenuBar(Menu):
                             if not data_test.empty:
                                 molecule.intensity = data_test['I'].max()
                                 data_test = data_test[data_test['I']==molecule.intensity]
-                                data_test = data_test['m/z'].tolist()
-                                molecule.memw = data_test[0]
+                                data_test1 = data_test['m/z'].tolist()
+                                molecule.memw = data_test1[0]
+                                data_test2 = data_test['S/N'].tolist()
+                                molecule.ston = data_test2[0]
                                 molecule.ppm = abs(1000000*(molecule.mw-molecule.memw)/molecule.mw)
                                 if molecule.ppm <= float(self.rawdataframe.ppmEntry.get()):
-                                    stringTovar={'measured m/z':molecule.memw,'m/z':molecule.mw,'ppm':molecule.ppm,'class':molecule.specie,'C':molecule.c,'H':molecule.realh,'O':molecule.o,'N':molecule.n,'S':molecule.s,'Na':molecule.na,'DBE':molecule.dbe,'intensity':molecule.intensity}
+                                    stringTovar={'measured m/z':molecule.memw,'m/z':molecule.mw,'ppm':molecule.ppm,'S/N':molecule.ston,'class':molecule.specie,'C':molecule.c,'H':molecule.realh,'O':molecule.o,'N':molecule.n,'S':molecule.s,'Na':molecule.na,'DBE':molecule.dbe,'intensity':molecule.intensity}
                                     for column in saveExcel:
                                         saveExcel.loc[count,column]=stringTovar[column]
                                     count+=1
@@ -335,13 +341,13 @@ class MenuBar(Menu):
     def processAPPIData(self):
         
         saveExcel=pd.DataFrame()
-        for i in ('measured m/z','m/z','ppm','class','C','H','O','N','S','Na','DBE','intensity'):
+        for i in ('measured m/z','m/z','ppm','S/N','class','C','H','O','N','S','Na','DBE','intensity'):
             saveExcel.loc[0,i]=i
             i+=i
         count=0
         self.data = self.data[self.data['S/N']>=int(self.rawdataframe.snEntry.get())]
         for column in self.data:
-            if column != 'm/z' and column != 'I':
+            if column != 'm/z' and column != 'I'and column != 'S/N':
                 del self.data[column]
         mw_max=self.data['m/z'].max()
         mw_min=self.data['m/z'].min()
@@ -357,11 +363,13 @@ class MenuBar(Menu):
                             if not data_test.empty:
                                 molecule.intensity = data_test['I'].max()
                                 data_test = data_test[data_test['I']==molecule.intensity]
-                                data_test = data_test['m/z'].tolist()
-                                molecule.memw = data_test[0]
+                                data_test1 = data_test['m/z'].tolist()
+                                molecule.memw = data_test1[0]
+                                data_test2 = data_test['S/N'].tolist()
+                                molecule.ston = data_test2[0]
                                 molecule.ppm = abs(1000000*(molecule.mw-molecule.memw)/molecule.mw)
                                 if molecule.ppm <= float(self.rawdataframe.ppmEntry.get()):
-                                    stringTovar={'measured m/z':molecule.memw,'m/z':molecule.mw,'ppm':molecule.ppm,'class':molecule.specie,'C':molecule.c,'H':molecule.realh,'O':molecule.o,'N':molecule.n,'S':molecule.s,'Na':molecule.na,'DBE':molecule.dbe,'intensity':molecule.intensity}
+                                    stringTovar={'measured m/z':molecule.memw,'m/z':molecule.mw,'ppm':molecule.ppm,'S/N':molecule.ston,'class':molecule.specie,'C':molecule.c,'H':molecule.realh,'O':molecule.o,'N':molecule.n,'S':molecule.s,'Na':molecule.na,'DBE':molecule.dbe,'intensity':molecule.intensity}
                                     for column in saveExcel:
                                         saveExcel.loc[count,column]=stringTovar[column]
                                     count+=1
@@ -377,11 +385,13 @@ class MenuBar(Menu):
                             if not data_test.empty:
                                 molecule.intensity = data_test['I'].max()
                                 data_test = data_test[data_test['I']==molecule.intensity]
-                                data_test = data_test['m/z'].tolist()
-                                molecule.memw = data_test[0]
+                                data_test1 = data_test['m/z'].tolist()
+                                molecule.memw = data_test1[0]
+                                data_test2 = data_test['S/N'].tolist()
+                                molecule.ston = data_test2[0]
                                 molecule.ppm = abs(1000000*(molecule.mw-molecule.memw)/molecule.mw)
                                 if molecule.ppm <= float(self.rawdataframe.ppmEntry.get()):
-                                    stringTovar={'measured m/z':molecule.memw,'m/z':molecule.mw,'ppm':molecule.ppm,'class':molecule.specie,'C':molecule.c,'H':molecule.realh,'O':molecule.o,'N':molecule.n,'S':molecule.s,'Na':molecule.na,'DBE':molecule.dbe,'intensity':molecule.intensity}
+                                    stringTovar={'measured m/z':molecule.memw,'m/z':molecule.mw,'ppm':molecule.ppm,'S/N':molecule.ston,'class':molecule.specie,'C':molecule.c,'H':molecule.realh,'O':molecule.o,'N':molecule.n,'S':molecule.s,'Na':molecule.na,'DBE':molecule.dbe,'intensity':molecule.intensity}
                                     for column in saveExcel:
                                         saveExcel.loc[count,column]=stringTovar[column]
                                     count+=1
