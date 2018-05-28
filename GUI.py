@@ -146,10 +146,13 @@ class ParaDialog(Toplevel):
 
 class MenuBar(Menu):       
     
-    def __init__(self,parent):
+    def __init__(self,parent,bubbleplotframe):
         Menu.__init__(self,parent)
         
         fileMenu=Menu(self)
+        
+        self.bubbleplotframe=bubbleplotframe
+        
         self.add_cascade(label='Import', menu=fileMenu)
         fileMenu.add_command(label='From clipboard', command=self.readClipboard)
         fileMenu.add_command(label='From excel', command=self.readExcel)
@@ -330,44 +333,43 @@ class MenuBar(Menu):
             messagebox.showerror('Error', 'Please import data first!')
 
     def bubbleplot(self):
-        try:
-            os.chdir(self.folder_path)
-            excelFile=readAllExcel(self.folder_path)
-            species=simpledialog.askstring('Required classes','e.g., N1,O2')
-            species=species.split(',')
+        os.chdir(self.folder_path)
+        excelFile=readAllExcel(self.folder_path)
+        species=self.bubbleplotframe.bpclass.get()
+        species=species.split(',')
+        for specie in species:
+            if os.path.exists(specie)==False:
+                os.makedirs(specie)
+        for excel in excelFile:
+            data=pd.read_excel(excel)
+            data=data[data['DBE']>0]
+            excelName=os.path.split(excel)[1]
+            excelName=os.path.splitext(excelName)[0]
+            data['intensity']=data['intensity'].astype(float)
             for specie in species:
-                if os.path.exists(specie)==False:
-                    os.makedirs(specie)
-            for excel in excelFile:
-                data=pd.read_excel(excel)
-                data=data[data['DBE']>0]
-                excelName=os.path.split(excel)[1]
-                excelName=os.path.splitext(excelName)[0]
-                data['intensity']=data['intensity'].astype(float)
-                for specie in species:
-                    data_specie=data[data['class']==specie]
-                    sum=data_specie['intensity'].sum()
-                    data_specie['normalized']=data_specie['intensity']/sum
-                    plt.figure(figsize=(6,5))
-                    font = {'family' : 'arial',  
-                            'color'  : 'black',  
-                            'weight' : 'normal',  
-                            'size'   : 20,  
-                            } 
-                    plt.axis([0,50,0,25])
-                    plt.xlabel("Carbon Number",fontdict=font)
-                    plt.ylabel("DBE",fontdict=font)
-                    plt.xticks(fontsize=16,fontname='arial')
-                    plt.yticks(np.arange(0,26,5),fontsize=16,fontname='arial')
-                    plt.text(1,23,s=specie,fontdict=font)
-                    plt.text(43,23,s=excelName,fontdict=font)
-                    plt.scatter(data_specie['C'],data_specie['DBE'],s=1000*data_specie['normalized'],edgecolors='black',linewidth=0.1)
-                    path=self.folder_path+"\\"+specie
-                    filename=excelName+'.png'
-                    plt.savefig(os.path.join(path,filename),dpi=600)
-            messagebox.showinfo("Complete!", "All plots are stored in the same folder with the excel files")
-        except:
-            messagebox.showerror('Error', 'Please import data first!')
+                data_specie=data[data['class']==specie]
+                sum=data_specie['intensity'].sum()
+                data_specie['normalized']=data_specie['intensity']/sum
+                plt.figure(figsize=(6,5))
+                font = {'family' : 'arial',  
+                        'color'  : 'black',  
+                        'weight' : 'normal',  
+                        'size'   : 20,  
+                        } 
+                plt.axis([int(self.bubbleplotframe.bpcstart.get()),int(self.bubbleplotframe.bpcstop.get()),int(self.bubbleplotframe.bpdbestart.get()),int(self.bubbleplotframe.bpdbestop.get())])
+                plt.xlabel("Carbon Number",fontdict=font)
+                plt.ylabel("DBE",fontdict=font)
+                plt.xticks(fontsize=16,fontname='arial')
+                plt.yticks(np.arange(int(self.bubbleplotframe.bpdbestart.get()),int(self.bubbleplotframe.bpdbestop.get())+1,2),fontsize=16,fontname='arial')
+                if self.bubbleplotframe.bpshowc.get()==0:
+                    plt.text(int(self.bubbleplotframe.bpcstart.get())+1,int(self.bubbleplotframe.bpdbestop.get())-3,s=specie,fontdict=font)
+                if self.bubbleplotframe.bpshows.get()==0:
+                    plt.text(int(self.bubbleplotframe.bpcstop.get())-5,int(self.bubbleplotframe.bpdbestop.get())-3,s=excelName,fontdict=font)
+                plt.scatter(data_specie['C'],data_specie['DBE'],s=float(self.bubbleplotframe.bpscale.get())*data_specie['normalized'],edgecolors='black',linewidth=0.1)
+                path=self.folder_path+"\\"+specie
+                filename=excelName+'.png'
+                plt.savefig(os.path.join(path,filename),dpi=600)
+        messagebox.showinfo("Complete!", "All plots are stored in the same folder with the excel files")
 
     def aboutMessage(self):
         messagebox.showinfo(title='About', message='FT–ICR MS Data Handler\nLicensed under the terms of the Apache License 2.0\n\nDeveloped and maintained by Weimin Liu\n\nFor bug reports and feature requests, please go to my Github website')
@@ -380,47 +382,40 @@ class RawDataFrame:
         
         self.menubar=menubar
         
-        self.rawlabel=Label(self.frame, text='RAW DATA\t')
-        self.rawlabel.grid(row=0,column=0)
+        Label(self.frame, text='RAW DATA',width=10).pack(side=LEFT)
                 
-        self.snLabel=Label(self.frame, text='S/N')
-        self.snLabel.grid(row=0,column=1)
-        self.snEntry=Entry(self.frame)
+        Label(self.frame, text='S/N',width=3).pack(side=LEFT)
+        self.snEntry=Entry(self.frame,width=3)
         self.snEntry.insert(END,'6')
-        self.snEntry.grid(row=0,column=2)
+        self.snEntry.pack(side=LEFT)
         
-        self.ppmLabel=Label(self.frame, text='error(ppm)')
-        self.ppmLabel.grid(row=0,column=3)
-        self.ppmEntry=Entry(self.frame)
+        Label(self.frame, text='Error',width=5).pack(side=LEFT)
+        self.ppmEntry=Entry(self.frame,width=3)
         self.ppmEntry.insert(END,'1.2')
-        self.ppmEntry.grid(row=0,column=4)
+        self.ppmEntry.pack(side=LEFT)
         
-        self.nLabel=Label(self.frame, text='N')
-        self.nLabel.grid(row=0,column=5)
-        self.nEntry=Entry(self.frame)
+        Label(self.frame, text='N',width=3).pack(side=LEFT)
+        self.nEntry=Entry(self.frame,width=3)
         self.nEntry.insert(END,'5')
-        self.nEntry.grid(row=0,column=6)
+        self.nEntry.pack(side=LEFT)
         
-        self.oLabel=Label(self.frame, text='O')
-        self.oLabel.grid(row=0,column=7)
-        self.oEntry=Entry(self.frame)
+        Label(self.frame, text='O',width=3).pack(side=LEFT)
+        self.oEntry=Entry(self.frame,width=3)
         self.oEntry.insert(END,'5')
-        self.oEntry.grid(row=0,column=8)
+        self.oEntry.pack(side=LEFT)
         
-        self.sLabel=Label(self.frame, text='S')
-        self.sLabel.grid(row=0,column=9)
-        self.sEntry=Entry(self.frame)
+        Label(self.frame, text='S',width=3).pack(side=LEFT)
+        self.sEntry=Entry(self.frame,width=3)
         self.sEntry.insert(END,'5')
-        self.sEntry.grid(row=0,column=10)
+        self.sEntry.pack(side=LEFT)
         
-        self.modeLabel=Label(self.frame, text='ESI mode(+,-)')
-        self.modeLabel.grid(row=0,column=11)
-        self.modeEntry=Entry(self.frame)
+        Label(self.frame, text='ESI mode(+,-)').pack(side=LEFT)
+        self.modeEntry=Entry(self.frame,width=3)
         self.modeEntry.insert(END,'+')
-        self.modeEntry.grid(row=0,column=12)
+        self.modeEntry.pack(side=LEFT)
         
-        self.processButton=Button(self.frame, text='Process', command=self.processData)
-        self.processButton.grid(row=0,column=13)
+        self.processButton=Button(self.frame, text='Go!', command=self.processData)
+        self.processButton.pack(side=LEFT)
         
         self.text_widget=parent.text_widget
                 
@@ -467,17 +462,67 @@ class DataFrame:
         self.frame=Frame(parent)
         self.frame.pack()
         
+class BubblePlotFrame:
+    
+    def __init__(self,parent):
+        self.frame=Frame(parent)
+        self.frame.pack()
+                
+        Label(self.frame, text='BUBBLE PLOT',width=12).pack(side=LEFT)
         
-
-
-       
+        Label(self.frame, text='C', width=3).pack(side=LEFT)
         
+        self.bpcstart=Entry(self.frame,width=3)
+        self.bpcstart.insert(END,'10')
+        self.bpcstart.pack(side=LEFT)      
+        
+        Label(self.frame, text='–', width=3).pack(side=LEFT)
+        
+        self.bpcstop=Entry(self.frame,width=3)
+        self.bpcstop.insert(END,'50')
+        self.bpcstop.pack(side=LEFT)      
+        
+        Label(self.frame, text='DBE', width=5).pack(side=LEFT)
+        
+        self.bpdbestart=Entry(self.frame,width=3)
+        self.bpdbestart.insert(END,'0')
+        self.bpdbestart.pack(side=LEFT)    
+        
+        Label(self.frame, text='–', width=3).pack(side=LEFT)
+
+        self.bpdbestop=Entry(self.frame,width=3)
+        self.bpdbestop.insert(END,'20')
+        self.bpdbestop.pack(side=LEFT)    
+        
+        Label(self.frame,text='Plot class',width=10).pack(side=LEFT)
+        
+        self.bpclass=Entry(self.frame,width=10)
+        self.bpclass.insert(END,'O2,N1')
+        self.bpclass.pack(side=LEFT)
+        
+        Label(self.frame,text='Scaling',width=5).pack(side=LEFT)
+        
+        self.bpscale=Entry(self.frame,width=5)
+        self.bpscale.insert(END,'1000')
+        self.bpscale.pack(side=LEFT)
+        
+        self.bpshowc=IntVar()
+        Checkbutton(self.frame,text='Disable class', variable=self.bpshowc).pack(side=LEFT)
+        
+        self.bpshows=IntVar()
+        Checkbutton(self.frame,text='Disable name', variable=self.bpshows).pack(side=LEFT)    
+        
+        
+                
 class App(Tk):
     def __init__(self):
         Tk.__init__(self)
         self.text_widget = Text(self)
         self.text_widget.pack()
-        menubar = MenuBar(self)
+        
+        bubbleplotframe=BubblePlotFrame(self)
+
+        menubar = MenuBar(self,bubbleplotframe)
         
         self.config(menu=menubar)
         
