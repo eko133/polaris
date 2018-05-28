@@ -545,7 +545,7 @@ class RawDataFrame:
         
         Radiobutton(self.frame,text='+ESI',variable=self.modeEntry,value=1).pack(side=LEFT)
         Radiobutton(self.frame,text='-ESI',variable=self.modeEntry,value=2).pack(side=LEFT)
-        Radiobutton(self.frame,text='APPI',variable=self.modeEntry,value=3).pack(side=LEFT)
+        Radiobutton(self.frame,text='APPI (Beta)',variable=self.modeEntry,value=3).pack(side=LEFT)
 #        Radiobutton(self.frame,text='-APPI',variable=self.modeEntry,value=4).pack(side=LEFT)
 
                         
@@ -620,5 +620,5 @@ class App(Tk):
         
 if __name__ == '__main__':
     app=App()
-    app.title("FT-ICR MS Data Handler v0.1.2")
+    app.title("FT-ICR MS Data Handler v0.1.3GM")
     app.mainloop()
