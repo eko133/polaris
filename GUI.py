@@ -488,5 +488,5 @@ class App(Tk):
         
 if __name__ == '__main__':
     app=App()
-    app.title("FT-ICR MS Data Handler v0.1")
+    app.title("FT-ICR MS Data Handler v0.1.2")
     app.mainloop()
