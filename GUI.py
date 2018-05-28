@@ -15,6 +15,8 @@ import itertools
 from tkinter import messagebox
 import matplotlib.pyplot as plt
 import numpy as np
+import base64
+from icon import Icon
 
 atomic_mass = {'C':12.0107, 'H':1.007825, 'N':14.003074, 'O':15.9949146, 'S':31.972071, 'e':0.0005485799, 'CH2':14.01565}
 mass_tolerance=0.0015*14.01565/14
@@ -502,7 +504,7 @@ class MenuBar(Menu):
         messagebox.showinfo("Complete!", "All plots are stored in the same folder with excels")
 
     def aboutMessage(self):
-        messagebox.showinfo(title='About', message='FT–ICR MS Data Handler\nLicensed under the terms of the Apache License 2.0\n\nDeveloped and maintained by Weimin Liu\n\nFor bug reports and feature requests, please go to my Github website')
+        messagebox.showinfo(title='About', message='FT–ICR MS Data Handler\nLicensed under the terms of the Apache License 2.0\n\nDeveloped and maintained by Weimin Liu\n\nFor bug reports and feature requests, please go to my Github website\n\nSpecial thanks to the following contributors:\nDr. Bin Jiang (VB codes for raw data processing)\nDr. Yahe Zhang & Dr. Linzhou Zhang (VB codes for molecular weight calibration)\nDinosoft Labs (''Atom'' icon)\n\nCoding for a better wolrd!')
         
 class RawDataFrame:
     
@@ -621,4 +623,8 @@ class App(Tk):
 if __name__ == '__main__':
     app=App()
     app.title("FT-ICR MS Data Handler v0.1.3GM")
+    with open('tmp.ico','wb') as tmp:
+        tmp.write(base64.b64decode(Icon().img))
+    app.iconbitmap('tmp.ico')
+    os.remove('tmp.ico')    
     app.mainloop()
