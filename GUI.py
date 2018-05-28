@@ -38,14 +38,14 @@ class Compound:
         self.specie=self.specie()
         
     def mw(self):
-        if self.mode==1:
+        if self.mode==1 or 3:
             a=12 * self.c + atomic_mass['N'] *self. n + atomic_mass['S'] *self. s + atomic_mass['O'] * self.o + atomic_mass['H']*self. h - atomic_mass['e']
         elif self.mode==2:
             a=12 * self.c + atomic_mass['N'] *self. n + atomic_mass['S'] *self. s + atomic_mass['O'] * self.o + atomic_mass['H']*self. h + atomic_mass['e']
         return a
 
     def realh(self):
-        if self.mode==1:
+        if self.mode==1 or 3:
             b=self.h-1
         if self.mode==2:
             b=self.h+1
@@ -62,17 +62,28 @@ class Compound:
         if self.s!=0:
             specie_s='S'+'%d'%self.s 
         specie_all=specie_n+specie_o+specie_s
+        if specie_all=='':
+            specie_all='CH'
+        if self.dbe != int(self.dbe):
+            specie_all='*'+specie_all
         return specie_all
             
 
 def isMolecule(a,mw_min):
-    if a.n!=0 or a.o!=0 or a.s!=0:
+    if a.mode==1 or 2:
+        if a.n!=0 or a.o!=0 or a.s!=0:
+            if 0.3<=a.h/a.c<=3.0:
+                if a.o/a.c<=3.0 and a.n/a.c<=0.5:
+                    if a.h<=1+2*a.c+a.n:
+                        if (a.h+a.n)%2 == 1:
+                            if a.mw>=mw_min:
+                                return True
+    if a.mode==3:
         if 0.3<=a.h/a.c<=3.0:
             if a.o/a.c<=3.0 and a.n/a.c<=0.5:
-                if a.h<=1+2*a.c+a.n:
-                    if (a.h+a.n)%2 == 1:
-                        if a.mw>=mw_min:
-                            return True
+                if a.h<=3+2*a.c+a.n:
+                    if a.mw>=mw_min:
+                        return True
 
 def excelSave(excelFile):
     path=filedialog.asksaveasfilename(defaultextension='.xlsx', filetypes=(('Excel', '*.xlsx'), ('2003 Excel', '*.xls'),('All Files', '*.*')))
@@ -248,6 +259,48 @@ class MenuBar(Menu):
         return inputDialog.para
 
     def processData(self):
+        if self.rawdataframe.modeEntry.get()==3:
+            self.processAPPIData()
+        self.processESIData()
+        
+    def processESIData(self):
+        
+        saveExcel=pd.DataFrame()
+        for i in ('measured m/z','m/z','ppm','class','C','H','O','N','S','DBE','intensity'):
+            saveExcel.loc[0,i]=i
+            i+=i
+        count=0
+        self.data = self.data[self.data['S/N']>=int(self.rawdataframe.snEntry.get())]
+        for column in self.data:
+            if column != 'm/z' and column != 'I':
+                del self.data[column]
+        mw_max=self.data['m/z'].max()
+        mw_min=self.data['m/z'].min()
+        for N,O,S in itertools.product(range(int(self.rawdataframe.nEntry.get())+1), range(int(self.rawdataframe.oEntry.get())+1),range(int(self.rawdataframe.sEntry.get())+1)):
+            c_max=int((mw_max-14*N-16*O-32*S)/12)
+            for C in range(1,c_max+1):
+                h_max=int(mw_max)-12*C-14*N-16*O-32*S+1
+                for H in range(1,h_max+1):
+                    molecule=Compound(C,H,N,O,S,self.rawdataframe.modeEntry.get())
+                    if isMolecule(molecule,mw_min):
+                        data_test=self.data[(self.data['m/z']>=(molecule.mw-mass_tolerance)) & (self.data['m/z']<=(molecule.mw+mass_tolerance))]
+                        if not data_test.empty:
+                            molecule.intensity = data_test['I'].max()
+                            data_test = data_test[data_test['I']==molecule.intensity]
+                            data_test = data_test['m/z'].tolist()
+                            molecule.memw = data_test[0]
+                            molecule.ppm = abs(1000000*(molecule.mw-molecule.memw)/molecule.mw)
+                            if molecule.ppm <= float(self.rawdataframe.ppmEntry.get()):
+                                stringTovar={'measured m/z':molecule.memw,'m/z':molecule.mw,'ppm':molecule.ppm,'class':molecule.specie,'C':molecule.c,'H':molecule.realh,'O':molecule.o,'N':molecule.n,'S':molecule.s,'DBE':molecule.dbe,'intensity':molecule.intensity}
+                                for column in saveExcel:
+                                    saveExcel.loc[count,column]=stringTovar[column]
+                                count+=1
+        self.text_widget.delete('1.0',END)
+        self.text_widget.insert(END,saveExcel)
+        excelSave(saveExcel)
+
+
+    def processAPPIData(self):
         
         saveExcel=pd.DataFrame()
         for i in ('measured m/z','m/z','ppm','class','C','H','O','N','S','DBE','intensity'):
@@ -491,8 +544,8 @@ class RawDataFrame:
         
         Radiobutton(self.frame,text='+ESI',variable=self.modeEntry,value=1).pack(side=LEFT)
         Radiobutton(self.frame,text='-ESI',variable=self.modeEntry,value=2).pack(side=LEFT)
-        Radiobutton(self.frame,text='+APPI',variable=self.modeEntry,value=3).pack(side=LEFT)
-        Radiobutton(self.frame,text='-APPI',variable=self.modeEntry,value=4).pack(side=LEFT)
+        Radiobutton(self.frame,text='APPI',variable=self.modeEntry,value=3).pack(side=LEFT)
+#        Radiobutton(self.frame,text='-APPI',variable=self.modeEntry,value=4).pack(side=LEFT)
 
                         
         
