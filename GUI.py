@@ -38,14 +38,14 @@ class Compound:
         self.specie=self.specie()
         
     def mw(self):
-        if self.mode==1 or 3:
+        if self.mode==1 or self.mode==3:
             a=12 * self.c + atomic_mass['N'] *self. n + atomic_mass['S'] *self. s + atomic_mass['O'] * self.o + atomic_mass['H']*self. h - atomic_mass['e']
         elif self.mode==2:
             a=12 * self.c + atomic_mass['N'] *self. n + atomic_mass['S'] *self. s + atomic_mass['O'] * self.o + atomic_mass['H']*self. h + atomic_mass['e']
         return a
 
     def realh(self):
-        if self.mode==1 or 3:
+        if self.mode==1 or self.mode==3:
             b=self.h-1
         if self.mode==2:
             b=self.h+1
@@ -70,7 +70,7 @@ class Compound:
             
 
 def isMolecule(a,mw_min):
-    if a.mode==1 or 2:
+    if a.mode==1 or a.mode==2:
         if a.n!=0 or a.o!=0 or a.s!=0:
             if 0.3<=a.h/a.c<=3.0:
                 if a.o/a.c<=3.0 and a.n/a.c<=0.5:
@@ -212,7 +212,7 @@ class MenuBar(Menu):
         
     def readExcel(self):
         excel_path=filedialog.askopenfilename(defaultextension='.xlsx', filetypes=(('Excel', '*.xlsx'), ('2003 Excel', '*.xls'), ('CSV', '*.csv'), ('All Files', '*.*')))
-        if os.path.splitext(excel_path)[1] == '.xlsx' or 'xls':
+        if os.path.splitext(excel_path)[1] == '.xlsx' or os.path.splitext(excel_path)[1] =='xls':
             self.data = pd.read_excel(excel_path)
         elif os.path.splitext(excel_path)[1] == '.csv':
             self.data = pd.read_csv(excel_path)
@@ -259,9 +259,10 @@ class MenuBar(Menu):
         return inputDialog.para
 
     def processData(self):
-        if self.rawdataframe.modeEntry.get()==3:
+        if self.rawdataframe.modeEntry.get()==1 or self.rawdataframe.modeEntry.get()==2:
+            self.processESIData()
+        elif self.rawdataframe.modeEntry.get()==3:
             self.processAPPIData()
-        self.processESIData()
         
     def processESIData(self):
         
