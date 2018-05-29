@@ -576,14 +576,16 @@ class RawDataFrame:
         self.frame.pack()
         
         
-        Label(self.frame, text='RAW DATA',width=10).pack(side=LEFT)
+        Label(self.frame, text='RAW DATA',width=8).pack(side=LEFT)
+        Label(self.frame, text='  ',width=2).pack(side=LEFT)
+        
                 
         Label(self.frame, text='S/N',width=3).pack(side=LEFT)
         self.snEntry=Entry(self.frame,width=3)
         self.snEntry.insert(END,'6')
         self.snEntry.pack(side=LEFT)
         
-        Label(self.frame, text='Error',width=5).pack(side=LEFT)
+        Label(self.frame, text='Error (ppm)',width=10).pack(side=LEFT)
         self.ppmEntry=Entry(self.frame,width=3)
         self.ppmEntry.insert(END,'1.2')
         self.ppmEntry.pack(side=LEFT)
@@ -608,7 +610,6 @@ class RawDataFrame:
         self.naEntry.insert(END,'0')
         self.naEntry.pack(side=LEFT)
        
-
         Label(self.frame, text='Source',width=5).pack(side=LEFT)
 
         self.modeEntry=IntVar()
@@ -690,7 +691,7 @@ class App(Tk):
         
 if __name__ == '__main__':
     app=App()
-    app.title("FT-ICR MS Data Handler v0.1.3GM")
+    app.title("POLARIS v0.1.3")
     with open('tmp.ico','wb') as tmp:
         tmp.write(base64.b64decode(Icon().img))
     app.iconbitmap('tmp.ico')
