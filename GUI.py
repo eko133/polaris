@@ -18,22 +18,23 @@ import numpy as np
 import base64
 from icon import Icon
 
-atomic_mass = {'C':12.0107, 'H':1.007825, 'N':14.003074, 'O':15.9949146, 'S':31.972071, 'e':0.0005485799, 'CH2':14.01565,'Na':22.989769}
+atomic_mass = {'C':12.0107, 'H':1.007825, 'N':14.003074, 'O':15.9949146, 'S':31.972071, 'e':0.0005485799, 'CH2':14.01565,'Na':22.989769,'Cl':34.968853}
 mass_tolerance=0.0015*14.01565/14
 
 class Compound:
-    def __init__(self,c,h,n,o,s,na,mode):
+    def __init__(self,c,h,n,o,s,na,cl,mode):
         self.c=c
         self.h=h
         self.o=o
         self.n=n
         self.s=s
         self.na=na
+        self.cl=cl
         self.mode=mode
         self.ston=0
         self.mw=self.mw()
         self.realh=self.realh()
-        self.dbe=(2*c+2+n-self.realh-self.na)/2
+        self.dbe=(2*c+2+n-self.realh-self.na-self.cl)/2
         self.km=self.mw/atomic_mass['CH2']*14
         self.kmd=int(self.km)+1-self.km
         self.memw=0
@@ -43,9 +44,9 @@ class Compound:
         
     def mw(self):
         if self.mode==1 or self.mode==3:
-            a=12 * self.c + atomic_mass['N'] *self. n + atomic_mass['S'] *self. s + atomic_mass['O'] * self.o + atomic_mass['H']*self. h + atomic_mass['Na']*self.na - atomic_mass['e']
+            a=12 * self.c + atomic_mass['N'] *self. n + atomic_mass['S'] *self. s + atomic_mass['O'] * self.o + atomic_mass['H']*self. h + atomic_mass['Na']*self.na + atomic_mass['Cl']*self.cl - atomic_mass['e']
         elif self.mode==2:
-            a=12 * self.c + atomic_mass['N'] *self. n + atomic_mass['S'] *self. s + atomic_mass['O'] * self.o + atomic_mass['H']*self. h + atomic_mass['Na']*self.na + atomic_mass['e']
+            a=12 * self.c + atomic_mass['N'] *self. n + atomic_mass['S'] *self. s + atomic_mass['O'] * self.o + atomic_mass['H']*self. h + atomic_mass['Na']*self.na + atomic_mass['Cl']*self.cl + atomic_mass['e']
         return a
 
     def realh(self):
@@ -60,6 +61,7 @@ class Compound:
         specie_o=''
         specie_s=''
         specie_na=''
+        specie_cl=''
         if self.n!=0:
             specie_n='N'+'%d'%self.n 
         if self.o!=0:
@@ -68,7 +70,9 @@ class Compound:
             specie_s='S'+'%d'%self.s 
         if self.na!=0:
             specie_na='Na'+'%d'%self.na
-        specie_all=specie_n+specie_o+specie_s+specie_na
+        if self.cl!=0:
+            specie_cl='Cl'+'%d'%self.cl
+        specie_all=specie_n+specie_o+specie_s+specie_na+specie_cl
         if specie_all=='':
             specie_all='CH'
         if self.dbe != int(self.dbe):
@@ -81,14 +85,14 @@ def isMolecule(a,mw_min):
         if a.n!=0 or a.o!=0 or a.s!=0:
             if 0.3<=a.h/a.c<=3.0:
                 if a.o/a.c<=3.0 and a.n/a.c<=0.5:
-                    if a.realh<=2+2*a.c+a.n-a.na:
-                        if (a.h+a.n+a.na)%2 == 1:
+                    if a.realh<=2+2*a.c+a.n-a.na-a.cl:
+                        if (a.h+a.n+a.na+a.cl)%2 == 1:
                             if a.mw>=mw_min:
                                 return True
     if a.mode==3:
         if 0.3<=a.h/a.c<=3.0:
             if a.o/a.c<=3.0 and a.n/a.c<=0.5:
-                if a.realh<=2+2*a.c+a.n-a.na:
+                if a.realh<=2+2*a.c+a.n-a.na-a.cl:
                     if a.mw>=mw_min:
                         return True
 
@@ -154,6 +158,10 @@ class ParaDialog(Toplevel):
         self.cana=IntVar()
         Entry(row2, textvariable=self.cana,width=5).pack(side=LEFT)
         
+        Label(row2,text='Cl',width=5).pack(side=LEFT)
+        self.cacl=IntVar()
+        Entry(row2, textvariable=self.cacl,width=5).pack(side=LEFT)
+             
         row3=Frame(self)
         row3.pack()
         Button(row3,text='Cancel',command=self.cancel).pack(side=RIGHT)
@@ -163,7 +171,7 @@ class ParaDialog(Toplevel):
         Button(row3,text='OK',command=self.ok).pack(side=RIGHT)
     
     def ok(self):
-        self.para=[self.cacstart.get(),self.cacstop.get(),self.cadbe.get(),self.camo.get(),self.can.get(),self.cao.get(),self.cas.get(),self.cana.get()]
+        self.para=[self.cacstart.get(),self.cacstop.get(),self.cadbe.get(),self.camo.get(),self.can.get(),self.cao.get(),self.cas.get(),self.cana.get(),self.cacl.get()]
         self.destroy()
         
     def cancel(self):
@@ -192,7 +200,7 @@ class MenuBar(Menu):
         self.excelName=0
         
         calMenu=Menu(self)
-        self.add_cascade(label='Calculate', menu=calMenu)
+        self.add_cascade(label='Analysis', menu=calMenu)
         calMenu.add_command(label='Possible formulas', command=self.processData)
         calMenu.add_command(label='Molecular weight calibration', command=self.mwCa)
         calMenu.add_command(label='Class abundance from file', command=self.calAbundance)
@@ -261,7 +269,7 @@ class MenuBar(Menu):
         para=self.askPara()
         if para is None: return
         
-        self.cacstart, self.cacstop,self.cadbe,self.camo,self.can,self.cao,self.cas,self.cana=para
+        self.cacstart, self.cacstop,self.cadbe,self.camo,self.can,self.cao,self.cas,self.cana,self.cacl=para
         
         
     def askPara(self):
@@ -278,7 +286,7 @@ class MenuBar(Menu):
     def processESIData(self):
         
         saveExcel=pd.DataFrame()
-        for i in ('measured m/z','m/z','ppm','S/N','class','C','H','O','N','S','Na','DBE','intensity'):
+        for i in ('measured m/z','m/z','ppm','S/N','class','C','H','O','N','S','Na','Cl','DBE','intensity'):
             saveExcel.loc[0,i]=i
             i+=i
         count=0
@@ -288,51 +296,27 @@ class MenuBar(Menu):
                 del self.data[column]
         mw_max=self.data['m/z'].max()
         mw_min=self.data['m/z'].min()
-        if int(self.rawdataframe.naEntry.get())==0:
-            for N,O,S in itertools.product(range(int(self.rawdataframe.nEntry.get())+1), range(int(self.rawdataframe.oEntry.get())+1),range(int(self.rawdataframe.sEntry.get())+1)):
-                c_max=int((mw_max-14*N-16*O-32*S)/12)
-                for C in range(1,c_max+1):
-                    h_max=int(mw_max)-12*C-14*N-16*O-32*S+1
-                    for H in range(1,h_max+1):
-                        molecule=Compound(C,H,N,O,S,0,self.rawdataframe.modeEntry.get())
-                        if isMolecule(molecule,mw_min):
-                            data_test=self.data[(self.data['m/z']>=(molecule.mw-mass_tolerance)) & (self.data['m/z']<=(molecule.mw+mass_tolerance))]
-                            if not data_test.empty:
-                                molecule.intensity = data_test['I'].max()
-                                data_test = data_test[data_test['I']==molecule.intensity]
-                                data_test1 = data_test['m/z'].tolist()
-                                molecule.memw = data_test1[0]
-                                data_test2 = data_test['S/N'].tolist()
-                                molecule.ston = data_test2[0]
-                                molecule.ppm = abs(1000000*(molecule.mw-molecule.memw)/molecule.mw)
-                                if molecule.ppm <= float(self.rawdataframe.ppmEntry.get()):
-                                    stringTovar={'measured m/z':molecule.memw,'m/z':molecule.mw,'ppm':molecule.ppm,'S/N':molecule.ston,'class':molecule.specie,'C':molecule.c,'H':molecule.realh,'O':molecule.o,'N':molecule.n,'S':molecule.s,'Na':molecule.na,'DBE':molecule.dbe,'intensity':molecule.intensity}
-                                    for column in saveExcel:
-                                        saveExcel.loc[count,column]=stringTovar[column]
-                                    count+=1
-
-        elif int(self.rawdataframe.naEntry.get())!=0:
-            for N,O,S,Na in itertools.product(range(int(self.rawdataframe.nEntry.get())+1), range(int(self.rawdataframe.oEntry.get())+1),range(int(self.rawdataframe.sEntry.get())+1),int(self.rawdataframe.naEntry.get())+1):
-                c_max=int((mw_max-14*N-16*O-32*S-23*Na)/12)
-                for C in range(1,c_max+1):
-                    h_max=int(mw_max)-12*C-14*N-16*O-32*S-23*Na+1
-                    for H in range(1,h_max+1):
-                        molecule=Compound(C,H,N,O,S,Na,self.rawdataframe.modeEntry.get())
-                        if isMolecule(molecule,mw_min):
-                            data_test=self.data[(self.data['m/z']>=(molecule.mw-mass_tolerance)) & (self.data['m/z']<=(molecule.mw+mass_tolerance))]
-                            if not data_test.empty:
-                                molecule.intensity = data_test['I'].max()
-                                data_test = data_test[data_test['I']==molecule.intensity]
-                                data_test1 = data_test['m/z'].tolist()
-                                molecule.memw = data_test1[0]
-                                data_test2 = data_test['S/N'].tolist()
-                                molecule.ston = data_test2[0]
-                                molecule.ppm = abs(1000000*(molecule.mw-molecule.memw)/molecule.mw)
-                                if molecule.ppm <= float(self.rawdataframe.ppmEntry.get()):
-                                    stringTovar={'measured m/z':molecule.memw,'m/z':molecule.mw,'ppm':molecule.ppm,'S/N':molecule.ston,'class':molecule.specie,'C':molecule.c,'H':molecule.realh,'O':molecule.o,'N':molecule.n,'S':molecule.s,'Na':molecule.na,'DBE':molecule.dbe,'intensity':molecule.intensity}
-                                    for column in saveExcel:
-                                        saveExcel.loc[count,column]=stringTovar[column]
-                                    count+=1
+        for N,O,S,Na,Cl in itertools.product(range(int(self.rawdataframe.nEntry.get())+1), range(int(self.rawdataframe.oEntry.get())+1),range(int(self.rawdataframe.sEntry.get())+1),range(int(self.rawdataframe.naEntry.get())+1),range(int(self.rawdataframe.clEntry.get())+1)):
+            c_max=int((mw_max-14*N-16*O-32*S-23*Na-35*Cl)/12)
+            for C in range(1,c_max+1):
+                h_max=int(mw_max)-12*C-14*N-16*O-32*S-23*Na-35*Cl+1
+                for H in range(1,h_max+1):
+                    molecule=Compound(C,H,N,O,S,Na,Cl,self.rawdataframe.modeEntry.get())
+                    if isMolecule(molecule,mw_min):
+                        data_test=self.data[(self.data['m/z']>=(molecule.mw-mass_tolerance)) & (self.data['m/z']<=(molecule.mw+mass_tolerance))]
+                        if not data_test.empty:
+                            molecule.intensity = data_test['I'].max()
+                            data_test = data_test[data_test['I']==molecule.intensity]
+                            data_test1 = data_test['m/z'].tolist()
+                            molecule.memw = data_test1[0]
+                            data_test2 = data_test['S/N'].tolist()
+                            molecule.ston = data_test2[0]
+                            molecule.ppm = abs(1000000*(molecule.mw-molecule.memw)/molecule.mw)
+                            if molecule.ppm <= float(self.rawdataframe.ppmEntry.get()):
+                                stringTovar={'measured m/z':molecule.memw,'m/z':molecule.mw,'ppm':molecule.ppm,'S/N':molecule.ston,'class':molecule.specie,'C':molecule.c,'H':molecule.realh,'O':molecule.o,'N':molecule.n,'S':molecule.s,'Na':molecule.na,'Cl':molecule.cl,'DBE':molecule.dbe,'intensity':molecule.intensity}
+                                for column in saveExcel:
+                                    saveExcel.loc[count,column]=stringTovar[column]
+                                count+=1
         self.text_widget.delete('1.0',END)
         self.text_widget.insert(END,saveExcel)
         excelSave(saveExcel)
@@ -341,7 +325,7 @@ class MenuBar(Menu):
     def processAPPIData(self):
         
         saveExcel=pd.DataFrame()
-        for i in ('measured m/z','m/z','ppm','S/N','class','C','H','O','N','S','Na','DBE','intensity'):
+        for i in ('measured m/z','m/z','ppm','S/N','class','C','H','O','N','S','Na','Cl','DBE','intensity'):
             saveExcel.loc[0,i]=i
             i+=i
         count=0
@@ -351,50 +335,27 @@ class MenuBar(Menu):
                 del self.data[column]
         mw_max=self.data['m/z'].max()
         mw_min=self.data['m/z'].min()
-        if int(self.rawdataframe.naEntry.get())==0:
-            for N,O,S in itertools.product(range(int(self.rawdataframe.nEntry.get())+1), range(int(self.rawdataframe.oEntry.get())+1),range(int(self.rawdataframe.sEntry.get())+1)):
-                c_max=int((mw_max-14*N-16*O-32*S)/12)
-                for C in range(1,c_max+1):
-                    h_max=int(mw_max)-12*C-14*N-16*O-32*S+1
-                    for H in range(1,h_max+1):
-                        molecule=Compound(C,H,N,O,S,self.rawdataframe.modeEntry.get())
-                        if isMolecule(molecule,mw_min):
-                            data_test=self.data[(self.data['m/z']>=(molecule.mw-mass_tolerance)) & (self.data['m/z']<=(molecule.mw+mass_tolerance))]
-                            if not data_test.empty:
-                                molecule.intensity = data_test['I'].max()
-                                data_test = data_test[data_test['I']==molecule.intensity]
-                                data_test1 = data_test['m/z'].tolist()
-                                molecule.memw = data_test1[0]
-                                data_test2 = data_test['S/N'].tolist()
-                                molecule.ston = data_test2[0]
-                                molecule.ppm = abs(1000000*(molecule.mw-molecule.memw)/molecule.mw)
-                                if molecule.ppm <= float(self.rawdataframe.ppmEntry.get()):
-                                    stringTovar={'measured m/z':molecule.memw,'m/z':molecule.mw,'ppm':molecule.ppm,'S/N':molecule.ston,'class':molecule.specie,'C':molecule.c,'H':molecule.realh,'O':molecule.o,'N':molecule.n,'S':molecule.s,'Na':molecule.na,'DBE':molecule.dbe,'intensity':molecule.intensity}
-                                    for column in saveExcel:
-                                        saveExcel.loc[count,column]=stringTovar[column]
-                                    count+=1
-        elif int(self.rawdataframe.naEntry.get())!=0:
-            for N,O,S,Na in itertools.product(range(int(self.rawdataframe.nEntry.get())+1), range(int(self.rawdataframe.oEntry.get())+1),range(int(self.rawdataframe.sEntry.get())+1),range(int(self.rawdataframe.naEntry.get())+1)):
-                c_max=int((mw_max-14*N-16*O-32*S-23*Na)/12)
-                for C in range(1,c_max+1):
-                    h_max=int(mw_max)-12*C-14*N-16*O-32*S-23*Na+1
-                    for H in range(1,h_max+1):
-                        molecule=Compound(C,H,N,O,S,0,self.rawdataframe.modeEntry.get())
-                        if isMolecule(molecule,mw_min):
-                            data_test=self.data[(self.data['m/z']>=(molecule.mw-mass_tolerance)) & (self.data['m/z']<=(molecule.mw+mass_tolerance))]
-                            if not data_test.empty:
-                                molecule.intensity = data_test['I'].max()
-                                data_test = data_test[data_test['I']==molecule.intensity]
-                                data_test1 = data_test['m/z'].tolist()
-                                molecule.memw = data_test1[0]
-                                data_test2 = data_test['S/N'].tolist()
-                                molecule.ston = data_test2[0]
-                                molecule.ppm = abs(1000000*(molecule.mw-molecule.memw)/molecule.mw)
-                                if molecule.ppm <= float(self.rawdataframe.ppmEntry.get()):
-                                    stringTovar={'measured m/z':molecule.memw,'m/z':molecule.mw,'ppm':molecule.ppm,'S/N':molecule.ston,'class':molecule.specie,'C':molecule.c,'H':molecule.realh,'O':molecule.o,'N':molecule.n,'S':molecule.s,'Na':molecule.na,'DBE':molecule.dbe,'intensity':molecule.intensity}
-                                    for column in saveExcel:
-                                        saveExcel.loc[count,column]=stringTovar[column]
-                                    count+=1
+        for N,O,S,Na,Cl in itertools.product(range(int(self.rawdataframe.nEntry.get())+1), range(int(self.rawdataframe.oEntry.get())+1),range(int(self.rawdataframe.sEntry.get())+1),range(int(self.rawdataframe.naEntry.get())+1),range(int(self.rawdataframe.clEntry.get())+1)):
+            c_max=int((mw_max-14*N-16*O-32*S-23*Na-35*Cl)/12)
+            for C in range(1,c_max+1):
+                h_max=int(mw_max)-12*C-14*N-16*O-32*S-23*Na-35*Cl+1
+                for H in range(1,h_max+1):
+                    molecule=Compound(C,H,N,O,S,0,self.rawdataframe.modeEntry.get())
+                    if isMolecule(molecule,mw_min):
+                        data_test=self.data[(self.data['m/z']>=(molecule.mw-mass_tolerance)) & (self.data['m/z']<=(molecule.mw+mass_tolerance))]
+                        if not data_test.empty:
+                            molecule.intensity = data_test['I'].max()
+                            data_test = data_test[data_test['I']==molecule.intensity]
+                            data_test1 = data_test['m/z'].tolist()
+                            molecule.memw = data_test1[0]
+                            data_test2 = data_test['S/N'].tolist()
+                            molecule.ston = data_test2[0]
+                            molecule.ppm = abs(1000000*(molecule.mw-molecule.memw)/molecule.mw)
+                            if molecule.ppm <= float(self.rawdataframe.ppmEntry.get()):
+                                stringTovar={'measured m/z':molecule.memw,'m/z':molecule.mw,'ppm':molecule.ppm,'S/N':molecule.ston,'class':molecule.specie,'C':molecule.c,'H':molecule.realh,'O':molecule.o,'N':molecule.n,'S':molecule.s,'Na':molecule.na,'Cl':molecule.cl,'DBE':molecule.dbe,'intensity':molecule.intensity}
+                                for column in saveExcel:
+                                    saveExcel.loc[count,column]=stringTovar[column]
+                                count+=1
         self.text_widget.delete('1.0',END)
         self.text_widget.insert(END,saveExcel)
         excelSave(saveExcel)
@@ -405,7 +366,7 @@ class MenuBar(Menu):
         caref=open(capath,'a')
         if self.camo==1:
             for cac in range(self.cacstart,self.cacstop):
-                camolecule=Compound(cac,2*cac+3+self.can-2*self.cadbe,self.can,self.cao,self.cas,self.cana,1)
+                camolecule=Compound(cac,2*cac+3+self.can-2*self.cadbe,self.can,self.cao,self.cas,self.cana,self.cacl,1)
                 caformula='C'+str(cac)+'H'+str(camolecule.h)
                 if not self.can==0:
                     caformula=caformula+'N'+str(camolecule.n)
@@ -415,12 +376,14 @@ class MenuBar(Menu):
                     caformula=caformula+'S'+str(camolecule.s)
                 if not self.cana==0:
                     caformula=caformula+'Na'+str(camolecule.na)
+                if not self.cacl==0:
+                    caformula=caformula+'Cl'+str(camolecule.cl)                    
                 caref.write(caformula+' '+str(camolecule.mw)+' '+'1+')   
                 caref.write('\n')
                 
         if self.camo==2:
             for cac in range(self.cacstart,self.cacstop):
-                camolecule=Compound(cac,2*cac+1+self.can-2*self.cadbe,self.can,self.cao,self.cas,self.cana,2)
+                camolecule=Compound(cac,2*cac+1+self.can-2*self.cadbe,self.can,self.cao,self.cas,self.cana,self.cacl,2)
                 caformula='C'+str(cac)+'H'+str(camolecule.h)
                 if not self.can==0:
                     caformula=caformula+'N'+str(camolecule.n)
@@ -430,6 +393,8 @@ class MenuBar(Menu):
                     caformula=caformula+'S'+str(camolecule.s)
                 if not self.cana==0:
                     caformula=caformula+'Na'+str(camolecule.na)
+                if not self.cacl==0:
+                    caformula=caformula+'Cl'+str(camolecule.cl)
                 caref.write(caformula+' '+str(camolecule.mw)+' '+'1-')   
                 caref.write('\n')
         caref.close()
@@ -609,6 +574,11 @@ class RawDataFrame:
         self.naEntry=Entry(self.frame,width=3)
         self.naEntry.insert(END,'0')
         self.naEntry.pack(side=LEFT)
+        
+        Label(self.frame, text='Cl',width=3).pack(side=LEFT)
+        self.clEntry=Entry(self.frame,width=3)
+        self.clEntry.insert(END,'0')
+        self.clEntry.pack(side=LEFT)
        
         Label(self.frame, text='Source',width=5).pack(side=LEFT)
 
@@ -676,8 +646,8 @@ class BubblePlotFrame:
 class App(Tk):
     def __init__(self):
         Tk.__init__(self)
-        self.text_widget = Text(self)
-        self.text_widget.pack()
+        self.text_widget = Text(self,width=100)
+        self.text_widget.pack(fill='x',expand=1)
         
         rawdataframe =RawDataFrame(self)
         bubbleplotframe=BubblePlotFrame(self)
