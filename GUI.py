@@ -82,13 +82,13 @@ class Compound:
 
 def isMolecule(a,mw_min):
     if a.mode==1 or a.mode==2:
-        if a.n!=0 or a.o!=0 or a.s!=0:
-            if 0.3<=a.h/a.c<=3.0:
-                if a.o/a.c<=3.0 and a.n/a.c<=0.5:
-                    if a.realh<=2+2*a.c+a.n-a.na-a.cl:
-                        if (a.h+a.n+a.na+a.cl)%2 == 1:
-                            if a.mw>=mw_min:
-                                return True
+#        if a.n!=0 or a.o!=0 or a.s!=0:
+        if 0.3<=a.h/a.c<=3.0:
+            if a.o/a.c<=3.0 and a.n/a.c<=0.5:
+                if a.realh<=2+2*a.c+a.n-a.na-a.cl:
+                    if (a.h+a.n+a.na+a.cl)%2 == 1:
+                        if a.mw>=mw_min:
+                            return True
     if a.mode==3:
         if 0.3<=a.h/a.c<=3.0:
             if a.o/a.c<=3.0 and a.n/a.c<=0.5:
@@ -207,6 +207,7 @@ class MenuBar(Menu):
         calMenu.add_command(label='Class abundance from folder', command=self.calAbundanceFile)
         calMenu.add_command(label='Class DBE abundance from file', command=self.caldbeAbundance)
         calMenu.add_command(label='Class DBE abundance from folder', command=self.caldbeAbundanceFile)
+        calMenu.add_command(label='Planar limits calculation', command=self.calplanarlimits)
         
         plotMenu=Menu(self)
         self.add_cascade(label='Plot', menu=plotMenu)
@@ -450,6 +451,22 @@ class MenuBar(Menu):
                 self.caldbeAbundance()
         except:
             messagebox.showerror('Error', 'Please import data first!')
+            
+    def calplanarlimits(self):
+        data=self.data
+        species=data['class']
+        species=species.drop_duplicates()
+        cn=0
+        dbe=0
+        planar=pd.DataFrame().astype(float)
+        for specie in species:
+            data_specie=data[data['class'] == specie]
+            for cn in range(10,90):
+                data_cn=data_specie[data_specie['C'] == cn]
+                planar.loc[specie,cn]=data_cn['DBE'].max()
+        self.text_widget.delete('1.0',END)
+        self.text_widget.insert(END,planar)
+        excelSave(planar)
     
     def barplot(self):
         try:
