@@ -208,6 +208,7 @@ class MenuBar(Menu):
         calMenu.add_command(label='Class DBE abundance from file', command=self.caldbeAbundance)
         calMenu.add_command(label='Class DBE abundance from folder', command=self.caldbeAbundanceFile)
         calMenu.add_command(label='Planar limits calculation', command=self.calplanarlimits)
+        calMenu.add_command(label='Merge table for PCA', command=self.pca)
         
         plotMenu=Menu(self)
         self.add_cascade(label='Plot', menu=plotMenu)
@@ -467,7 +468,33 @@ class MenuBar(Menu):
         self.text_widget.delete('1.0',END)
         self.text_widget.insert(END,planar)
         excelSave(planar)
-    
+ 
+    def pca(self):
+        mz=set()
+        excelFile=readAllExcel(self.folder_path)
+        for excel in excelFile:
+            data=pd.read_excel(excel)
+            data=data[data.ppm<1.2]
+            mz_tmp=set(data['m/z'].unique())
+            mz.update(mz_tmp)
+        pca=pd.DataFrame().astype(float)
+        for excel in excelFile:
+            data=pd.read_excel(excel)
+            excelName=excel
+            data=data[data.ppm<1.2]
+            for mztmp in mz:
+                data_mz=data[data['m/z']==mztmp]
+                if not data_mz.empty:
+                    data_test3=data_mz['class'].tolist()
+                    pca.loc[mztmp,'class']=data_test3[0]
+                    data_test2=data_mz['RA'].tolist()
+                    pca.loc[mztmp,excelName]=data_test2[0]
+                else:
+                    pca.loc[mztmp,excelName]=0
+        self.text_widget.delete('1.0',END)
+        self.text_widget.insert(END,pca)
+        excelSave(pca)
+
     def barplot(self):
         try:
             data=self.data
