@@ -17,6 +17,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 import base64
 from icon import Icon
+from sklearn.decomposition import PCA
+from sklearn.preprocessing import StandardScaler
 
 atomic_mass = {'C':12.0107, 'H':1.007825, 'N':14.003074, 'O':15.9949146, 'S':31.972071, 'e':0.0005485799, 'CH2':14.01565,'Na':22.989769,'Cl':34.968853}
 mass_tolerance=0.0015*14.01565/14
@@ -208,7 +210,8 @@ class MenuBar(Menu):
         calMenu.add_command(label='Class DBE abundance from file', command=self.caldbeAbundance)
         calMenu.add_command(label='Class DBE abundance from folder', command=self.caldbeAbundanceFile)
         calMenu.add_command(label='Planar limits calculation', command=self.calplanarlimits)
-        calMenu.add_command(label='Merge table for PCA', command=self.pca)
+        calMenu.add_command(label='Merge table for PCA', command=self.pcatable)
+        calMenu.add_command(label='PCA', command=self.pca)
         
         plotMenu=Menu(self)
         self.add_cascade(label='Plot', menu=plotMenu)
@@ -469,7 +472,7 @@ class MenuBar(Menu):
         self.text_widget.insert(END,planar)
         excelSave(planar)
  
-    def pca(self):
+    def pcatable(self):
         mz=set()
         excelFile=readAllExcel(self.folder_path)
         for excel in excelFile:
@@ -494,6 +497,16 @@ class MenuBar(Menu):
         self.text_widget.delete('1.0',END)
         self.text_widget.insert(END,pca)
         excelSave(pca)
+        
+    def pca(self):
+        data=self.data
+        data=StandardScaler().fit_transform(data)
+        data_pca=PCA(n_components=2)
+        pca=data_pca.fit_transform(data)
+        pca_excel=pd.DataFrame(pca,columns=['X1','X2'])
+        excelSave(pca_excel)
+        print(data_pca.explained_variance_)
+        print(data_pca.explained_variance_ratio_)
 
     def barplot(self):
         try:
