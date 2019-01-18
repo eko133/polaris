@@ -589,7 +589,7 @@ class MenuBar(Menu):
         messagebox.showinfo("Complete!", "All plots are stored in the same folder with excels")
 
     def aboutMessage(self):
-        messagebox.showinfo(title='About', message='FT–ICR MS Data Handler\nLicensed under the terms of the Apache License 2.0\n\nDeveloped and maintained by Weimin Liu\n\nFor bug reports and feature requests, please go to my Github website\n\nSpecial thanks to the following contributors:\nDr. Bin Jiang (VB codes for raw data processing)\nDr. Yahe Zhang & Dr. Linzhou Zhang (VB codes for molecular weight calibration)\nDinosoft Labs (''Atom'' icon)\nLiqian Huang (Love and support)\n\nCoding for a better wolrd!')
+        messagebox.showinfo(title='About', message='FT–ICR MS Data Handler\nLicensed under the terms of the Apache License 2.0\n\nDeveloped and maintained by Weimin Liu\n\nFor bug reports and feature requests, please open tickets\n\nSpecial thanks to the following contributors:\nDr. Bin Jiang (VB codes for raw data processing)\nDr. Yahe Zhang & Dr. Linzhou Zhang (VB codes for molecular weight calibration)\nDinosoft Labs (''Atom'' icon)\nLiqian Huang (Love and support)\n\nCoding for a better wolrd!')
         
 class RawDataFrame:
     
