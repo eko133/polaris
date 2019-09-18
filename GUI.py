@@ -19,6 +19,7 @@ import base64
 from icon import Icon
 from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import MinMaxScaler
 
 atomic_mass = {'C':12.0107, 'H':1.007825, 'N':14.003074, 'O':15.9949146, 'S':31.972071, 'e':0.0005485799, 'CH2':14.01565,'Na':22.989769,'Cl':34.968853}
 mass_tolerance=0.0015*14.01565/14
@@ -210,6 +211,7 @@ class MenuBar(Menu):
         calMenu.add_command(label='Class DBE abundance from file', command=self.caldbeAbundance)
         calMenu.add_command(label='Class DBE abundance from folder', command=self.caldbeAbundanceFile)
         calMenu.add_command(label='Planar limits calculation', command=self.calplanarlimits)
+        calMenu.add_command(label='Customized Calculation 1', command=self.cuscal1)
         calMenu.add_command(label='Merge table for PCA', command=self.pcatable)
         calMenu.add_command(label='PCA', command=self.pca)
         
@@ -218,6 +220,7 @@ class MenuBar(Menu):
         plotMenu.add_command(label='Bar plot from file', command=self.barplot)
         plotMenu.add_command(label='Bubble plots from file', command=self.bubbleplotfile)
         plotMenu.add_command(label='Bubble plots from folder', command=self.bubbleplot)
+#        plotMenu.add_command(label='Hexbin plot from file', command=self.hexbinplotfile)
         
         aboutMenu=Menu(self)
         self.add_cascade(label='Help', menu=aboutMenu)
@@ -507,6 +510,29 @@ class MenuBar(Menu):
         excelSave(pca_excel)
         print(data_pca.explained_variance_)
         print(data_pca.explained_variance_ratio_)
+        
+    def cuscal1(self):
+        os.chdir(self.folder_path)
+        excelFile=readAllExcel(self.folder_path)
+        species=self.bubbleplotframe.bpclass.get()
+        species=species.split(',')
+        cuscal1execel=pd.DataFrame().astype(float)
+        for excel in excelFile:
+            data=pd.read_excel(excel)
+            data=data[data['DBE']>0]
+            excelName=os.path.split(excel)[1]
+            excelName=os.path.splitext(excelName)[0]
+            data['intensity']=data['intensity'].astype(float)
+            data['H/C']=data['H']/data['C']
+            for specie in species:
+                data_specie=data[data['class']==specie]
+                data_specie=data_specie.reset_index()
+                min_max_scaler=MinMaxScaler()
+                data_specie['normalized']=min_max_scaler.fit_transform(data_specie['intensity'].values.reshape(-1,1))
+                cuscal1execel[excelName+'m/z']=data_specie['m/z']
+                cuscal1execel[excelName+'normalized']=data_specie['normalized']
+                cuscal1execel[excelName+'H/C']=data_specie['H/C']
+        excelSave(cuscal1execel)
 
     def barplot(self):
         try:
@@ -548,6 +574,14 @@ class MenuBar(Menu):
             filename=specie+'.png'
             plt.savefig(os.path.join(path,filename),dpi=1000)
         messagebox.showinfo("Complete!", "All plots are stored successfully!")
+        
+        
+#    def hexbinplotfile(self):
+#        excelName=os.path.split(self.excelName)[1]
+#        data=self.data
+#        plt.hexbin(data['measured m/z'],data['H/C'],data['intensity'],gridsize=10000)
+#        plt.show()
+
         
     def bubbleplot(self):
         os.chdir(self.folder_path)
