@@ -1,28 +1,34 @@
 import pandas as pd
+import os
 import sys
 
 #data=pd.read_excel(sys.argv[1])
-data=pd.read_excel('/Users/siaga/Desktop/pca.xlsx')
-data1=data.iloc[:,0:2].dropna()
-data2=data.iloc[:,2:4].dropna()
-data3=data.iloc[:,4:6].dropna()
-data4=data.iloc[:,6:8].dropna()
-data5=data.iloc[:,8:10].dropna()
-data6=data.iloc[:,10:12].dropna()
+data=pd.read_excel('/Users/siaga/Desktop/processedData.xlsx')
 mass=set()
-for i in range(1,7):
-    mass.update(data['mass%d'%i])
+basket=pd.DataFrame()
+excelList=os.listdir('/Users/siaga/Desktop/NFT')
+for i in excelList:
+    i=i.replace('.xlsx','')
+    i=i.replace('-','_')
+    locals()['data'+i]=data[['mass'+i,i]].dropna()
+    mass.update(data['mass'+i])
 mass = {x for x in mass if pd.notna(x)}
-#for i in range(1,12,2):
-#    locals()['df'+str(int((i+1)/2))]=data.iloc[:,i-1:i+1]
-for m in range(1,7):
-    locals()['masse'+str(m)]=mass-set(data['mass%d'%m])
-    locals()['masse'+str(m)]=pd.DataFrame(locals()['masse'+str(m)],columns=['mass%d'%m])
-    locals()['data'+str(m)]=pd.concat([locals()['data'+str(m)],locals()['masse'+str(m)]],ignore_index=True,sort=False).fillna(0)
-    locals()['data'+str(m)]=locals()['data'+str(m)].sort_values(by=['mass%d'%m])
-    locals()['data' + str(m)]=locals()['data'+str(m)].reset_index(drop=True)
-data=pd.concat([data1,data2,data3,data4,data5,data6],axis=1,sort=False)
-data.to_excel('/Users/siaga/Desktop/pca_processed.xlsx')
+for m in excelList:
+    m=m.replace('.xlsx','')
+    m=m.replace('-','_')
+    locals()['masse'+m]=mass-set(data['mass'+m])
+    locals()['masse'+m]=pd.DataFrame(locals()['masse'+m],columns=['mass'+m])
+    locals()['data'+m]=pd.concat([locals()['data'+m],locals()['masse'+m]],ignore_index=True,sort=False).fillna(0)
+    locals()['data'+m]=locals()['data'+m].sort_values(by=['mass'+m])
+    locals()['data' + m]=locals()['data'+m].reset_index(drop=True)
+    basket=pd.concat([basket,locals()['data'+m]],axis=1,sort=False)
+basket=basket.rename(columns={'massL5_450':"mtoz"})
+for column in basket:
+    if 'mass' in column:
+        del basket[column]
+basket.to_excel('/Users/siaga/Desktop/pca_processed.xlsx',index=False)
+
+# data.to_excel('/Users/siaga/Desktop/pca_processed.xlsx')
 
 # masse1=pd.DataFrame(masse1,columns=['mass1'])
 # data1=pd.concat([data1,masse1],ignore_index=True,sort=False).fillna(0)
