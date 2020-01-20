@@ -26,6 +26,9 @@ basket=basket.rename(columns={'massL5_450':"mtoz"})
 for column in basket:
     if 'mass' in column:
         del basket[column]
+basket[['mtoz','formula']]=basket['mtoz'].str.split(',',expand=True)
+basket['mtoz']=basket['mtoz'].astype(float)
+basket=basket.sort_values(by=['mtoz'])
 basket.to_excel('/Users/siaga/Desktop/pca_processed.xlsx',index=False)
 
 # data.to_excel('/Users/siaga/Desktop/pca_processed.xlsx')
