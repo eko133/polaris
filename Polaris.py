@@ -132,7 +132,7 @@ def excelSave(excelFile):
         return
     else:
         writer = pd.ExcelWriter(path, engine='xlsxwriter')
-    excelFile.to_excel(writer, 'Sheet1')
+    excelFile.to_excel(writer, 'Sheet1',index=False)
     writer.save()
 
 
@@ -244,7 +244,7 @@ class MenuBar(Menu):
                             command=lambda: thread_it(self.caldbeAbundanceFile))
         calMenu.add_command(label='Planar limits calculation', command=lambda: thread_it(self.calplanarlimits))
         calMenu.add_command(label='Customized Calculation 1', command=lambda: thread_it(self.cuscal1))
-        calMenu.add_command(label='Merge table for PCA', command=lambda: thread_it(self.pcatable))
+        calMenu.add_command(label='Merge table for PCA', command=lambda: thread_it(self.mergeTablePCA))
         calMenu.add_command(label='PCA', command=lambda: thread_it(self.pca))
 
         plotMenu = Menu(self)
@@ -518,6 +518,58 @@ class MenuBar(Menu):
         except:
             messagebox.showerror('Error', 'Please import data first!')
 
+    def mergeTablePCA(self):
+        self.text_widget.insert(END, "Merging Tables for PCA, please wait and do not close the window......")
+        excelFile = readAllExcel(self.folder_path)
+        pcatable = pd.DataFrame()
+        basket = pd.DataFrame()
+        mass = set()
+        for excel in excelFile:
+            raw = pd.read_excel(excel)
+            raw = raw.dropna(axis=1, how='all')
+            raw = raw.dropna()
+            raw['formula'] = 'C' + raw['C'].astype(int).astype(str) + '-H' + raw['H'].astype(int).astype(str) + '-O' + raw[
+                'O'].astype(int).astype(str) + '-N' + raw['N'].astype(int).astype(str)
+            raw['m/z'] = raw['m/z'].astype(str) + ',' + raw['formula']
+            excel=os.path.basename(excel)
+            excel = excel.replace('.xlsx', '')
+            excel = excel.replace('-', '_')
+            for column in raw:
+                if column != 'm/z' and column != 'intensity':
+                    del raw[column]
+            raw['normalized'] = raw['intensity'] / raw['intensity'].sum()
+            del raw['intensity']
+            raw = raw.rename(columns={'m/z': 'mass%s' % excel, 'normalized': excel, 'formula': 'formula%s' % excel})
+            pcatable = pd.concat([pcatable, raw], axis=1, sort=False)
+        for i in excelFile:
+            i = os.path.basename(i)
+            i = i.replace('.xlsx', '')
+            i = i.replace('-', '_')
+            locals()['pcatable' + i] = pcatable[['mass' + i, i]].dropna()
+            mass.update(pcatable['mass' + i])
+        mass = {x for x in mass if pd.notna(x)}
+        for m in excelFile:
+            m = os.path.basename(m)
+            m = m.replace('.xlsx', '')
+            m = m.replace('-', '_')
+            locals()['masse' + m] = mass - set(pcatable['mass' + m])
+            locals()['masse' + m] = pd.DataFrame(locals()['masse' + m], columns=['mass' + m])
+            locals()['pcatable' + m] = pd.concat([locals()['pcatable' + m], locals()['masse' + m]], ignore_index=True,
+                                                 sort=False).fillna(0)
+            locals()['pcatable' + m] = locals()['pcatable' + m].sort_values(by=['mass' + m])
+            locals()['pcatable' + m] = locals()['pcatable' + m].reset_index(drop=True)
+            basket = pd.concat([basket, locals()['pcatable' + m]], axis=1, sort=False)
+        basket = basket.rename(columns={('mass'+os.path.basename(excelFile[0]).replace('.xlsx', '').replace('-', '_')):"mtoz"})
+        for column in basket:
+            if 'mass' in column:
+                del basket[column]
+        basket[['mtoz', 'formula']] = basket['mtoz'].str.split(',', expand=True)
+        basket['mtoz'] = basket['mtoz'].astype(float)
+        basket = basket.sort_values(by=['mtoz'])
+        self.text_widget.delete('1.0', END)
+        self.text_widget.insert(END, basket)
+        excelSave(basket)
+
     def calplanarlimits(self):
         data = self.data
         species = data['class']
@@ -534,31 +586,31 @@ class MenuBar(Menu):
         self.text_widget.insert(END, planar)
         excelSave(planar)
 
-    def pcatable(self):
-        mz = set()
-        excelFile = readAllExcel(self.folder_path)
-        for excel in excelFile:
-            data = pd.read_excel(excel)
-            data = data[data.ppm < 1.2]
-            mz_tmp = set(data['m/z'].unique())
-            mz.update(mz_tmp)
-        pca = pd.DataFrame().astype(float)
-        for excel in excelFile:
-            data = pd.read_excel(excel)
-            excelName = excel
-            data = data[data.ppm < 1.2]
-            for mztmp in mz:
-                data_mz = data[data['m/z'] == mztmp]
-                if not data_mz.empty:
-                    data_test3 = data_mz['class'].tolist()
-                    pca.loc[mztmp, 'class'] = data_test3[0]
-                    data_test2 = data_mz['RA'].tolist()
-                    pca.loc[mztmp, excelName] = data_test2[0]
-                else:
-                    pca.loc[mztmp, excelName] = 0
-        self.text_widget.delete('1.0', END)
-        self.text_widget.insert(END, pca)
-        excelSave(pca)
+    # def pcatable(self):
+    #     mz = set()
+    #     excelFile = readAllExcel(self.folder_path)
+    #     for excel in excelFile:
+    #         data = pd.read_excel(excel)
+    #         data = data[data.ppm < 1.2]
+    #         mz_tmp = set(data['m/z'].unique())
+    #         mz.update(mz_tmp)
+    #     pca = pd.DataFrame().astype(float)
+    #     for excel in excelFile:
+    #         data = pd.read_excel(excel)
+    #         excelName = excel
+    #         data = data[data.ppm < 1.2]
+    #         for mztmp in mz:
+    #             data_mz = data[data['m/z'] == mztmp]
+    #             if not data_mz.empty:
+    #                 data_test3 = data_mz['class'].tolist()
+    #                 pca.loc[mztmp, 'class'] = data_test3[0]
+    #                 data_test2 = data_mz['RA'].tolist()
+    #                 pca.loc[mztmp, excelName] = data_test2[0]
+    #             else:
+    #                 pca.loc[mztmp, excelName] = 0
+    #     self.text_widget.delete('1.0', END)
+    #     self.text_widget.insert(END, pca)
+    #     excelSave(pca)
 
     def pca(self):
         data = self.data
