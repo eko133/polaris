@@ -57,7 +57,7 @@ On windows, the spyder included in [Anaconda](https://anaconda.org/) is highly r
 
 ### Step 1. Import file:
 
-![](source\import_file.png)
+![](source/import_file.png)
 
 First, you should import the data that you want to proceed. Currently, this tool is capable of dealing with the following data sources:
 
