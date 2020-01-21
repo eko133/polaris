@@ -18,6 +18,8 @@ from tkinter import ttk
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+from sklearn import preprocessing
+
 from icon import Icon
 from sklearn.decomposition import PCA
 from sklearn.preprocessing import MinMaxScaler
@@ -665,7 +667,7 @@ class MenuBar(Menu):
         for specie in species:
             data_specie = data[data['class'] == specie]
             sum = data_specie['intensity'].sum()
-            data_specie['normalized'] = data_specie['intensity'] / sum
+            data_specie['normalized'] = (data_specie['intensity']-data_specie['intensity'].min())/(data_specie['intensity'].max()-data_specie['intensity'].min())
             plt.figure(figsize=(6, 5))
             font = {'family': 'arial',
                     'color': 'black',
@@ -847,7 +849,7 @@ class BubblePlotFrame:
         Label(self.frame, text='Scaling', width=5).pack(side=LEFT)
 
         self.bpscale = Entry(self.frame, width=5)
-        self.bpscale.insert(END, '1000')
+        self.bpscale.insert(END, '500')
         self.bpscale.pack(side=LEFT)
 
         self.bpshowc = IntVar()
@@ -873,7 +875,7 @@ class App(Tk):
 
 if __name__ == '__main__':
     app = App()
-    app.title("POLARIS v0.1.3")
+    app.title("POLARIS")
     with open('tmp.ico', 'wb') as tmp:
         tmp.write(base64.b64decode(Icon().img))
     app.iconbitmap('tmp.ico')
