@@ -10,19 +10,12 @@ This tool is being actively developed, so ANY feedback is welcome. Does everythi
 
 ## Overview
 
-*FT–ICR MS Data Handler* is yet another utility for interacting with fticrms data.
-
-
-
-## Prerequisites
-
-None, binaries are statically linked.
-
+*Polaris* is yet another utility for interacting with fticrms data.
 
 
 ## Installation
 
-### From source
+### From source (Recommended)
 
 Simply download the source code 
 
@@ -32,11 +25,12 @@ git clone https://github.com/eko133/fticrms.git
 
 or, the source code [package](https://github.com/eko133/fticrms/releases).
 
+Install requirements:
 
-
-Then, run `GUI.py` in any python IDE.
-
-
+```
+pip3 install -r requirements.txt
+```
+Then, run `Polaris.py` in any python IDE.
 
 On windows, the spyder included in [Anaconda](https://anaconda.org/) is highly recommended.
 
@@ -50,7 +44,8 @@ On windows, the spyder included in [Anaconda](https://anaconda.org/) is highly r
 
 | **Filename**                                                 | **Version** | **Description** |
 | ------------------------------------------------------------ | ----------- | --------------- |
-| [DataHandler-windows-x64-v0.1.1.exe](https://github.com/eko133/fticrms/releases/download/v0.1.1/DataHandler-windows-x64-v0.1.1.exe) | 0.1.1       | Windows 64-bit  |
+| [Polaris_Windows_x64.zip](https://github.com/sliuweimin/polaris/releases/download/0.1.4/Polaris_Windows_x64.zip) | 0.1.4       | Windows 64-bit  |
+| [Polaris_Darwin.zip](https://github.com/sliuweimin/polaris/releases/download/0.1.4/Polaris_Darwin.zip) | 0.1.4 | MacOS (only tested on 15.12) |
 
 ## Usage
 
