@@ -323,6 +323,7 @@ class MenuBar(Menu):
 
     def processESIData(self):
         self.text_widget.insert(END, "Processing ESI data, please wait and do not close the window......")
+        # Generating empty dataframe
         saveExcel = pd.DataFrame()
         for i in (
         'measured m/z', 'm/z', 'ppm', 'S/N', 'class', 'C', 'H', 'O', 'N', 'S', 'Na', 'Cl', 'DBE', 'intensity'):
@@ -330,29 +331,40 @@ class MenuBar(Menu):
             i += i
         count = 0
         self.isodata = self.data
+        # Screening data
         self.data = self.data[self.data['S/N'] >= int(self.rawdataframe.snEntry.get())]
         for column in self.data:
             if column != 'm/z' and column != 'I' and column != 'S/N':
                 del self.data[column]
         mw_max = self.data['m/z'].max()
         mw_min = self.data['m/z'].min()
+        # Iterating through combinations of N, O, S, Na, Cl elements
         for N, O, S, Na, Cl in itertools.product(range(int(self.rawdataframe.nEntry.get()) + 1),
                                                  range(int(self.rawdataframe.oEntry.get()) + 1),
                                                  range(int(self.rawdataframe.sEntry.get()) + 1),
                                                  range(int(self.rawdataframe.naEntry.get()) + 1),
                                                  range(int(self.rawdataframe.clEntry.get()) + 1)):
+            # Upper limit of the carbon number with the combination of N, O, S, Na, Cl
             c_max = int((mw_max - atomic_mass['N'] * N - atomic_mass['O'] * O - atomic_mass['S'] * S - atomic_mass[
                 'Na'] * Na - atomic_mass['Cl'] * Cl) / atomic_mass['C'])
+            # Iterating possible carbon numbers
             for C in range(1, c_max + 1):
+                # Upper limit of the hydrogen number with the combination of C, N, O, S, Na, Cl
                 h_max = int((mw_max - atomic_mass['C'] * C - atomic_mass['N'] * N - atomic_mass['O'] * O - atomic_mass[
                     'S'] * S - atomic_mass['Na'] * Na - atomic_mass['Cl'] * Cl) / atomic_mass['H']) + 1
+                # Iterate possible hydrogen number
                 for H in range(1, h_max + 1):
+                    # Possible molecular formula
                     molecule = Compound(C, H, N, O, S, Na, Cl, self.rawdataframe.modeEntry.get())
+                    # Test whether the formula is valid with preset rules
                     if isMolecule(molecule, mw_min):
+                        # Wether the measured mass is within mass tolerance
                         data_test = self.data[(self.data['m/z'] >= (molecule.mw - mass_tolerance)) & (
                                     self.data['m/z'] <= (molecule.mw + mass_tolerance))]
+                        # Test the presence of corresponding isotopic peaks
                         data_test_iso = self.isodata[(self.isodata['m/z'] >= (molecule.isomw - mass_tolerance)) & (
                                     self.isodata['m/z'] <= (molecule.isomw + mass_tolerance))]
+                        # Writing molecules to dataframe
                         if not data_test.empty and not data_test_iso.empty:
                             molecule.intensity = data_test['I'].max()
                             data_test = data_test[data_test['I'] == molecule.intensity]
