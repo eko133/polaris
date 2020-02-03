@@ -323,7 +323,7 @@ class MenuBar(Menu):
 
     def processESIData(self):
         self.text_widget.insert(END, "Processing ESI data, please wait and do not close the window......")
-        # Generating empty dataframe
+        # Generating empty dataframe as storage backend
         saveExcel = pd.DataFrame()
         for i in (
         'measured m/z', 'm/z', 'ppm', 'S/N', 'class', 'C', 'H', 'O', 'N', 'S', 'Na', 'Cl', 'DBE', 'intensity'):
