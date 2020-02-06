@@ -28,7 +28,7 @@ from sklearn.preprocessing import StandardScaler
 # https://www.nist.gov/pml/handbook-basic-atomic-spectroscopic-data
 atomic_mass = {'C': 12.000000, 'C13': 13.003355, 'H': 1.007825, 'N': 14.003074, 'O': 15.994915, 'S': 31.972070,
                'e': 0.0005485799, 'CH2': 14.01565, 'Na': 22.989767, 'Cl': 34.968852}
-mass_tolerance = 0.0015 * atomic_mass['CH2'] / 14
+mass_tolerance = 3 * 0.0015 * atomic_mass['CH2'] / 14
 
 
 class Compound:
@@ -52,7 +52,7 @@ class Compound:
         self.specie = self.specie()
 
     def mw(self):
-        if self.mode == 1 or self.mode == 3:
+        if self.mode == 1 or self.mode == 3 or self.mode == 4:
             a = atomic_mass['C'] * self.c + atomic_mass['N'] * self.n + atomic_mass['S'] * self.s + atomic_mass[
                 'O'] * self.o + atomic_mass['H'] * self.h + atomic_mass['Na'] * self.na + atomic_mass['Cl'] * self.cl - \
                 atomic_mass['e']
@@ -63,7 +63,7 @@ class Compound:
         return a
 
     def iso_mw(self):
-        if self.mode == 1 or self.mode == 3:
+        if self.mode == 1 or self.mode == 3 or self.mode == 4:
             a = atomic_mass['C'] * (self.c - 1) + atomic_mass['C13'] + atomic_mass['N'] * self.n + atomic_mass[
                 'S'] * self.s + atomic_mass['O'] * self.o + atomic_mass['H'] * self.h + atomic_mass['Na'] * self.na + \
                 atomic_mass['Cl'] * self.cl - atomic_mass['e']
@@ -78,6 +78,8 @@ class Compound:
             b = self.h - 1
         if self.mode == 2:
             b = self.h + 1
+        if self.mode == 4:
+            b = self.h
         return b
 
     def specie(self):
@@ -125,6 +127,15 @@ def isMolecule(a, mw_min):
                 if a.realh <= 2 + 2 * a.c + a.n - a.na - a.cl:
                     if a.mw >= mw_min:
                         return True
+
+    if a.mode == 4:
+        if 0.3 <= a.h / a.c <= 3.0:
+            if a.o / a.c <= 3.0 and a.n / a.c <= 0.5:
+                if a.realh <= 2 + 2 * a.c + a.n - a.na - a.cl:
+                    if a.mw >= mw_min:
+                        if a.dbe <= 20:
+                         return True
+
 
 
 def excelSave(excelFile):
@@ -320,6 +331,8 @@ class MenuBar(Menu):
             self.processESIData()
         elif self.rawdataframe.modeEntry.get() == 3:
             self.processAPPIData()
+        elif self.rawdataframe.modeEntry.get() == 4:
+            self.processLDIData()
 
     def processESIData(self):
         self.text_widget.insert(END, "Processing ESI data, please wait and do not close the window......")
@@ -347,15 +360,87 @@ class MenuBar(Menu):
             # Upper limit of the carbon number with the combination of N, O, S, Na, Cl
             c_max = int((mw_max - atomic_mass['N'] * N - atomic_mass['O'] * O - atomic_mass['S'] * S - atomic_mass[
                 'Na'] * Na - atomic_mass['Cl'] * Cl) / atomic_mass['C'])
+            c_min = int((mw_min - atomic_mass['N'] * N - atomic_mass['O'] * O - atomic_mass['S'] * S - atomic_mass[
+                'Na'] * Na - atomic_mass['Cl'] * Cl) / atomic_mass['C'])
             # Iterating possible carbon numbers
-            for C in range(1, c_max + 1):
+            for C in range(c_min, c_max + 1):
                 # Upper limit of the hydrogen number with the combination of C, N, O, S, Na, Cl
                 h_max = int((mw_max - atomic_mass['C'] * C - atomic_mass['N'] * N - atomic_mass['O'] * O - atomic_mass[
                     'S'] * S - atomic_mass['Na'] * Na - atomic_mass['Cl'] * Cl) / atomic_mass['H']) + 1
+                h_min = int((mw_min - atomic_mass['C'] * C - atomic_mass['N'] * N - atomic_mass['O'] * O - atomic_mass[
+                    'S'] * S - atomic_mass['Na'] * Na - atomic_mass['Cl'] * Cl) / atomic_mass['H'])
                 # Iterate possible hydrogen number
-                for H in range(1, h_max + 1):
+                for H in range(h_min, h_max + 1):
                     # Possible molecular formula
                     molecule = Compound(C, H, N, O, S, Na, Cl, self.rawdataframe.modeEntry.get())
+                    # Test whether the formula is valid with preset rules
+                    if isMolecule(molecule, mw_min):
+                        # Wether the measured mass is within mass tolerance
+                        data_test = self.data[(self.data['m/z'] >= (molecule.mw - mass_tolerance)) & (
+                                    self.data['m/z'] <= (molecule.mw + mass_tolerance))]
+                        # Test the presence of corresponding isotopic peaks
+                        data_test_iso = self.isodata[(self.isodata['m/z'] >= (molecule.isomw - mass_tolerance)) & (
+                                    self.isodata['m/z'] <= (molecule.isomw + mass_tolerance))]
+                        # Writing molecules to dataframe
+                        if not data_test.empty and not data_test_iso.empty:
+                            molecule.intensity = data_test['I'].max()
+                            data_test = data_test[data_test['I'] == molecule.intensity]
+                            data_test1 = data_test['m/z'].tolist()
+                            molecule.memw = data_test1[0]
+                            data_test2 = data_test['S/N'].tolist()
+                            molecule.ston = data_test2[0]
+                            molecule.ppm = abs(1000000 * (molecule.mw - molecule.memw) / molecule.mw)
+                            if molecule.ppm <= float(self.rawdataframe.ppmEntry.get()):
+                                stringTovar = {'measured m/z': molecule.memw, 'm/z': molecule.mw, 'ppm': molecule.ppm,
+                                               'S/N': molecule.ston, 'class': molecule.specie, 'C': molecule.c,
+                                               'H': molecule.realh, 'O': molecule.o, 'N': molecule.n, 'S': molecule.s,
+                                               'Na': molecule.na, 'Cl': molecule.cl, 'DBE': molecule.dbe,
+                                               'intensity': molecule.intensity}
+                                for column in saveExcel:
+                                    saveExcel.loc[count, column] = stringTovar[column]
+                                count += 1
+        self.text_widget.delete('1.0', END)
+        self.text_widget.insert(END, saveExcel)
+        excelSave(saveExcel)
+
+    def processLDIData(self):
+        self.text_widget.insert(END, "Processing LDI data, please wait and do not close the window......")
+        # Generating empty dataframe as storage backend
+        saveExcel = pd.DataFrame()
+        for i in (
+        'measured m/z', 'm/z', 'ppm', 'S/N', 'class', 'C', 'H', 'O', 'N', 'S', 'Na', 'Cl', 'DBE', 'intensity'):
+            saveExcel.loc[0, i] = i
+            i += i
+        count = 0
+        self.isodata = self.data
+        # Screening data
+        # self.data = self.data[self.data['S/N'] >= int(self.rawdataframe.snEntry.get())]
+        for column in self.data:
+            if column != 'm/z' and column != 'I' and column != 'S/N':
+                del self.data[column]
+        mw_max = self.data['m/z'].max()
+        mw_min = self.data['m/z'].min()
+        # Iterating through combinations of N, O, S, Na, Cl elements
+        for N, O, S, Cl in itertools.product(range(int(self.rawdataframe.nEntry.get()) + 1),
+                                                 range(int(self.rawdataframe.oEntry.get()) + 1),
+                                                 range(int(self.rawdataframe.sEntry.get()) + 1),
+                                                 range(int(self.rawdataframe.clEntry.get()) + 1)):
+            # Upper limit of the carbon number with the combination of N, O, S, Na, Cl
+            c_max = int((mw_max - atomic_mass['N'] * N - atomic_mass['O'] * O - atomic_mass['Na'] - atomic_mass['S'] * S -  atomic_mass['Cl'] * Cl) / atomic_mass['C'])
+            c_min = int((mw_min - atomic_mass['N'] * N - atomic_mass['O'] * O - atomic_mass['Na'] - atomic_mass['S'] * S - atomic_mass['Cl'] * Cl) / (atomic_mass['C'] + 2 * atomic_mass['H']))
+            # print(c_max)
+            # print(c_min)
+            # Iterating possible carbon numbers
+            for C in range(c_min - 1, c_max + 1):
+                # Upper limit of the hydrogen number with the combination of C, N, O, S, Na, Cl
+                h_max = int((mw_max - atomic_mass['C'] * C - atomic_mass['N'] * N - atomic_mass['O'] * O - atomic_mass[
+                    'S'] * S  - atomic_mass['Cl'] * Cl) - atomic_mass['Na'] / atomic_mass['H']) + 1
+                dbe_limit = 10
+                h_min = 2 * C + 2 + N - 1 - Cl - 2 * dbe_limit
+                # Iterate possible hydrogen number
+                for H in range(h_min - 1, h_max + 1):
+                    # Possible molecular formula
+                    molecule = Compound(C, H, N, O, S, 1, Cl, self.rawdataframe.modeEntry.get())
                     # Test whether the formula is valid with preset rules
                     if isMolecule(molecule, mw_min):
                         # Wether the measured mass is within mass tolerance
@@ -815,6 +900,7 @@ class RawDataFrame:
         Radiobutton(self.frame, text='+ESI', variable=self.modeEntry, value=1).pack(side=LEFT)
         Radiobutton(self.frame, text='-ESI', variable=self.modeEntry, value=2).pack(side=LEFT)
         Radiobutton(self.frame, text='APPI (Beta)', variable=self.modeEntry, value=3).pack(side=LEFT)
+        Radiobutton(self.frame, text='LDI(Na+)', variable=self.modeEntry, value=4).pack(side=LEFT)
 
 
 #        Radiobutton(self.frame,text='-APPI',variable=self.modeEntry,value=4).pack(side=LEFT)
