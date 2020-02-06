@@ -3,6 +3,9 @@ import os
 import pandas as pd
 import numpy as np
 
+
+mass_list=set()
+pcatable = pd.DataFrame()
 runtime = get('Node')
 context = runtime.compile('''
     module.paths.push('%s');
@@ -14,10 +17,13 @@ context = runtime.compile('''
 
 f = open(r'/Users/siaga/line_test1.txt','r')
 lines =f.readlines()
+samples = {}
+samples_extra = {}
+basket = pd.DataFrame()
 for line in lines:
     data = line.split(';')
     sample_name = data[0]
-    locals()['%s'%sample_name] = pd.DataFrame()
+    samples[sample_name] = pd.DataFrame()
     del data[0]
     del data[1]
     data = pd.DataFrame(np.array(data).reshape((-1,3)),columns=['m/z','I','S/N'])
@@ -43,6 +49,28 @@ for line in lines:
         else:
             break
     data= data.dropna(axis=0).reset_index(drop=True)
-    locals()['%s'%sample_name] = data
+    samples[sample_name] = data
+    data['m/z'] = data['real mass'].astype(str) + ',' + data['mf']
+    for column in data:
+        if column != 'm/z' and column != 'I':
+            del data[column]
+    mass_list.update(data['m/z'])
+    data = data.rename(columns={'m/z': 'mass%s'%sample_name,'I':sample_name})
+    pcatable = pd.concat([pcatable, data], axis=1, sort=False)
 
+for key in samples:
+    samples_extra[key] = pcatable[['mass' + key, key]].dropna()
+    samples_extra['mass'+key] = mass_list - set(pcatable['mass' + key])
+    samples_extra['mass' + key] = pd.DataFrame(samples_extra['mass' + key], columns=['mass' + key])
+    samples_extra[key] = pd.concat([samples_extra[key], samples_extra['mass' + key]], ignore_index=True,
+                                     sort=False).fillna(0)
+    samples_extra[key] = samples_extra[key].sort_values(by=['mass' + key]).reset_index(drop=True)
+    basket = pd.concat([basket, samples_extra[key]], axis=1, sort=False)
+basket = basket.rename(columns={basket.columns[0]:'mtoz'})
+for column in basket:
+     if 'mass' in column:
+        del basket[column]
+basket[['mtoz', 'formula']] = basket['mtoz'].str.split(',', expand=True)
+basket['mtoz'] = basket['mtoz'].astype(float)
+# basket = basket.sort_values(by=['mtoz'])
 
