@@ -28,26 +28,21 @@ for line in lines:
             result = context.call('mfFromMonoisotopicMass',mass_Na,{'mfRange':'C1-200H1-200O0-10Na+','maxUnsaturation':'10','useUnsaturation':'true','integerUnsaturation':'false','massRange':'0.006'})
             try:
                 for m in range(len(result['results'])):
-                    if isinstance(result['results'][m]['unsat'], int):
-                        continue
+                    if not isinstance(result['results'][m]['unsat'], int):
                     # should the carbon isotopes be tested?
-                    else:
                         mass_iso_em = result['results'][m]['em'] - 12 + 13.003355
                         mass_iso = data[(data['m/z'] >= (mass_iso_em - 0.005)) & (data['m/z'] <= (mass_iso_em + 0.005))]
-                        if not mass_iso.empty:
-                            data.loc[i, 'real mass'] = result['results'][m]['em']
-                            data.loc[i, 'error(ppm)'] = result['results'][m]['ppm']
-                            data.loc[i, 'mf'] = result['results'][m]['mf']
-                            data.loc[i, 'unsat'] = result['results'][m]['unsat']
-                            data = data[data['m/z'] != mass_iso['m/z'].max()].reset_index(drop=True)
-                            break
-                        else:
-                            continue
+                        data = data[data['m/z'] != mass_iso['m/z'].max()].reset_index(drop=True)
+                        data.loc[i, 'real mass'] = result['results'][m]['em']
+                        data.loc[i, 'error(ppm)'] = result['results'][m]['ppm']
+                        data.loc[i, 'mf'] = result['results'][m]['mf']
+                        data.loc[i, 'unsat'] = result['results'][m]['unsat']
+                        break
             except IndexError:
                 data.loc[i,'real mass'] = 'nan'
         else:
             break
-    data= data.dropna(axis=0)
+    data= data.dropna(axis=0).reset_index(drop=True)
     locals()['%s'%sample_name] = data
 
 
