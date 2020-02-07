@@ -2,10 +2,11 @@ from execjs import get
 import os
 import pandas as pd
 import numpy as np
-
+import pickle
 
 mass_list=set()
 pcatable = pd.DataFrame()
+similar_index = list()
 runtime = get('Node')
 context = runtime.compile('''
     module.paths.push('%s');
@@ -15,7 +16,7 @@ context = runtime.compile('''
     }
 ''' % os.path.join(os.path.dirname(__file__),'node_modules'))
 
-f = open(r'/Users/siaga/line_test1.txt','r')
+f = open(r'/Users/siaga/gdgt_test.txt','r')
 lines =f.readlines()
 samples = {}
 samples_extra = {}
@@ -48,15 +49,19 @@ for line in lines:
                 data.loc[i,'real mass'] = 'nan'
         else:
             break
-    data= data.dropna(axis=0).reset_index(drop=True)
-    samples[sample_name] = data
-    data['m/z'] = data['real mass'].astype(str) + ',' + data['mf']
-    for column in data:
-        if column != 'm/z' and column != 'I':
-            del data[column]
-    mass_list.update(data['m/z'])
-    data = data.rename(columns={'m/z': 'mass%s'%sample_name,'I':sample_name})
-    pcatable = pd.concat([pcatable, data], axis=1, sort=False)
+    if 'real mass' in data.columns:
+        data= data.dropna(axis=0).reset_index(drop=True)
+        data = data[(data['error(ppm)'] < 10) & (data['error(ppm)'] > -10)]
+        samples[sample_name] = data.copy()
+        data['m/z'] = data['real mass'].astype(str) + ',' + data['mf']
+        for column in data:
+            if column != 'm/z' and column != 'I':
+                del data[column]
+        mass_list.update(data['m/z'])
+        data = data.rename(columns={'m/z': 'mass%s'%sample_name,'I':sample_name})
+        pcatable = pd.concat([pcatable, data], axis=1, sort=False)
+
+pickle.dump(samples, open('./samples.p', 'wb'))
 
 for key in samples:
     samples_extra[key] = pcatable[['mass' + key, key]].dropna()
@@ -72,5 +77,15 @@ for column in basket:
         del basket[column]
 basket[['mtoz', 'formula']] = basket['mtoz'].str.split(',', expand=True)
 basket['mtoz'] = basket['mtoz'].astype(float)
-# basket = basket.sort_values(by=['mtoz'])
+basket.to_pickle("./gdgt.pkl")
 
+for i in range(len(basket)-1):
+    if basket.loc[i+1,'mtoz'] - basket.loc[i,'mtoz'] < 0.01:
+        mass_tmp = basket.loc[i,'mtoz']
+        basket.loc[i] = basket.loc[i] + basket.loc[i+1]
+        basket.loc[i, 'mtoz'] = mass_tmp
+        similar_index.append(i)
+for i in reversed(similar_index):
+    basket=basket.drop([i+1])
+basket = basket.reset_index(drop=True)
+basket.to_pickle("./gdgt_similarMassMerged.pkl")
