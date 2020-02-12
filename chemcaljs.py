@@ -26,7 +26,7 @@ for line in lines:
     sample_name = data[0]
     samples[sample_name] = pd.DataFrame()
     del data[0]
-    del data[1]
+    del data[0]
     data = pd.DataFrame(np.array(data).reshape((-1,3)),columns=['m/z','I','S/N'])
     data = data.astype(float)
     for i in range(len(data)):

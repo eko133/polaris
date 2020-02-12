@@ -84,9 +84,9 @@ import pickle
 
 basket = pd.read_pickle("./line_test.pkl")
 similar_index=list()
-mass_index=0
 duplicate_flag = 1
 while duplicate_flag == 1:
+    mass_index = 0
     duplicate_flag = 0
     while mass_index < (len(basket)-1):
         if (basket.loc[mass_index+1,'mtoz'] - basket.loc[mass_index,'mtoz']) < 0.02:
