@@ -2,7 +2,7 @@ import os
 import pandas as pd
 import numpy as np
 
-f = open(r'/Users/siaga/line_test.txt','r')
+f = open(r'/Users/siaga/gdgt_test.txt','r')
 lines =f.readlines()
 samples = {}
 basket = pd.DataFrame()
@@ -33,4 +33,5 @@ while duplicate_flag == 1:
             basket.loc[mass_index,'m/z'] = basket.loc[mass_index+1,'m/z']
         mass_index = mass_index + 1
 basket = basket.groupby('m/z').sum()
+basket.to_pickle("./gdgt_similarMassMerged.pkl")
 
