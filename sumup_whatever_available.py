@@ -23,15 +23,15 @@ for sample in samples:
 basket = basket.reset_index()
 
 
-duplicate_flag = 1
-while duplicate_flag == 1:
-    mass_index = 0
-    duplicate_flag = 0
-    while mass_index < (len(basket)-1):
-        if (basket.loc[mass_index+1,'m/z'] - basket.loc[mass_index,'m/z']) <= 0.01 and (basket.loc[mass_index+1,'m/z'] - basket.loc[mass_index,'m/z']) !=0 :
-            duplicate_flag = 1
-            basket.loc[mass_index,'m/z'] = basket.loc[mass_index+1,'m/z']
-        mass_index = mass_index + 1
-basket = basket.groupby('m/z').sum()
-basket.to_pickle("./gdgt_similarMassMerged.pkl")
+# duplicate_flag = 1
+# while duplicate_flag == 1:
+#     mass_index = 0
+#     duplicate_flag = 0
+#     while mass_index < (len(basket)-1):
+#         if (basket.loc[mass_index+1,'m/z'] - basket.loc[mass_index,'m/z']) <= 0.01 and (basket.loc[mass_index+1,'m/z'] - basket.loc[mass_index,'m/z']) !=0 :
+#             duplicate_flag = 1
+#             basket.loc[mass_index,'m/z'] = basket.loc[mass_index+1,'m/z']
+#         mass_index = mass_index + 1
+# basket = basket.groupby('m/z').sum()
+basket.to_pickle("./gdgt_similarMassMerged2.pkl")
 
