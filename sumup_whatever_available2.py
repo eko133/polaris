@@ -2,19 +2,7 @@ import os
 import pandas as pd
 import numpy as np
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 f = open(r'/Users/siaga/line_test.txt','r')
-=======
-f = open(r'/Users/siaga/gdgt_test.txt','r')
->>>>>>> 2cfc163034ecf24df37ccc7cad1f3fb1ed7182fb
-=======
-f = open(r'/Users/siaga/gdgt_test.txt','r')
->>>>>>> 2cfc163034ecf24df37ccc7cad1f3fb1ed7182fb
-=======
-f = open(r'/Users/siaga/gdgt_test.txt','r')
->>>>>>> 2cfc163034ecf24df37ccc7cad1f3fb1ed7182fb
 lines =f.readlines()
 samples = {}
 basket = pd.DataFrame()

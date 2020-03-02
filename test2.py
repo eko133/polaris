@@ -1,20 +1,3 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-# import pickle
-# import pandas as pd
-#
-# f = open('./gdgt_similarMassMerged2.pkl','rb')
-# samples = pickle.load(f)
-# samples = samples.set_index('m/z')
-# biomarker = pd.DataFrame(index=samples.columns)
-# for column in samples:
-#     gdgt_5 = samples.loc[1314.23,column]
-#     gdgt_0 = samples.loc[1324.31,column]
-#     biomarker.loc[column,'ccat1'] = gdgt_5/(gdgt_0+gdgt_5)
-# biomarker = biomarker.dropna()
-# biomarker.to_pickle('./ccat2.pkl')
-
 import pandas as pd
 from sklearn.decomposition import PCA
 import numpy as np
@@ -24,13 +7,6 @@ from sklearn.model_selection import train_test_split
 from itertools import combinations
 import matplotlib.pyplot as plt
 
-# def reg(x,y):
-#     X_train, X_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=0)
-#     LR = linear_model.LinearRegression()
-#     LR.fit(X_train, y_train)
-#     print('intercept_:%.3f' % LR.intercept_+'coef_:%.3f' % LR.coef_+'Variance score: %.3f' % r2_score(y_test, LR.predict(X_test))+'score: %.3f' % LR.score(X_test, y_test))
-#
-# data=pd.read_excel('/Users/siaga/Desktop/pca_processed.xlsx',index_col=0)
 data = pd.read_pickle('./gdgt_similarMassMerged_Y50.pkl')
 data = data.set_index('m/z')
 column_length = len(data.columns)
@@ -81,17 +57,17 @@ data.to_excel('./ccat.xlsx')
 # loadings.to_excel('/Users/siaga/Desktop/loadings.xlsx')
 # pcaData.to_excel('/Users/siaga/Desktop/pca_results.xlsx')
 =======
-import pickle
-f = open('./samples_line_test.p','rb')
-samples = pickle.load(f)
->>>>>>> 2cfc163034ecf24df37ccc7cad1f3fb1ed7182fb
-=======
-import pickle
-f = open('./samples_line_test.p','rb')
-samples = pickle.load(f)
->>>>>>> 2cfc163034ecf24df37ccc7cad1f3fb1ed7182fb
-=======
-import pickle
-f = open('./samples_line_test.p','rb')
-samples = pickle.load(f)
->>>>>>> 2cfc163034ecf24df37ccc7cad1f3fb1ed7182fb
+# import pickle
+# f = open('./samples_line_test.p','rb')
+# samples = pickle.load(f)
+# >>>>>>> 2cfc163034ecf24df37ccc7cad1f3fb1ed7182fb
+# =======
+# import pickle
+# f = open('./samples_line_test.p','rb')
+# samples = pickle.load(f)
+# >>>>>>> 2cfc163034ecf24df37ccc7cad1f3fb1ed7182fb
+# =======
+# import pickle
+# f = open('./samples_line_test.p','rb')
+# samples = pickle.load(f)
+# >>>>>>> 2cfc163034ecf24df37ccc7cad1f3fb1ed7182fb
