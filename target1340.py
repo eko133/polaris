@@ -2,7 +2,7 @@ import os
 import pandas as pd
 import numpy as np
 
-f = open(r'/Users/siaga/y53_test.txt','r')
+f = open(r'/Users/siaga/gdgt_test.txt','r')
 lines =f.readlines()
 basket = pd.DataFrame(columns=['ccat','ccat_new'])
 for line in lines:
@@ -26,5 +26,5 @@ for line in lines:
     basket.loc[sample_name,'ccat_new'] = t1330/(t1340+t1330)
 basket = basket.replace(1,np.nan)
 basket = basket.dropna()
-basket.to_excel('./target1340.xlsx')
+basket.to_excel('./target1340_all.xlsx')
 
