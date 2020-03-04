@@ -1,6 +1,6 @@
 import pandas as pd
 
-data=pd.read_excel('./target1340_all.xlsx')
+data=pd.read_excel('./target1345_all.xlsx')
 data['sample'] = data['sample'].str.replace('R00X','')
 data['X'] = data['sample'].str.split('Y').str[0].astype(int)
 data['Y'] = data['sample'].str.split('Y').str[1].astype(int)
