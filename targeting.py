@@ -1,3 +1,6 @@
+# -*- coding: utf-8 -*-
+
+
 import pandas as pd
 import numpy as np
 from sklearn import linear_model
@@ -6,6 +9,7 @@ from sklearn.model_selection import train_test_split
 from itertools import combinations
 import matplotlib.pyplot as plt
 import sys
+import json 
 
 def filter(path, filter1):
     with open(path,'r') as f:
@@ -77,33 +81,61 @@ def pca(path):
     loadings = loadings.T
     loadings = pd.DataFrame(loadings)
     loadings.index = data.T.index
-    loadings.to_excel(r'./data/sterol_loadings.xlsx')
-    pcaData.to_excel(r'./data/sterol_pca_results.xlsx')
+    loadings.to_csv(r'./data/sterol_loadings.csv')
+    pcaData.to_csv(r'./data/sterol_pca_results.csv')
+
+def get_important_compounds(path):
+    loadings = pd.read_csv(path)
+    loadings = loadings.abs()
+    loadings = loadings[(loadings['0'] >= 0.1) | (loadings['1'] >=0.1)]
+    important_compounds_list = list(loadings['m/z'])
+    return important_compounds_list
+    
+def get_ccat_dict(path):
+    data = pd.read_csv(path)
+    data['x'] = data['x'].astype(str)
+    data['x'] = data['x'].str.zfill(3)
+    data['y'] = data['y'].astype(str)
+    data['y'] = data['y'].str.zfill(3)
+    data['sample'] = 'R00X' + data['x'] + 'Y' + data['y']
+    ccat_dict = dict()
+    ccat_dict = pd.Series(data['CCaT'].values,index = data['sample']).to_dict()
+    
+    data['combine_pixel'] = data[['pixel_x', 'pixel_y']].values.tolist()
+    data['combine_pixel'] = tuple(data['combine_pixel'])
+    pixel_dict = pd.Series(data['combine_pixel'].values,index = data['sample']).to_dict()
+
+    with open (r'./dict/ccat_dict.json','w') as f:
+        json.dump(ccat_dict,f)
+    with open (r'./dict/pixel_dict.json','w') as f:
+        json.dump(pixel_dict,f)
 
 def LR(path):
-    data = pd.read_pickle(path)
+    data = pd.read_csv(path)
     data = data.set_index('m/z')
-    column_length = len(data.columns)
-    data = data.dropna(thresh=0.5 * column_length)
-    row_length = len(data)
-    data = data.dropna(thresh=0.5 * row_length, axis=1)
-    data = data.fillna(0)
-    for column in data.columns:
-        data[column] = (data[column] - data[column].min()) / (data[column].max() - data[column].min())
-    data = data.T
-    for column in data.columns:
-        if data[column].mean() >= 0.5:
-            del data[column]
-    data = data.T
-    for column in data.columns:
-        data[column] = (data[column] - data[column].min()) / (data[column].max() - data[column].min())
+    data = data.T    
+    with open (r'./dict/ccat_dict.json','r')  as f:
+        ccat_dict = json.load(f)
+    data['ccat'] =  data.index.map(ccat_dict)   
 
-    data['ccat'] = data[1314.23] / (data[1314.23] + data[1324.31])
-    data['ccat'] = data['ccat'].replace(1, np.nan)
-    data['ccat'] = data['ccat'].replace(0, np.nan)
-    data = data.dropna(how='any', axis=0)
+    data = data.dropna(subset=['ccat'])
+    
+    important_compounds_list = get_important_compounds(r'./data/sterol_loadings.csv')
+    
+    for column in data.columns:
+        if column not in important_compounds_list:
+            del data[column]
+    
+    data['ccat'] =  data.index.map(ccat_dict)   
+
+    data = data.dropna(subset=['ccat'])
+    
     rdata = pd.DataFrame(columns={'Intercept', 'Coef', 'Score'})
-    for x, y in combinations(data.columns, 2):
+    
+    compounds = list(data.columns)
+    compounds.remove('ccat')
+        
+    for x, y in combinations(compounds, 2):
         data['%s_%s' % (x, y)] = data[x] / data[y]
         data['%s_%s' % (x, y)] = data['%s_%s' % (x, y)].replace(np.inf, np.nan)
         data['%s_%s' % (x, y)] = data['%s_%s' % (x, y)].replace(0, np.nan)
@@ -122,85 +154,63 @@ def LR(path):
         plt.title('%s + %s' % (x, y))
         plt.savefig('./figure/%s + %s.png' % (x, y))
 
-    rdata.to_excel(r'./data/regdata2.xlsx')
+    rdata.to_csv(r'./data/regdata2.csv')
 
-    data.to_excel(r'./data/ccat.xlsx')
+    data.to_csv(r'./data/ccat.csv')
 
 def target(path):
     ## find targeting compounds
     f = open(path,'r')
     lines =f.readlines()
-    basket = pd.DataFrame(columns=['ccat','ccat_new'])
+    basket = pd.DataFrame()
     for line in lines:
-        data = line.split(';')
-        sample_name = data[0]
-        del data[0]
-        del data[0]
-        data = pd.DataFrame(np.array(data).reshape((-1,3)),columns=['m/z',sample_name,'S/N'])
-        data = data.astype(float)
-        data1 = data[(data['m/z'] >= 1345.00) & (data['m/z'] <= 1345.02)]
-        data3 = data[(data['m/z'] >= 1324.29) & (data['m/z'] <= 1324.31)]
-        data4 = data[(data['m/z'] >= 1314.220) & (data['m/z'] <= 1314.230)]
-        t1314 = data4[sample_name].max()
-        t1324 = data3[sample_name].max()
-        t1345 = data1[sample_name].max()
-        basket.loc[sample_name,'ccat'] = t1314/(t1314+t1324)
-        basket.loc[sample_name,'ccat_new'] = t1314/(t1345+t1314)
+        if 'R00' in line:
+            data = line.split(';')
+            sample_name = data[0]
+            del data[0]
+            del data[0]
+            data = pd.DataFrame(np.array(data).reshape((-1,3)),columns=['m/z',sample_name,'S/N'])
+            data = data.astype(float)
+            data1 = data[(data['m/z'] >= 473.20) & (data['m/z'] <= 473.22)]
+            data2 = data[(data['m/z'] >= 557.30) & (data['m/z'] <= 557.32)]
+            compound1 = data1[sample_name].max()
+            compound2 = data2[sample_name].max()
+            basket.loc[sample_name,'newindices'] = compound1/(compound1+compound2)
     basket = basket.replace(1,np.nan)
+    basket = basket.dropna()   
+    basket['combine_pixel']= basket.index.map(pixel_dict)
     basket = basket.dropna()
-    basket.to_excel('./data/target1345_all.xlsx')
-    data = basket.copy()
-
-    ## Averaging indices on horizontal scale
-    data=pd.read_excel(r'./data/target1345_all.xlsx')
-    data['sample'] = data['sample'].str.replace('R00X','')
-    data['X'] = data['sample'].str.split('Y').str[0].astype(int)
-    data['Y'] = data['sample'].str.split('Y').str[1].astype(int)
-    del data['sample']
-    data['combine_axis'] = data[['X', 'Y']].values.tolist()
-    data['combine_axis'] = tuple(data['combine_axis'])
-
-
-    ## generating dictionary (x,y) axis to pixel axis
-    dict_orig = pd.read_excel('~/Desktop/SBB_0-5_CCaTxy_transformed.xlsx')
-    dict_orig['combine_axis'] = dict_orig[['x', 'y']].values.tolist()
-    dict_orig['combine_axis'] = tuple(dict_orig['combine_axis'])
-
-    dict_orig['combine_pixel'] = dict_orig[['x.1', 'y.1']].values.tolist()
-    dict_orig['combine_pixel'] = tuple(dict_orig['combine_pixel'])
-    dict = pd.Series(dict_orig.combine_pixel.values,index=dict_orig.combine_axis).to_dict()
-
-
-    data['combine_pixel']= data['combine_axis'].map(dict)
-    data = data.dropna()
-
-    data.loc[:,'pixel_x']=data.combine_pixel.map(lambda x:x[0])
-    data.loc[:,'pixel_y']=data.combine_pixel.map(lambda x:x[1])
-
+    basket.loc[:,'pixel_x']=basket.combine_pixel.map(lambda x:x[0])
+    basket.loc[:,'pixel_y']=basket.combine_pixel.map(lambda x:x[1])
+    del basket['combine_pixel']
     ## converting pixel axis to actual axis in mm
-    data['pixel_x'] = 0.0418 * data['pixel_x']
-    data['pixel_y'] = 0.0418 * data['pixel_y']
-
-    data.to_excel(r'./pixel.xlsx')
-
+    basket['pixel_x'] = 0.0418 * basket['pixel_x']
+    basket['pixel_y'] = 0.0418 * basket['pixel_y']
+    basket['ccat'] = basket.index.map(ccat_dict)
+    basket.to_csv(r'./pixel.csv')
     ## start averaging results
-    start = data.pixel_y.min()
-    end = data.pixel_y.max()
+    start = basket.pixel_y.min()
+    end = basket.pixel_y.max()
     average_points = np.linspace(start,end,227,endpoint=True)
     averaged_data = pd.DataFrame()
     for i in range(len(average_points)-2):
-        data_tmp = data[(data['pixel_y'] >= average_points[i]) & (data['pixel_y'] <= average_points[i+1])]
+        data_tmp = basket[(basket['pixel_y'] >= average_points[i]) & (basket['pixel_y'] <= average_points[i+1])]
         if len(data_tmp)>= 10:
             ccat = data_tmp.ccat.mean()
-            ccat_new = data_tmp.ccat_new.mean()
+            newindices = data_tmp.newindices.mean()
             y = data_tmp.pixel_y.mean()
             averaged_data.loc[y,'ccat'] = ccat
-            averaged_data.loc[y,'ccat_new'] = ccat_new
-
-    averaged_data.to_excel(r'./averaged_data.xlsx')
+            averaged_data.loc[y,'newindices'] = newindices
+    averaged_data.to_csv(r'./averaged_data.csv')
 
 option = sys.argv[1]
 path = sys.argv[2]
+
+with open (r'./dict/ccat_dict.json','r')  as f:
+    ccat_dict = json.load(f)
+
+with open (r'./dict/pixel_dict.json','r')  as f:
+    pixel_dict = json.load(f)
 
 if option == 'a':
     print('align rawdata')
