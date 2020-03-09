@@ -11,6 +11,7 @@ import matplotlib.pyplot as plt
 import sys
 import json
 import os
+import math
 
 dir = '/Users/siaga/Git/polaris/'
 
@@ -178,10 +179,13 @@ def linear_regression(path):
     # compounds.remove('ccat')
         
     for x, y in combinations(data.columns,2):
-        if abs(float(x) - float(y)) >= 2:
+        ## not carbon isotopes and not carbon clusters
+        difference = float(x) - float(y)
+        difference_dem = math.modf(difference)[0]
+        if (abs(difference) >= 2) & (abs(difference_dem)>0.01):
             tmp = data[[x,y]].copy()
             tmp = tmp.dropna(how='any', axis=0)
-            if len(tmp) >= 80:
+            if len(tmp) >= 50:
                 print(x, y)
                 x1 = tmp[x].values.reshape(-1, 1)
                 y1 = tmp[y].values.reshape(-1, 1)
@@ -195,7 +199,7 @@ def linear_regression(path):
         # plt.scatter(x1, ccat, color='black')
         # plt.title('%s + %s' % (x, y))
         # plt.savefig('./figure/%s + %s.png' % (x, y))
-    rdata = rdata[rdata.Score >=0.6]
+    rdata = rdata[rdata.Score >=0.2]
 
     rdata.to_csv(os.path.split(path)[0] + r'lr_' + os.path.split(path)[1])
 
@@ -211,7 +215,7 @@ def group_by_ccat():
     group_by_ccat=dict()
     for i in range(len(average_points) - 2):
         data_tmp = ccat_dict[(ccat_dict.ccat >= average_points[i]) & (ccat_dict.ccat <= average_points[i + 1])]
-        if len(data_tmp) >= 80:
+        if len(data_tmp) >= 50:
             averaged_ccat = data_tmp.ccat.mean()
             grouped_sample = data_tmp.index.to_list()
             group_by_ccat[round(averaged_ccat,5)] = grouped_sample
