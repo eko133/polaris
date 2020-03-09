@@ -9,7 +9,10 @@ from sklearn.model_selection import train_test_split
 from itertools import combinations
 import matplotlib.pyplot as plt
 import sys
-import json 
+import json
+import os
+
+dir = '/Users/siaga/Git/polaris/'
 
 def filter(path, filter1):
     with open(path,'r') as f:
@@ -19,9 +22,30 @@ def filter(path, filter1):
             if filter1 in line:
                 f.write(line)
 
+def exclude_mass_list():
+    gdgt0 = '1301.3154	1302.3187	1302.3227	1303.3260	1319.3492	1320.3526	651.6650	652.6683	668.6915	669.6949	660.1782	661.1816	1324.3046	1325.3080	1340.2785	1341.2819'
+    gdgt5 = '1291.2371	1292.2405	1292.2444	1293.2478	1309.2710	1310.2743	646.6258	647.6292	663.6524	664.6558	655.1391	656.1425	1314.2264	1315.2297	1330.2003	1331.2037'
+    exclude_mass_list = list()
+    tmp_mass_list = gdgt0.split('\t') + gdgt5.split('\t')
+    for i in range(len(tmp_mass_list)):
+        mass = float(tmp_mass_list[i])
+        mass = round(mass, 2)
+        exclude_mass_list = exclude_mass_list + [str(mass), str(mass + 0.01), str(mass - 0.01)]
+        with open(dir + r'dict/gdgt_excluded_mass_list.json', 'w') as f:
+            json.dump(exclude_mass_list, f)
+
+def delete_exclude_mass(path):
+    with open(dir + r'dict/gdgt_excluded_mass_list.json', 'r') as f:
+        exclude_mass_list = json.load(f)
+    data = pd.read_csv(path)
+    for column in data.columns:
+        if column in exclude_mass_list:
+            del data[column]
+    data.to_csv(path)
+
 def align(path):
-    f = open(path,'r')
-    lines =f.readlines()
+    with open (path) as f:
+        lines =f.readlines()
     samples = {}
     basket = pd.DataFrame()
     for line in lines:
@@ -50,8 +74,28 @@ def align(path):
                 basket.loc[mass_index,'m/z'] = basket.loc[mass_index+1,'m/z']
             mass_index = mass_index + 1
     basket = basket.groupby('m/z').sum()
-    basket.to_csv(r'./data/SterolSimilarMassMerged.csv')
+    basket.to_csv(os.path.splitext(path)[0] + r'.csv')
     return basket
+
+def normalizer(path):
+    data = pd.read_csv(path)
+    data = data.set_index('m/z')
+    data = data.replace(0, np.nan)
+    column_length = len(data.columns)
+    data = data.dropna(thresh=0.2 * column_length)
+    row_length = len(data)
+    data = data.dropna(thresh=0.2 * row_length, axis=1)
+    for column in data.columns:
+        data[column] = (data[column] - data[column].min()) / (data[column].max() - data[column].min())
+    data = data.T
+    for column in data.columns:
+        if data[column].mean() >= 0.5:
+            del data[column]
+    data = data.T
+    for column in data.columns:
+        data[column] = (data[column] - data[column].min()) / (data[column].max() - data[column].min())
+    data = data.T
+    data.to_csv(os.path.split(path)[0] + r'normalized_' + os.path.split(path)[1])
 
 def pca(path):
     data = pd.read_csv(path)
@@ -65,7 +109,7 @@ def pca(path):
         data[column] = (data[column] - data[column].min()) / (data[column].max() - data[column].min())
     data = data.T
     for column in data.columns:
-        if data[column].mean() >= 0.5:
+        if data[column].mean() >= 0.1:
             del data[column]
     data = data.T
     for column in data.columns:
@@ -81,8 +125,8 @@ def pca(path):
     loadings = loadings.T
     loadings = pd.DataFrame(loadings)
     loadings.index = data.T.index
-    loadings.to_csv(r'./data/sterol_loadings.csv')
-    pcaData.to_csv(r'./data/sterol_pca_results.csv')
+    loadings.to_csv(dir+ r'data/sterol_loadings.csv')
+    pcaData.to_csv(dir + r'data/sterol_pca_results.csv')
 
 def get_important_compounds(path):
     loadings = pd.read_csv(path)
@@ -105,76 +149,74 @@ def get_ccat_dict(path):
     data['combine_pixel'] = tuple(data['combine_pixel'])
     pixel_dict = pd.Series(data['combine_pixel'].values,index = data['sample']).to_dict()
 
-    with open (r'./dict/ccat_dict.json','w') as f:
+    with open (dir + r'dict/ccat_dict.json','w') as f:
         json.dump(ccat_dict,f)
-    with open (r'./dict/pixel_dict.json','w') as f:
+    with open (dir + r'dict/pixel_dict.json','w') as f:
         json.dump(pixel_dict,f)
 
 def linear_regression(path):
     data = pd.read_csv(path)
-    data = data.set_index('m/z')
-    data = data.T    
-    with open (r'./dict/ccat_dict.json','r')  as f:
-        ccat_dict = json.load(f)
-    data['ccat'] =  data.index.map(ccat_dict)   
 
-    data = data.dropna(subset=['ccat'])
-    
-    important_compounds_list = get_important_compounds(r'./data/sterol_loadings.csv')
-    
-    for column in data.columns:
-        if column not in important_compounds_list:
-            del data[column]
-    
-    data['ccat'] =  data.index.map(ccat_dict)   
+    data.drop(data.columns[0], axis=1, inplace=True)
 
-    data = data.dropna(subset=['ccat'])
+    data = data.set_index(data.columns[0])
+    # data = data.T
+    #
+    # important_compounds_list = get_important_compounds(r'./data/sterol_loadings.csv')
+    
+    # for column in data.columns:
+    #     if column not in important_compounds_list:
+    #         del data[column]
+    
+    # data['ccat'] =  data.index.map(ccat_dict)
+    #
+    # data = data.dropna(subset=['ccat'])
     
     rdata = pd.DataFrame(columns={'Intercept', 'Coef', 'Score'})
     
-    compounds = list(data.columns)
-    compounds.remove('ccat')
+    # compounds = list(data.columns)
+    # compounds.remove('ccat')
         
-    for x, y in combinations(compounds, 2):
-        data['%s_%s' % (x, y)] = data[x] / data[y]
-        data['%s_%s' % (x, y)] = data['%s_%s' % (x, y)].replace(np.inf, np.nan)
-        data['%s_%s' % (x, y)] = data['%s_%s' % (x, y)].replace(0, np.nan)
-        tmp = data[['%s_%s' % (x, y), 'ccat']].copy()
-        tmp = tmp.dropna(how='any', axis=0)
-        x1 = tmp['%s_%s' % (x, y)].values.reshape(-1, 1)
-        ccat = tmp['ccat'].values.reshape(-1, 1)
-        X_train, X_test, y_train, y_test = train_test_split(x1, ccat, test_size=0.2, random_state=0)
-        LR = linear_model.LinearRegression()
-        LR.fit(X_train, y_train)
-        rdata.loc['%s + %s' % (x, y), 'Intercept'] = LR.intercept_
-        rdata.loc['%s + %s' % (x, y), 'Coef'] = LR.coef_
-        rdata.loc['%s + %s' % (x, y), 'Score'] = LR.score(X_test, y_test)
-        plt.show()
-        plt.scatter(x1, ccat, color='black')
-        plt.title('%s + %s' % (x, y))
-        plt.savefig('./figure/%s + %s.png' % (x, y))
+    for x, y in combinations(data.columns,2):
+        if abs(float(x) - float(y)) >= 2:
+            tmp = data[[x,y]].copy()
+            tmp = tmp.dropna(how='any', axis=0)
+            if len(tmp) >= 80:
+                print(x, y)
+                x1 = tmp[x].values.reshape(-1, 1)
+                y1 = tmp[y].values.reshape(-1, 1)
+                X_train, X_test, y_train, y_test = train_test_split(x1, y1, test_size=0.2, random_state=0)
+                LR = linear_model.LinearRegression()
+                LR.fit(X_train, y_train)
+                rdata.loc['%s, %s' % (x, y), 'Intercept'] = LR.intercept_
+                rdata.loc['%s, %s' % (x, y), 'Coef'] = LR.coef_
+                rdata.loc['%s, %s' % (x, y), 'Score'] = LR.score(X_test, y_test)
+        # plt.show()
+        # plt.scatter(x1, ccat, color='black')
+        # plt.title('%s + %s' % (x, y))
+        # plt.savefig('./figure/%s + %s.png' % (x, y))
+    rdata = rdata[rdata.Score >=0.6]
 
-    rdata.to_csv(r'./data/regdata2.csv')
+    rdata.to_csv(os.path.split(path)[0] + r'lr_' + os.path.split(path)[1])
 
-    data.to_csv(r'./data/ccat.csv')
 
-    def group_by_ccat():
-        with open ('./dict/ccat_dict.json', 'r') as f:
-            ccat_dict = json.load(f)
-        ccat_dict = pd.DataFrame.from_dict(ccat_dict,orient='index',columns=['ccat'])
-        ccat_min = ccat_dict.ccat.min()
-        ccat_max = ccat_dict.ccat.max()
-        average_points = np.linspace(ccat_min, ccat_max, 111, endpoint=True)
-        averaged_data = pd.DataFrame()
-        group_by_ccat=dict()
-        for i in range(len(average_points) - 2):
-            data_tmp = ccat_dict[(ccat_dict.ccat >= average_points[i]) & (ccat_dict.ccat <= average_points[i + 1])]
-            if len(data_tmp) >= 10:
-                averaged_ccat = data_tmp.ccat.mean()
-                grouped_sample = data_tmp.index.to_list()
-                group_by_ccat[round(averaged_ccat,5)] = grouped_sample
-        with open ('./dict/group_by_ccat.json', 'w') as f:
-            json.dump(group_by_ccat,f)
+def group_by_ccat():
+    with open (dir+r'dict/ccat_dict.json', 'r') as f:
+        ccat_dict = json.load(f)
+    ccat_dict = pd.DataFrame.from_dict(ccat_dict,orient='index',columns=['ccat'])
+    ccat_min = ccat_dict.ccat.min()
+    ccat_max = ccat_dict.ccat.max()
+    average_points = np.linspace(ccat_min, ccat_max, 111, endpoint=True)
+    averaged_data = pd.DataFrame()
+    group_by_ccat=dict()
+    for i in range(len(average_points) - 2):
+        data_tmp = ccat_dict[(ccat_dict.ccat >= average_points[i]) & (ccat_dict.ccat <= average_points[i + 1])]
+        if len(data_tmp) >= 80:
+            averaged_ccat = data_tmp.ccat.mean()
+            grouped_sample = data_tmp.index.to_list()
+            group_by_ccat[round(averaged_ccat,5)] = grouped_sample
+    with open (dir + 'dict/group_by_ccat.json', 'w') as f:
+        json.dump(group_by_ccat,f)
 
 
 def target(path):
@@ -206,7 +248,7 @@ def target(path):
     basket['pixel_x'] = 0.0418 * basket['pixel_x']
     basket['pixel_y'] = 0.0418 * basket['pixel_y']
     basket['ccat'] = basket.index.map(ccat_dict)
-    basket.to_csv(r'./pixel.csv')
+    basket.to_csv(r'pixel.csv')
     ## start averaging results
     start = basket.pixel_y.min()
     end = basket.pixel_y.max()
@@ -220,16 +262,16 @@ def target(path):
             y = data_tmp.pixel_y.mean()
             averaged_data.loc[y,'ccat'] = ccat
             averaged_data.loc[y,'newindices'] = newindices
-    averaged_data.to_csv(r'./averaged_data.csv')
+    averaged_data.to_csv(r'averaged_data.csv')
 
 def find_grouped_samples():
-    with open ('./dict/group_by_ccat.json','r') as f:
+    with open (dir+ r'dict/group_by_ccat.json','r') as f:
         grouped_by_ccat = json.load(f)
     for key in grouped_by_ccat:
-        grouped_sample =grouped_by_ccat(key)
-        with open ('./data/gdgt_test.txt','r') as f:
+        grouped_sample =grouped_by_ccat[key]
+        with open (dir+ r'data/gdgt_test.txt','r') as f:
             lines =f.readlines()
-        with open ('./data/grouped_vy_ccat/ccat%.5f.txt'%key,'w') as f:
+        with open (dir+r'data/grouped_by_ccat/ccat%s.txt'%key,'w') as f:
             for line in lines:
                 data = line.split(';')
                 if data[0] in grouped_sample:
@@ -237,10 +279,10 @@ def find_grouped_samples():
 
 
 
-with open (r'./dict/ccat_dict.json','r')  as f:
+with open (dir+r'dict/ccat_dict.json','r')  as f:
     ccat_dict = json.load(f)
 
-with open (r'./dict/pixel_dict.json','r')  as f:
+with open (dir+r'dict/pixel_dict.json','r')  as f:
     pixel_dict = json.load(f)
 
 if __name__ == "__main__":
