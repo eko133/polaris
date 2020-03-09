@@ -110,7 +110,7 @@ def get_ccat_dict(path):
     with open (r'./dict/pixel_dict.json','w') as f:
         json.dump(pixel_dict,f)
 
-def LR(path):
+def linear_regression(path):
     data = pd.read_csv(path)
     data = data.set_index('m/z')
     data = data.T    
@@ -158,6 +158,25 @@ def LR(path):
 
     data.to_csv(r'./data/ccat.csv')
 
+    def group_by_ccat():
+        with open ('./dict/ccat_dict.json', 'r') as f:
+            ccat_dict = json.load(f)
+        ccat_dict = pd.DataFrame.from_dict(ccat_dict,orient='index',columns=['ccat'])
+        ccat_min = ccat_dict.ccat.min()
+        ccat_max = ccat_dict.ccat.max()
+        average_points = np.linspace(ccat_min, ccat_max, 111, endpoint=True)
+        averaged_data = pd.DataFrame()
+        group_by_ccat=dict()
+        for i in range(len(average_points) - 2):
+            data_tmp = ccat_dict[(ccat_dict.ccat >= average_points[i]) & (ccat_dict.ccat <= average_points[i + 1])]
+            if len(data_tmp) >= 10:
+                averaged_ccat = data_tmp.ccat.mean()
+                grouped_sample = data_tmp.index.to_list()
+                group_by_ccat[round(averaged_ccat,5)] = grouped_sample
+        with open ('./dict/group_by_ccat.json', 'w') as f:
+            json.dump(group_by_ccat,f)
+
+
 def target(path):
     ## find targeting compounds
     f = open(path,'r')
@@ -203,8 +222,20 @@ def target(path):
             averaged_data.loc[y,'newindices'] = newindices
     averaged_data.to_csv(r'./averaged_data.csv')
 
-option = sys.argv[1]
-path = sys.argv[2]
+def find_grouped_samples():
+    with open ('./dict/group_by_ccat.json','r') as f:
+        grouped_by_ccat = json.load(f)
+    for key in grouped_by_ccat:
+        grouped_sample =grouped_by_ccat(key)
+        with open ('./data/gdgt_test.txt','r') as f:
+            lines =f.readlines()
+        with open ('./data/grouped_vy_ccat/ccat%.5f.txt'%key,'w') as f:
+            for line in lines:
+                data = line.split(';')
+                if data[0] in grouped_sample:
+                    f.writelines(line)
+
+
 
 with open (r'./dict/ccat_dict.json','r')  as f:
     ccat_dict = json.load(f)
@@ -212,23 +243,5 @@ with open (r'./dict/ccat_dict.json','r')  as f:
 with open (r'./dict/pixel_dict.json','r')  as f:
     pixel_dict = json.load(f)
 
-if option == 'a':
-    print('align rawdata')
-    align(path)
-
-if option == 'p':
-    print('pca analysis')
-    pca(path)
-
-if option == 'l':
-    print('linear regression analysis')
-    LR(path)
-
-if option == 't':
-    print('targeting specific compounds')
-    target(path)
-
-if 'filter' in option:
-    option = option.strip('filter')
-    print('filtering by %s'%option)
-    filter(path,option)
+if __name__ == "__main__":
+    main()
