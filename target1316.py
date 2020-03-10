@@ -28,8 +28,8 @@ for line in lines:
         del data[0]
         data = pd.DataFrame(np.array(data).reshape((-1, 3)), columns=['m/z', sample_name, 'S/N'])
         data = data.astype(float)
-        data1 = data[(data['m/z'] >= 1316.23) & (data['m/z'] <= 1316.25)]
-        data2 = data[(data['m/z'] >= 1348.29) & (data['m/z'] <= 1348.31)]
+        data1 = data[(data['m/z'] >= 1312.21) & (data['m/z'] <= 1323.33)]
+        data2 = data[(data['m/z'] >= 1346.96) & (data['m/z'] <= 1346.98)]
         compound1 = data1[sample_name].max()
         compound2 = data2[sample_name].max()
         basket.loc[sample_name, 'newindices'] = compound1 / (compound1 + compound2)

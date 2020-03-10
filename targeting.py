@@ -222,7 +222,6 @@ def group_by_ccat():
     with open (dir + 'dict/group_by_ccat.json', 'w') as f:
         json.dump(group_by_ccat,f)
 
-
 def target(path):
     ## find targeting compounds
     f = open(path,'r')
