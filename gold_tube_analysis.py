@@ -7,6 +7,7 @@ import crude_oil
 from multiprocessing import cpu_count, Pool
 from functools import partial
 import ast
+import pickle
 
 
 
@@ -26,14 +27,20 @@ def chemcaljs_column(data):
 
 if __name__ == '__main__':
     data_cluster = crude_oil.read_raw_csv()
+    processed_data = dict()
     cores = cpu_count()
-    data = data_cluster['L0_330']
-    data = parallelize(data, chemcaljs_column)
-    data = data.dropna()
-    # data['result'] = data['result'].apply(ast.literal_eval)
-    data = crude_oil.extract_result(data)
+    for key in data_cluster:
+        data = data_cluster[key]
+        data = parallelize(data, chemcaljs_column)
+        data = data.dropna()
+        # data['result'] = data['result'].apply(ast.literal_eval)
+        data = crude_oil.extract_result(data)
+        data = crude_oil.extract_mf(data)
+        data = crude_oil.custom_data_filter1(data)
+        processed_data[key] = data.copy()
+    with open ('./processed_data.pickle') as f:
+        pickle.dump(processed_data,f)
 
-    data = crude_oil.extract_mf(data)
 
 
 

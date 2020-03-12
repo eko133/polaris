@@ -3,6 +3,7 @@ import numpy as np
 import sys
 import os
 from execjs import get
+import re
 
 
 def read_raw_csv():
@@ -40,7 +41,15 @@ def chemcaljs(m_to_z):
                  }
     try:
         result = context.call('mfFromMonoisotopicMass', m_to_z, mf_option)['results'][0]
+        # custom filter in the case of Cl contamination
+        # if 'Cl' in result['mf']:
+        #     if (result['unsat'] != int(result['unsat'])) or (re.findall(r'H(\d{1,9})', result['mf'])[0] % 2 != 0):
+        #         return np.nan
+        # else:
+        #     if result['unsat'] == int(result['unsat']) or (re.findall(r'H(\d{1,9})',result['mf'])[0] % 2 == 0):
+        #         return np.nan
         return result
+        ##
     except IndexError:
         return np.nan
 
@@ -53,14 +62,24 @@ def extract_result(data):
 
 
 def extract_mf(data):
-    
-
-    data['C'] = data['mf'].str.extract(r'(C)[a-zA-Z]|C(\d{1,9})')
-    data['O'] = data['mf'].str.extract(r'(O\d{1,9})')
-    data['Cl'] = data['mf'].str.extract(r'(Cl)[a-zA-Z]|(Cl\d{1,9})')
-    data['H'] = data['mf'].str.extract(r'(H\d{1,9})')
-    data['N'] = data['mf'].str.extract(r'(N\d{1,9})')
+    data['C'] = data['mf'].str.extract(r'C(\d{1,9})')
+    data['H'] = data['mf'].str.extract(r'H(\d{1,9})')
+    data['Class'] = data['mf'].str.replace(r'C\d{1,9}H\d{1,9}','')
     data = data.dropna(subset=['H'])
+    return data
+
+
+def custom_data_filter1(data):
+    datacl = data[data['Class'].str.contains('Cl')]
+    datacl = datacl[datacl.unsat % 1 == 0]
+
+    data = data[~data['Class'].str.contains('Cl')]
+    data = data[data.unsat % 1 != 0]
+    # for negative mode
+    data['unsat'] = data['unsat'].astype(float) - 0.5
+    data['H'] = data['H'].astype(int) + 1
+
+    data = pd.concat([datacl,data])
     return data
 
 
