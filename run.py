@@ -7,6 +7,7 @@ import re
 from mendeleev import element
 import itertools
 import json
+import pickle
 
 
 def generate_possible_formula():
@@ -30,7 +31,7 @@ def generate_possible_formula():
                 'O'] + n * mono_isotope_mass_dict['N'] + 0.0005485799
             if 200 <= em <= 800:
                 formula = 'C' + '%i'%c +'H' +'%i'%h +'O' +'%i'%o +'N' +'%i'%n
-                compound[em] = formula
+                compound[em] = formula + ',' + str(int(dbe-0.5))
     with open (r'./dict/neg_esi_compound_dict.json','w') as f:
         json.dump(compound,f)
     return compound
@@ -57,12 +58,24 @@ def speculate_formula(data,compound):
     for mass in compound:
         data1 = data[(data['m/z'] <= float(mass) + mass_tolerance) & (data['m/z'] >= float(mass) - mass_tolerance)]
         if not data1.empty:
+            print(mass)
             ind = data1[data1['I'] == data1['I'].max()].index.tolist()[0]
             data.loc[ind, 'em'] = mass
-            data.loc[ind, 'mf'] = compound[mass]
+            data.loc[ind, 'dbe'] =compound[mass].split(',')[1]
+            data.loc[ind, 'mf'] = compound[mass].split(',')[0]
             data.loc[ind, 'error'] = abs(float(mass) - data.loc[ind, 'm/z'])
-    data = data.dropna(subset=['em'])
+    data.dropna(subset=['em'],inplace=True)
     return data
+
+def extract_mf(data):
+    data = data[(data['mf'] != 'C18H33O2N0') & (data['mf'] != 'C18H35O2N0') & (data['mf'] != 'C16H31O2N0')]
+    data['C'] = data['mf'].str.extract(r'C(\d{1,9})')
+    data['H'] = data['mf'].str.extract(r'H(\d{1,9})')
+    data['Class'] = data['mf'].str.replace(r'C\d{1,9}H\d{1,9}', '')
+    data['Class'] = data['Class'].str.replace(r'[a-zA-z]{1,9}0', '')
+    del data['mf']
+    return data
+
 
 if __name__ == "__main__":
     main()
