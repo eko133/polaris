@@ -18,7 +18,7 @@ avr=pd.DataFrame()
 with open (r'./negative_ESI_result.pkl','rb') as f:
     data=pickle.load(f)
 for i in data:
-    data[i] = data[i][(data[i]['Class'] != '') & (data[i]['Class'] != 'O4') & (data[i]['Class'] != 'O4N1')]
+    data[i] = data[i][(data[i]['Class'] != '') & (data[i]['Class'] != 'O4') & (data[i]['Class'] != 'O4N1')&  (data[i]['Class']!='O3')]
     tmp = data[i]
     tmp = tmp[(tmp['Class'] != '')]
     tmp2 = tmp[['I','em']]

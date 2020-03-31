@@ -18,7 +18,7 @@ with open (r'./negative_ESI_result.pkl','rb') as f:
 class_abundance=dict()
 orig_sample = {'L0':0,'L2':0,'L5':0,'L8':0}
 for i in data:
-    data[i] =data[i][(data[i]['Class']!='') & (data[i]['Class']!='O4') & (data[i]['Class']!='O4N1')]
+    data[i] =data[i][(data[i]['Class']!='') & (data[i]['Class']!='O4') & (data[i]['Class']!='O4N1') &  (data[i]['Class']!='O3')]
     class_abundance[i] = data[i].groupby('Class').agg({'I':'sum'})
     class_abundance[i][i] = class_abundance[i].I/class_abundance[i].I.sum()
     del class_abundance[i]['I']

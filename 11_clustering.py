@@ -41,13 +41,15 @@ pca = pd.DataFrame()
 with open (r'./negative_ESI_result.pkl','rb') as f:
     data = pickle.load(f)
 for i in data:
-    data[i] =data[i][(data[i]['Class']!='') & (data[i]['Class']!='O4') & (data[i]['Class']!='O4N1')]
-    data[i] = data[i][data[i]['Class']=='O2']
-    data[i]['dbe']  = data[i]['dbe'].astype(int)
-    data[i] = data[i][(data[i]['dbe']>=1) & (data[i]['dbe']<=6)]
+    data[i] = data[i][(data[i]['Class']!='') & (data[i]['Class']!='O4') & (data[i]['Class']!='O4N1')& (data[i]['Class']!='O3') ]
+    data[i] = data[i].dropna()
+    # data[i] = data[i][data[i]['Class']=='N1']
+    # data[i]['dbe'] = data[i]['dbe'].astype(int)
+    # data[i] = data[i][(data[i]['dbe']>=9) ]
     data[i] = data[i][['em','I','Class']]
-    data[i].em = data[i].em.astype(str)
-    data[i].em = data[i].em + ','+ data[i].Class
+    data[i].em = data[i].em.round(6)
+    # data[i].em = data[i].em.astype(str)
+    # data[i].em = data[i].em + ','+ data[i].Class
     del data[i]['Class']
     data[i]['I'] = (data[i]['I'] - data[i]['I'].min())/(data[i]['I'].max() - data[i]['I'].min())
     data[i] = data[i].rename(columns={'I':i})
@@ -62,4 +64,5 @@ pca = pca.replace(np.nan,0)
 sample_list = pca.index
 clustering = AgglomerativeClustering(distance_threshold=0, n_clusters=None).fit(pca)
 plot_dendrogram(clustering,labels = pca.index)
+plt.savefig('plt1.png', dpi=600, format='png', bbox_inches='tight')
 plt.show()
