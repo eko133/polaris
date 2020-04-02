@@ -149,9 +149,25 @@ def carbon_number_distribution(data, specie,dbe):
         for carbon in range(41):
         #     basket.loc[i,carbon] = tmp[tmp['C'] == carbon]['I'].sum()/tmp['I'].sum()
             basket.loc[i, carbon] = tmp[tmp['C'] == carbon]['I'].max()
-
     return basket
 
+
+def dbe_distribution(data, specie):
+    with open(data,'rb') as f:
+        data = pickle.load(f)
+    basket = pd.DataFrame()
+    for i in data:
+        data[i]['dbe'] = data[i]['dbe'].astype(int)
+        data[i]['C'] = data[i]['C'].astype(int)
+        data[i]['I'] = data[i]['I'].astype(float)
+        tmp = data[i][(data[i]['Class'] == specie) & (data[i]['C'] >= 10) & (data[i]['C'] <= 40)]
+        tmp = tmp.drop(tmp[(tmp.dbe == 1) & (tmp.C == 16)].index)
+        tmp = tmp.drop(tmp[(tmp.dbe == 1) & (tmp.C == 18)].index)
+        tmp = tmp.drop(tmp[(tmp.dbe == 2) & (tmp.C == 18)].index)
+        for dbe in range(31):
+            #basket.loc[i,carbon] = tmp[tmp['C'] == carbon]['I'].sum()/tmp['I'].sum()
+            basket.loc[i, dbe] = tmp[tmp['dbe'] == dbe]['I'].sum()
+    return basket
 
 def cyclic_acids(data):
     with open(data,'rb') as f:
@@ -162,12 +178,15 @@ def cyclic_acids(data):
         tmp['dbe'] = tmp['dbe'].astype(int)
         tmp['C'] = tmp['C'].astype(int)
         tmp['I'] = tmp['I'].astype(float)
-        tmp = tmp[~((tmp['C'] == 16)& (tmp['dbe'] == 2))]
-        tmp = tmp[~((tmp['C'] == 18)& (tmp['dbe'] == 3))]
+
+        tmp = tmp.drop(tmp[(tmp.dbe == 1) & (tmp.C == 16)].index)
+        tmp = tmp.drop(tmp[(tmp.dbe == 1) & (tmp.C == 18)].index)
+        tmp = tmp.drop(tmp[(tmp.dbe == 2) & (tmp.C == 18)].index)
+
         acyclic = tmp[tmp['dbe']==1]['I'].sum()
+
         cyclic = tmp[(tmp['dbe']>=2)&(tmp['dbe']<=6)]['I'].sum()
-        cyclic2 = tmp[(tmp['dbe']>=1)&(tmp['dbe']<=8)]['I'].sum()
-        cyclic2 = tmp[(tmp['dbe']>=9)&(tmp['dbe']<=20)]['I'].sum()
+        cyclic2 = tmp[(tmp['dbe']>=7)&(tmp['dbe']<=20)]['I'].sum()
         basket.loc[i, 'O_ratio'] = acyclic/cyclic
         basket.loc[i, 'O_ratio2'] = cyclic/cyclic2
     return basket
