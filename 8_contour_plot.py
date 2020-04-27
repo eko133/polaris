@@ -17,19 +17,19 @@ import matplotlib.pyplot as plt
 from scipy.stats import kde
 
 
-with open (r'./pkl/negative_ESI_result_1.pkl','rb') as f:
+with open (r'./pkl/negative_ESI_result.pkl','rb') as f:
     data=pickle.load(f)
 for i in data:
-    data[i] = data[i][data[i]['Class'] == 'O2Cl1']
+    data[i] = data[i][data[i]['Class'] == 'O2']
     tmp = data[i][['C','dbe','I']]
     tmp['dbe'] = tmp['dbe'].astype(int)
     # tmp['dbe'] = tmp['dbe'] +1
     tmp['C'] = tmp['C'].astype(int)
-    # tmp = tmp.drop(tmp[(tmp.dbe == 1) & (tmp.C == 16)].index)
-    # tmp = tmp.drop(tmp[(tmp.dbe == 1) & (tmp.C == 18)].index)
-    # tmp = tmp.drop(tmp[(tmp.dbe == 2) & (tmp.C == 18)].index)
-    tmp = tmp[(tmp['dbe'] >=1) & (tmp['dbe'] <=30)]
-    tmp = tmp[(tmp['C'] >10) & (tmp['C'] <=55)]
+    tmp = tmp.drop(tmp[(tmp.dbe == 1) & (tmp.C == 16)].index)
+    tmp = tmp.drop(tmp[(tmp.dbe == 1) & (tmp.C == 18)].index)
+    tmp = tmp.drop(tmp[(tmp.dbe == 2) & (tmp.C == 18)].index)
+    tmp = tmp[(tmp['dbe'] >=1) & (tmp['dbe'] <=20)]
+    tmp = tmp[(tmp['C'] >10) & (tmp['C'] <=45)]
     tmp['normalized'] = (tmp['I']-tmp['I'].min())/(tmp['I'].max()-tmp['I'].min())
     del tmp['I']
     x=tmp['C'].values
@@ -40,9 +40,9 @@ for i in data:
     z=np.array(z,dtype=float)
     plt.figure(figsize=(6,5),dpi=300)
     plt.scatter(x,y,s=150*z)
-    plt.xticks(range(10,56,5), fontsize = 16)
-    plt.yticks(range(1,31,5), fontsize = 16)
+    plt.xticks(range(10,46,5), fontsize = 16)
+    plt.yticks(range(0,21,5), fontsize = 16)
     # plt.title(i, fontsize = 20)
-    plt.savefig(r'C:\Users\siaga\OneDrive\Documents\黄金管FT\气泡图\O1Cl1\%s'%i)
+    plt.savefig(r'./figure/气泡图/O2/%s'%i)
 
 

@@ -15,22 +15,17 @@ from sklearn import linear_model
 from itertools import combinations
 
 avr=pd.DataFrame()
-with open (r'./negative_ESI_result.pkl','rb') as f:
+with open (r'./pkl/negative_ESI_result.pkl','rb') as f:
     data=pickle.load(f)
 for i in data:
     data[i] = data[i][(data[i]['Class'] != '') & (data[i]['Class'] != 'O4') & (data[i]['Class'] != 'O4N1')&  (data[i]['Class']!='O3')]
     tmp = data[i]
-    tmp = tmp[(tmp['Class'] != '')]
+    tmp=tmp.dropna()
     tmp2 = tmp[['I','em']]
-    tmp2['normalized'] = tmp2.I / tmp2.I.sum()
-    tmp2['avrem'] = tmp2['normalized'] * tmp2['em']
-    avr.loc[i,'total'] = tmp2['avrem'].sum()
+    tmp2['mw1'] = tmp2['I'] * tmp2['em']
+    tmp2['mn1'] = tmp['em']*tmp['em']*tmp['I']
 
-    species = set(tmp['Class'])
-    for m in species:
-        tmp1 = tmp[tmp['Class'] == m]
-        tmp1 = tmp1[['I','em']]
-        tmp1['normalized'] = tmp1.I/tmp1.I.sum()
-        tmp1['avrem'] = tmp1['normalized']*tmp1['em']
-        avr.loc[i, m]= tmp1['avrem'].sum()
+    avr.loc[i,'mw'] = tmp2['mw1'].sum()/tmp['I'].sum()
+    avr.loc[i,'mn'] = tmp2['mn1'].sum()/tmp2['mw1'].sum()
+    avr.loc[i,'signal'] = len(tmp2)
 avr.to_csv(r'./average_mass1.csv')

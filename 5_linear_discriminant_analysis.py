@@ -18,49 +18,38 @@ from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 import matplotlib.pyplot as plt
 
 pca=pd.DataFrame()
-with open (r'./negative_ESI_result.pkl','rb') as f:
+with open (r'./pkl/negative_ESI_result.pkl','rb') as f:
     data=pickle.load(f)
 for i in data:
     data[i] =data[i][(data[i]['Class']!='') & (data[i]['Class']!='O4') & (data[i]['Class']!='O4N1')]
-    data[i] = data[i][data[i]['Class'] == 'N1']
-    data[i] = data[i][['em','I']]
+    data[i] = data[i].dropna()
+    # data[i] = data[i][data[i]['Class'] == 'N1']
+    data[i] = data[i][['em','I','Class']]
+    data[i].em = data[i].em.astype(str)
+    data[i].em = data[i].em + ','+ data[i]['Class']
+    del data[i]['Class']
     data[i]['I'] = (data[i]['I'] - data[i]['I'].min())/(data[i]['I'].max() - data[i]['I'].min())
     data[i] = data[i].rename(columns={'I':i})
     data[i] = data[i].set_index('em')
     pca = pca.merge(data[i],how='outer',left_index=True,right_index=True)
-# pca = pca.replace(np.nan,0)
-pca = pca.dropna(axis=0)
+pca = pca.replace(np.nan,0)
 pca=pca.T
 pca['sample'] = pca.index
 pca[['bio','thermo']] = pca['sample'].str.split('_',expand=True)
-pca['thermo'] = pca['thermo'].astype(int)
-pca['bio'] = pca['bio'].str.replace('L5','L2')
-pca['bio'] = pca['bio'].str.replace('L8','L2')
-pca = pca[pca['thermo'] <400]
-del pca['thermo']
 del pca['sample']
+del pca['thermo']
 
-X=np.array(pca.drop(columns='bio'))
+X=np.array(pca.drop(columns={'bio'}))
 Y=np.array(pca['bio'])
-X_train, X_test,Y_train, Y_test = train_test_split(X,Y,test_size=0.1)
 lda = LinearDiscriminantAnalysis(n_components=2)
-lda.fit(X_train,Y_train)
-score = lda.score(X_test,Y_test)
-print(score)
-# X_new = lda.transform(X)
-# ldaData = pd.DataFrame(data=X_new, columns=['lda1', 'lda2'])
-# ldaData.index = pca.index
-# ldaData.to_csv(r'./lda.csv')
-
-# pc = PCA(n_components=2)
-# pComponents = pc.fit_transform(pca)
-# print(pc.explained_variance_ratio_)
-# pcaData = pd.DataFrame(data=pComponents, columns=['principal component 1', 'principal component 2'])
-# pcaData.index = pca.index
-# loadings = pc.components_
+lda.fit(X,Y)
+X_lda = lda.transform(X)
+ldaData = pd.DataFrame(data=X_lda, columns=['principal component 1', 'principal component 2'])
+ldaData.index = pca.index
+loadings = lda.scalings_
 # loadings = loadings.T
-# loadings = pd.DataFrame(loadings)
-# loadings.index = pca.T.index
-# loadings.to_csv( r'./loadings.csv')
-# pcaData.to_csv(r'./pca_results.csv')
+loadings = pd.DataFrame(loadings)
+loadings.index = pca.drop(columns={'bio'}).T.index
+loadings.to_csv( r'./loadings.csv')
+ldaData.to_csv(r'./lda_results.csv')
 

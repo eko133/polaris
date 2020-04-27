@@ -20,7 +20,7 @@ with open (r'./negative_ESI_result.pkl','rb') as f:
     data=pickle.load(f)
 for i in data:
     ratio = pd.DataFrame()
-    data[i] = data[i][(data[i]['Class'] != '') & (data[i]['Class'] != 'O4') & (data[i]['Class'] != 'O4N1')]
+    data[i] = data[i].dropna()
     tmp = data[i][data[i]['Class'] == 'O2']
     tmp['C'] = tmp['C'].astype(int)
     tmp['H'] = tmp['H'].astype(int)

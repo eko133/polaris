@@ -21,15 +21,6 @@ with open (r'./negative_ESI_result.pkl','rb') as f:
     data=pickle.load(f)
 for i in data:
     data[i] = data[i][data[i]['Class'] == 'N1']
-    # for m in range(9,20):
-    #     tmp2 = data[i][data[i]['dbe'] == m]
-    #     c_min = tmp2['C'].min()
-    #     c_mean = tmp2['C'].mean()
-    #     c_max = tmp2['C'].max()
-    #     tmp2_upper = tmp2[(tmp2['C'] >= c_mean) & (tmp2['C'] >= c_mean)<=c_max]
-    #     tmp2_lower = tmp2[(tmp2['C'] >= c_min) & (tmp2['C'] >= c_mean)<=c_mean]
-    #
-
     dbe[i] = data[i].groupby('dbe').agg({'I':'sum'})
     dbe[i][i] = dbe[i].I/dbe[i].I.sum()
     del dbe[i]['I']

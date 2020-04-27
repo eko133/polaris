@@ -86,31 +86,21 @@ def csv_to_pkl(path):
     with open(r'./negative_ESI_result.pkl', 'wb') as f:
         pickle.dump(data,f)
 
-
-def filter_compounds(data):
-    # data = data.drop(data[(data['Class'] == 'O2N1')&(data['C'] >=25)].index)
-    # data = data.drop(data[(data['Class'] == 'O3')&(data['C'] >=30)].index)
-    # data = data.drop(data[(data['Class'] == 'O3N1') & (data['C'] >= 25)].index)
-    data = data.drop(data[(data['Class'] == 'O1N1') & (data['C'] >= 25)].index)
-    return data
-
-
-def carbazole_ternary(data):
+def ternary_calculation(data, specie, dbe1, dbe2, dbe3):
     with open(data,'rb') as f:
         data = pickle.load(f)
     basket = pd.DataFrame()
     for i in data:
-        tmp = data[i][data[i]['Class'] == 'N1Cl1']
+        tmp = data[i][data[i]['Class'] == specie]
         tmp['dbe'] = tmp['dbe'].astype(int)
-        tmp['dbe'] = tmp['dbe']+1
         tmp['C'] = tmp['C'].astype(int)
         tmp['I'] = tmp['I'].astype(float)
-        basket.loc[i, '9'] = tmp[tmp['dbe'] == 9]['I'].sum()
-        basket.loc[i, '12'] = tmp[tmp['dbe'] == 12]['I'].sum()
-        basket.loc[i, '15'] = tmp[tmp['dbe'] == 15]['I'].sum()
-        basket['n9'] = 100 * basket['9'] / (basket['9'] + basket['12'] + basket['15'])
-        basket['n12'] = 100 * basket['12'] / (basket['9'] + basket['12'] + basket['15'])
-        basket['n15'] = 100 * basket['15'] / (basket['9'] + basket['12'] + basket['15'])
+        basket.loc[i, dbe1] = tmp[tmp['dbe'] == dbe1]['I'].sum()
+        basket.loc[i, dbe2] = tmp[tmp['dbe'] == dbe2]['I'].sum()
+        basket.loc[i, dbe3] = tmp[tmp['dbe'] == dbe3]['I'].sum()
+        basket['%i'%dbe1+'%'] = 100 * basket[dbe1] / (basket[dbe1] + basket[dbe2] + basket[dbe3])
+        basket['%i'%dbe2+'%'] = 100 * basket[dbe2] / (basket[dbe1] + basket[dbe2] + basket[dbe3])
+        basket['%i'%dbe3+'%'] = 100 * basket[dbe3] / (basket[dbe1] + basket[dbe2] + basket[dbe3])
     return basket
 
 
@@ -119,14 +109,10 @@ def full_aromatized_to_partially_aromatized(data):
         data = pickle.load(f)
     basket = pd.DataFrame()
     for i in data:
-        tmp = data[i][data[i]['Class'] == 'N1Cl1']
+        tmp = data[i][data[i]['Class'] == 'N1']
         tmp['dbe'] = tmp['dbe'].astype(int)
-        tmp['dbe'] = tmp['dbe']+1
         tmp['C'] = tmp['C'].astype(int)
-        tmp = tmp[tmp['C']<=55]
         tmp['I'] = tmp['I'].astype(float)
-        tmp = tmp.drop(tmp[(tmp.dbe == 13) & (tmp.C == 33)].index)
-        tmp = tmp.drop(tmp[(tmp.dbe == 14) & (tmp.C == 35)].index)
         full = tmp[(tmp['dbe'] == 9) | (tmp['dbe'] == 12) | (tmp['dbe'] == 15) | (tmp['dbe'] == 18) | (tmp['dbe'] == 21) | (tmp['dbe'] == 24)]['I'].sum()
         par = tmp[(tmp['dbe'] == 10) | (tmp['dbe'] == 11) | (tmp['dbe'] == 13) |(tmp['dbe'] == 14) | (tmp['dbe'] == 16) | (tmp['dbe'] == 17)|(tmp['dbe'] == 19) | (tmp['dbe'] == 20) | (tmp['dbe'] == 22) |(tmp['dbe'] == 23) | (tmp['dbe'] == 25) | (tmp['dbe'] == 26) ]['I'].sum()
         basket.loc[i, 'full_partial'] = full/par
@@ -141,14 +127,9 @@ def carbon_number_distribution(data, specie,dbe):
         data[i]['dbe'] = data[i]['dbe'].astype(int)
         data[i]['C'] = data[i]['C'].astype(int)
         data[i]['I'] = data[i]['I'].astype(float)
-        tmp = data[i][(data[i]['Class'] == specie) & (data[i]['dbe'] == dbe) & (data[i]['C'] >= 10) & (data[i]['C'] <= 50)]
-        tmp = tmp.drop(tmp[(tmp.dbe == 1) & (tmp.C == 16)].index)
-        tmp = tmp.drop(tmp[(tmp.dbe == 1) & (tmp.C == 18)].index)
-        tmp = tmp.drop(tmp[(tmp.dbe == 2) & (tmp.C == 18)].index)
-        # tmp = data[i][(data[i]['Class'] == specie)  & (data[i]['C'] >= 10) & (data[i]['C'] <= 50)]
+        tmp = data[i][(data[i]['Class'] == specie) & (data[i]['dbe'] == dbe)]
         for carbon in range(41):
-        #     basket.loc[i,carbon] = tmp[tmp['C'] == carbon]['I'].sum()/tmp['I'].sum()
-            basket.loc[i, carbon] = tmp[tmp['C'] == carbon]['I'].max()
+            basket.loc[i,carbon] = tmp[tmp['C'] == carbon]['I'].sum()/tmp['I'].sum()
     return basket
 
 
@@ -160,12 +141,8 @@ def dbe_distribution(data, specie):
         data[i]['dbe'] = data[i]['dbe'].astype(int)
         data[i]['C'] = data[i]['C'].astype(int)
         data[i]['I'] = data[i]['I'].astype(float)
-        tmp = data[i][(data[i]['Class'] == specie) & (data[i]['C'] >= 10) & (data[i]['C'] <= 40)]
-        tmp = tmp.drop(tmp[(tmp.dbe == 1) & (tmp.C == 16)].index)
-        tmp = tmp.drop(tmp[(tmp.dbe == 1) & (tmp.C == 18)].index)
-        tmp = tmp.drop(tmp[(tmp.dbe == 2) & (tmp.C == 18)].index)
+        tmp = data[i][(data[i]['Class'] == specie) & (data[i]['C'] >= 10) & (data[i]['dbe'] >0)]
         for dbe in range(31):
-            #basket.loc[i,carbon] = tmp[tmp['C'] == carbon]['I'].sum()/tmp['I'].sum()
             basket.loc[i, dbe] = tmp[tmp['dbe'] == dbe]['I'].sum()
     return basket
 
@@ -203,12 +180,15 @@ def cpi(data):
         tmp['I'] = tmp['I'].astype(float)
         even = 0
         odd = 0
-        for dbe in (1,2,3,4,5,6):
-            for c in (22,24,26,28,30):
-                even = even + tmp[(tmp['dbe']==dbe)&(tmp['C']==c)]['I'].max()
-                odd = odd + tmp[(tmp['dbe']==dbe)&(tmp['C']==(c+1))]['I'].max()
-            cpi = even/odd
-            basket.loc[i, dbe] = cpi
+        for c in (22,24,26,28,30):
+            even = even + tmp[(tmp['dbe']==1)&(tmp['C']==c)]['I'].max()
+            odd = odd + tmp[(tmp['dbe']==1)&(tmp['C']==(c+1))]['I'].max()
+        cpi = odd/even
+        basket.loc[i, 'cpi'] = cpi
+        oep1 = tmp[(tmp['dbe']==1)&(tmp['C']==25)]['I'].max() + 6*tmp[(tmp['dbe']==1)&(tmp['C']==27)]['I'].max() + tmp[(tmp['dbe']==1)&(tmp['C']==29)]['I'].max()
+        oep2 = 4*(tmp[(tmp['dbe']==1)&(tmp['C']==26)]['I'].max() + tmp[(tmp['dbe']==1)&(tmp['C']==28)]['I'].max())
+        basket.loc[i, 'oep'] = oep1/oep2
+
     return basket
 
 
