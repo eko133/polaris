@@ -1,24 +1,27 @@
 # -*- coding: utf-8 -*-
 
-
 import pandas as pd
 import numpy as np
 from sklearn import linear_model
 from sklearn.decomposition import PCA
 from sklearn.model_selection import train_test_split
 from itertools import combinations
-import matplotlib.pyplot as plt
-import sys
+import concurrent.futures
 import json
 import os
 import math
 
-dir = '/Users/siaga/Git/polaris/'
+# Set dir for different OS
+if os.sys.platform == 'darwin':
+    dir = r'/Users/siaga/Git/polaris/'
+# if 'win' in os.sys.platform:
+#     dir = r'C:/Users/siaga/Git/polaris/'
 
-def filter(path, filter1):
+
+def raw_txt_filter(path, filter1):
     with open(path,'r') as f:
         lines = f.readlines()
-    with open(r'%s_'%filter1+path,'w') as f:
+    with open(r'%s_'%filter1,'w') as f:
         for line in lines:
             if filter1 in line:
                 f.write(line)
@@ -83,9 +86,9 @@ def normalizer(path):
     data = data.set_index('m/z')
     data = data.replace(0, np.nan)
     column_length = len(data.columns)
-    data = data.dropna(thresh=0.2 * column_length)
+    data = data.dropna(thresh=0.5 * column_length)
     row_length = len(data)
-    data = data.dropna(thresh=0.2 * row_length, axis=1)
+    data = data.dropna(thresh=0.5 * row_length, axis=1)
     for column in data.columns:
         data[column] = (data[column] - data[column].min()) / (data[column].max() - data[column].min())
     data = data.T
@@ -155,29 +158,27 @@ def get_ccat_dict(path):
     with open (dir + r'dict/pixel_dict.json','w') as f:
         json.dump(pixel_dict,f)
 
-def linear_regression(path):
+def multi_linear_regression(path):
+    # Formatting csv data
     data = pd.read_csv(path)
-
     data.drop(data.columns[0], axis=1, inplace=True)
-
     data = data.set_index(data.columns[0])
-    # data = data.T
-    #
-    # important_compounds_list = get_important_compounds(r'./data/sterol_loadings.csv')
-    
-    # for column in data.columns:
-    #     if column not in important_compounds_list:
-    #         del data[column]
-    
-    # data['ccat'] =  data.index.map(ccat_dict)
-    #
-    # data = data.dropna(subset=['ccat'])
-    
-    rdata = pd.DataFrame(columns={'Intercept', 'Coef', 'Score'})
-    
-    # compounds = list(data.columns)
-    # compounds.remove('ccat')
-        
+    # Slicing dataframe according to column values
+    data_sliced = {}
+    length = len(data.columns)
+    n = 16
+    step = int(length/n) +1
+    for column_start in range(0,length,step):
+        print(column_start)
+        data_sliced[column_start] = data.iloc[:,column_start:(column_start+step)]
+
+    # Internal regression
+    with concurrent.futures.ProcessPoolExecutor() as executor:
+        executor.map(linear_regression,list(data_sliced.values()))
+
+
+
+def linear_regression(data):
     for x, y in combinations(data.columns,2):
         ## not carbon isotopes and not carbon clusters
         difference = float(x) - float(y)
@@ -187,21 +188,17 @@ def linear_regression(path):
             tmp = tmp.dropna(how='any', axis=0)
             if len(tmp) >= 50:
                 print(x, y)
-                x1 = tmp[x].values.reshape(-1, 1)
-                y1 = tmp[y].values.reshape(-1, 1)
-                X_train, X_test, y_train, y_test = train_test_split(x1, y1, test_size=0.2, random_state=0)
+                X_train, X_test, y_train, y_test = train_test_split(tmp[x], tmp[y], test_size=0.2, random_state=0)
                 LR = linear_model.LinearRegression()
                 LR.fit(X_train, y_train)
-                rdata.loc['%s, %s' % (x, y), 'Intercept'] = LR.intercept_
-                rdata.loc['%s, %s' % (x, y), 'Coef'] = LR.coef_
-                rdata.loc['%s, %s' % (x, y), 'Score'] = LR.score(X_test, y_test)
+                if LR.score(X_test, y_test) >=0.5:
+                    with open ('./shared.txt','a') as f:
+                        f.writelines(f'{x,y}, {LR.coef_}, {LR.intercept_}, {LR.score(X_test, y_test)} \n')
         # plt.show()
         # plt.scatter(x1, ccat, color='black')
         # plt.title('%s + %s' % (x, y))
         # plt.savefig('./figure/%s + %s.png' % (x, y))
-    rdata = rdata[rdata.Score >=0.2]
 
-    rdata.to_csv(os.path.split(path)[0] + r'lr_' + os.path.split(path)[1])
 
 
 def group_by_ccat():
@@ -268,13 +265,13 @@ def target(path):
     averaged_data.to_csv(r'averaged_data.csv')
 
 def find_grouped_samples():
-    with open (dir+ r'dict/group_by_ccat.json','r') as f:
+    with open (r'dict/group_by_ccat.json','r') as f:
         grouped_by_ccat = json.load(f)
     for key in grouped_by_ccat:
         grouped_sample =grouped_by_ccat[key]
-        with open (dir+ r'data/gdgt_test.txt','r') as f:
+        with open (r'/Users/siaga/Downloads/sbb_sterol.txt','r') as f:
             lines =f.readlines()
-        with open (dir+r'data/grouped_by_ccat/ccat%s.txt'%key,'w') as f:
+        with open (r'data/grouped_by_ccat_sterol/ccat%s.txt'%key,'w') as f:
             for line in lines:
                 data = line.split(';')
                 if data[0] in grouped_sample:
