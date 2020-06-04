@@ -1,35 +1,31 @@
 import pandas as pd
-from mendeleev import element
-import itertools
-import run
 import numpy as np
-import sys
-import os
-from multiprocessing import cpu_count, Pool
-from functools import partial
-import ast
 import pickle
-from sklearn.decomposition import PCA
-from sklearn.model_selection import train_test_split
-from sklearn import linear_model
-from itertools import combinations
 import matplotlib.pyplot as plt
-from scipy.stats import kde
+import os
 
+figdir = r'./figure/气泡图/N1Cl1/'
+if not os.path.exists(figdir):
+    os.makedirs(figdir)
 
-with open (r'./pkl/negative_ESI_result.pkl','rb') as f:
+with open (r'./pkl/negative_ESI_result_2 (2020_04_02 06_19_35 UTC).pkl','rb') as f:
     data=pickle.load(f)
 for i in data:
-    data[i] = data[i][data[i]['Class'] == 'O2']
+    data[i] = data[i][data[i]['Class'] == 'N1Cl1']
     tmp = data[i][['C','dbe','I']]
     tmp['dbe'] = tmp['dbe'].astype(int)
-    # tmp['dbe'] = tmp['dbe'] +1
+    tmp['dbe'] = tmp['dbe'] +1
     tmp['C'] = tmp['C'].astype(int)
-    tmp = tmp.drop(tmp[(tmp.dbe == 1) & (tmp.C == 16)].index)
-    tmp = tmp.drop(tmp[(tmp.dbe == 1) & (tmp.C == 18)].index)
-    tmp = tmp.drop(tmp[(tmp.dbe == 2) & (tmp.C == 18)].index)
-    tmp = tmp[(tmp['dbe'] >=1) & (tmp['dbe'] <=20)]
-    tmp = tmp[(tmp['C'] >10) & (tmp['C'] <=45)]
+    tmp = tmp[(tmp['dbe'] >=1) & (tmp['dbe'] <=25)]
+    tmp = tmp[(tmp['C'] >10) & (tmp['C'] <=56)]
+    try:
+        tmp.loc[(tmp.dbe == 13) & (tmp.C == 33), 'I'] = tmp.loc[(tmp.dbe == 13) & (tmp.C == 32),'I'].tolist()[0]
+    except:
+        tmp.loc[(tmp.dbe == 13) & (tmp.C == 33), 'I'] = 0
+    try:
+        tmp.loc[(tmp.dbe == 14) & (tmp.C == 35), 'I'] = tmp.loc[(tmp.dbe == 14) & (tmp.C == 34),'I'].tolist()[0]
+    except:
+        tmp.loc[(tmp.dbe == 14) & (tmp.C == 35), 'I'] = 0
     tmp['normalized'] = (tmp['I']-tmp['I'].min())/(tmp['I'].max()-tmp['I'].min())
     del tmp['I']
     x=tmp['C'].values
@@ -39,10 +35,11 @@ for i in data:
     z=tmp['normalized'].values
     z=np.array(z,dtype=float)
     plt.figure(figsize=(6,5),dpi=300)
-    plt.scatter(x,y,s=150*z)
-    plt.xticks(range(10,46,5), fontsize = 16)
-    plt.yticks(range(0,21,5), fontsize = 16)
+    plt.scatter(x,y,s=100*z)
+    plt.xticks(range(10,56,5), fontsize = 16)
+    plt.yticks(range(0,26,5), fontsize = 16)
     # plt.title(i, fontsize = 20)
-    plt.savefig(r'./figure/气泡图/O2/%s'%i)
+    figfile = figdir+r'%s'%i
+    plt.savefig(figfile)
 
 
