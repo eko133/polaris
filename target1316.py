@@ -10,6 +10,10 @@ import json
 import os
 import math
 
+# set target m/z
+target1 = 413.14
+target2 = 479.18
+target_raw_txt = '/Users/siaga/Documents/gdgt/sbb_sterol.txt'
 
 with open (r'./dict/ccat_dict.json','r')  as f:
     ccat_dict = json.load(f)
@@ -17,7 +21,7 @@ with open (r'./dict/ccat_dict.json','r')  as f:
 with open (r'./dict/pixel_dict.json','r')  as f:
     pixel_dict = json.load(f)
 
-with open (r'./data/gdgt_test.txt') as f:
+with open (target_raw_txt) as f:
     lines = f.readlines()
 basket = pd.DataFrame()
 for line in lines:
@@ -28,8 +32,8 @@ for line in lines:
         del data[0]
         data = pd.DataFrame(np.array(data).reshape((-1, 3)), columns=['m/z', sample_name, 'S/N'])
         data = data.astype(float)
-        data1 = data[(data['m/z'] >= 1312.21) & (data['m/z'] <= 1323.33)]
-        data2 = data[(data['m/z'] >= 1346.96) & (data['m/z'] <= 1346.98)]
+        data1 = data[(data['m/z'] >= (target1-0.1)) & (data['m/z'] <= (target1+0.1))]
+        data2 = data[(data['m/z'] >= (target2-0.1)) & (data['m/z'] <= (target2+0.1))]
         compound1 = data1[sample_name].max()
         compound2 = data2[sample_name].max()
         basket.loc[sample_name, 'newindices'] = compound1 / (compound1 + compound2)

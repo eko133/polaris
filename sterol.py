@@ -1,4 +1,3 @@
-
 import targeting
 import pandas as pd
 import json
@@ -12,7 +11,7 @@ import concurrent.futures
 import math
 import matplotlib.pyplot as plt
 
-
+# take the ratios of two m/z values as input
 def simple_linear_regression(packed_arg):
     data, mass, outputtxt = packed_arg
     x, y = mass
@@ -31,27 +30,22 @@ def simple_linear_regression(packed_arg):
 
 raw_txt = r'/Users/siaga/Documents/gdgt/sbb_sterol.txt'
 test_txt = r'/Users/siaga/Git/polaris/Y053.txt'
-test_csv = r'/Users/siaga/Git/polaris/Y053.csv'
 
 ## Testing with a small group of laser points
 # targeting.raw_txt_filter(raw_txt,'Y053')
-# targeting.align(test_txt)
 # targeting.normalizer(test_csv)
 
+data = targeting.align(test_txt)
 ## Add ccat values to each laser point
-data = pd.read_csv('./normalized_Y053.csv')
-data = data.set_index('Unnamed: 0')
+data=data.set_index('m/z')
+data = data.T
 ## Reduce complexity using dropna
 data = data.dropna(axis =1, thresh=0.5*data.shape[0])
 mass_lists_combinations =list(combinations(data.columns,2))
 with open ('./dict/ccat_dict.json') as f:
     ccat_dict = json.load(f)
-mass_lists = data.columns
 data['ccat'] = data.index.map(ccat_dict)
 data = data.dropna(subset=['ccat'])
-
-
-
 ## Use linear regression to predict ccat, with multiprocessing built in
 ## Breaks the mass_lists
 # mass_lists_sliced = {}
@@ -66,6 +60,7 @@ data = data.dropna(subset=['ccat'])
 args = ((data,mass,'./shared.txt') for mass in mass_lists_combinations)
 with concurrent.futures.ProcessPoolExecutor() as executor:
     executor.map(simple_linear_regression, args)
+
 
 
 # x,y=mass_lists_combinations[0]

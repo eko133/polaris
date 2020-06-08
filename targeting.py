@@ -67,19 +67,19 @@ def align(path):
     for sample in samples:
         basket = basket.merge(samples[sample], how ='outer', left_index=True, right_index=True)
     basket = basket.reset_index()
-
-    duplicate_flag = 1
-    while duplicate_flag == 1:
-        mass_index = 0
-        duplicate_flag = 0
-        while mass_index < (len(basket)-1):
-            if (basket.loc[mass_index+1,'m/z'] - basket.loc[mass_index,'m/z']) <= 0.01 and (basket.loc[mass_index+1,'m/z'] - basket.loc[mass_index,'m/z']) !=0 :
-                duplicate_flag = 1
-                basket.loc[mass_index,'m/z'] = basket.loc[mass_index+1,'m/z']
-            mass_index = mass_index + 1
-    basket = basket.groupby('m/z').sum()
-    basket.to_csv(os.path.splitext(path)[0] + r'.csv')
     return basket
+
+    # duplicate_flag = 1
+    # while duplicate_flag == 1:
+    #     mass_index = 0
+    #     duplicate_flag = 0
+    #     while mass_index < (len(basket)-1):
+    #         if (basket.loc[mass_index+1,'m/z'] - basket.loc[mass_index,'m/z']) <= 0.01 and (basket.loc[mass_index+1,'m/z'] - basket.loc[mass_index,'m/z']) !=0 :
+    #             duplicate_flag = 1
+    #             basket.loc[mass_index,'m/z'] = basket.loc[mass_index+1,'m/z']
+    #         mass_index = mass_index + 1
+    # basket = basket.groupby('m/z').sum()
+    # return basket
 
 def normalizer(path):
     data = pd.read_csv(path)
