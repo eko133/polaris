@@ -2,18 +2,290 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d6c82dfc-5e86-4d8b-9536-806bb1b9fb62" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/mass_bining.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mean_spectrum.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/111.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/averaged_data.csv" beforeDir="false" afterPath="$PROJECT_DIR$/averaged_data.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/group_by_ccat.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ldr.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pixel.csv" beforeDir="false" afterPath="$PROJECT_DIR$/pixel.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scalings.csv" beforeDir="false" afterPath="$PROJECT_DIR$/scalings.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/shared.txt" beforeDir="false" afterPath="$PROJECT_DIR$/shared.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sterol.py" beforeDir="false" afterPath="$PROJECT_DIR$/sterol_regression.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SharedStorage/shared.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TestData/Y050.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/SBB_0-5_CCaTxy_transformed.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/SBB_0-5_CCaTxy_transformed.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/SimilarMassMerged.pkl" beforeDir="false" afterPath="$PROJECT_DIR$/Data/SimilarMassMerged.pkl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/SterolSimilarMassMerged.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/SterolSimilarMassMerged.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/averaged_data.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/Data/averaged_data.xlsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/ccat.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/ccat.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/ccat.pkl" beforeDir="false" afterPath="$PROJECT_DIR$/Data/ccat.pkl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/ccat.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/Data/ccat.xlsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/ccat2.pkl" beforeDir="false" afterPath="$PROJECT_DIR$/Data/ccat2.pkl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/gdgt_similarMassMerged.pkl" beforeDir="false" afterPath="$PROJECT_DIR$/Data/gdgt_similarMassMerged.pkl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/gdgt_similarMassMerged_Y50.pkl" beforeDir="false" afterPath="$PROJECT_DIR$/Data/gdgt_similarMassMerged_Y50.pkl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/gdgt_test.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Data/gdgt_test.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat/ccat0.40818.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat/ccat0.40818.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat/ccat0.40818.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat/ccat0.40818.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat/ccat0.4137.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat/ccat0.4137.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat/ccat0.4137.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat/ccat0.4137.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat/ccat0.41865.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat/ccat0.41865.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat/ccat0.41865.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat/ccat0.41865.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat/ccat0.42421.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat/ccat0.42421.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat/ccat0.42421.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat/ccat0.42421.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat/ccat0.42902.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat/ccat0.42902.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat/ccat0.42902.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat/ccat0.42902.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat/ccat0.43418.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat/ccat0.43418.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat/ccat0.43418.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat/ccat0.43418.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat/ccat0.43906.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat/ccat0.43906.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat/ccat0.43906.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat/ccat0.43906.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat/ccat0.44399.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat/ccat0.44399.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat/ccat0.44399.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat/ccat0.44399.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat/ccat0.4491.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat/ccat0.4491.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat/ccat0.4491.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat/ccat0.4491.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat/ccat0.45396.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat/ccat0.45396.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat/ccat0.45396.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat/ccat0.45396.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat/ccat0.4591.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat/ccat0.4591.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat/ccat0.4591.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat/ccat0.4591.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat/ccat0.46401.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat/ccat0.46401.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat/ccat0.46401.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat/ccat0.46401.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat/ccat0.46898.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat/ccat0.46898.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat/ccat0.46898.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat/ccat0.46898.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat/ccat0.47393.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat/ccat0.47393.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat/ccat0.47393.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat/ccat0.47393.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat/ccat0.47892.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat/ccat0.47892.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat/ccat0.47892.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat/ccat0.47892.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat/ccat0.48382.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat/ccat0.48382.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat/ccat0.48382.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat/ccat0.48382.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat/ccat0.48902.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat/ccat0.48902.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat/ccat0.48902.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat/ccat0.48902.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat/ccat0.49402.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat/ccat0.49402.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat/ccat0.49402.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat/ccat0.49402.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat/ccat0.49902.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat/ccat0.49902.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat/ccat0.49902.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat/ccat0.49902.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat/ccat0.50394.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat/ccat0.50394.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat/ccat0.50394.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat/ccat0.50394.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat/ccat0.50893.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat/ccat0.50893.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat/ccat0.50893.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat/ccat0.50893.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat/ccat0.5138.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat/ccat0.5138.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat/ccat0.5138.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat/ccat0.5138.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat/ccat0.5189.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat/ccat0.5189.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat/ccat0.5189.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat/ccat0.5189.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat/ccat0.52428.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat/ccat0.52428.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat/ccat0.52428.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat/ccat0.52428.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat/ccat0.52932.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat/ccat0.52932.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat/ccat0.52932.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat/ccat0.52932.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat/ccat0.53468.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat/ccat0.53468.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat/ccat0.53468.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat/ccat0.53468.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat/ccat0.53976.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat/ccat0.53976.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat/ccat0.53976.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat/ccat0.53976.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat/ccat0.54515.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat/ccat0.54515.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat/ccat0.54515.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat/ccat0.54515.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat/ccat0.54982.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat/ccat0.54982.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat/ccat0.54982.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat/ccat0.54982.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat/lr_normalized_ccat0.40818.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat/lr_normalized_ccat0.40818.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat/lr_normalized_ccat0.4137.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat/lr_normalized_ccat0.4137.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat/lr_normalized_ccat0.41865.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat/lr_normalized_ccat0.41865.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat/lr_normalized_ccat0.42421.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat/lr_normalized_ccat0.42421.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat/lr_normalized_ccat0.42902.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat/lr_normalized_ccat0.42902.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat/lr_normalized_ccat0.43418.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat/lr_normalized_ccat0.43418.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat/lr_normalized_ccat0.43906.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat/lr_normalized_ccat0.43906.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat/lr_normalized_ccat0.44399.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat/lr_normalized_ccat0.44399.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat/lr_normalized_ccat0.4491.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat/lr_normalized_ccat0.4491.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat/lr_normalized_ccat0.45396.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat/lr_normalized_ccat0.45396.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat/lr_normalized_ccat0.4591.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat/lr_normalized_ccat0.4591.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat/lr_normalized_ccat0.46401.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat/lr_normalized_ccat0.46401.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat/lr_normalized_ccat0.46898.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat/lr_normalized_ccat0.46898.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat/lr_normalized_ccat0.47393.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat/lr_normalized_ccat0.47393.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat/lr_normalized_ccat0.47892.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat/lr_normalized_ccat0.47892.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat/lr_normalized_ccat0.48382.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat/lr_normalized_ccat0.48382.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat/lr_normalized_ccat0.48902.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat/lr_normalized_ccat0.48902.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat/lr_normalized_ccat0.49402.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat/lr_normalized_ccat0.49402.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat/lr_normalized_ccat0.49902.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat/lr_normalized_ccat0.49902.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat/lr_normalized_ccat0.50394.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat/lr_normalized_ccat0.50394.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat/lr_normalized_ccat0.50893.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat/lr_normalized_ccat0.50893.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat/lr_normalized_ccat0.5138.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat/lr_normalized_ccat0.5138.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat/lr_normalized_ccat0.5189.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat/lr_normalized_ccat0.5189.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat/lr_normalized_ccat0.52428.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat/lr_normalized_ccat0.52428.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat/lr_normalized_ccat0.52932.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat/lr_normalized_ccat0.52932.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat/lr_normalized_ccat0.53468.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat/lr_normalized_ccat0.53468.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat/lr_normalized_ccat0.53976.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat/lr_normalized_ccat0.53976.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat/lr_normalized_ccat0.54515.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat/lr_normalized_ccat0.54515.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat/lr_normalized_ccat0.54982.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat/lr_normalized_ccat0.54982.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat/normalized_ccat0.40818.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat/normalized_ccat0.40818.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat/normalized_ccat0.4137.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat/normalized_ccat0.4137.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat/normalized_ccat0.41865.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat/normalized_ccat0.41865.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat/normalized_ccat0.42421.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat/normalized_ccat0.42421.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat/normalized_ccat0.42902.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat/normalized_ccat0.42902.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat/normalized_ccat0.43418.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat/normalized_ccat0.43418.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat/normalized_ccat0.43906.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat/normalized_ccat0.43906.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat/normalized_ccat0.44399.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat/normalized_ccat0.44399.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat/normalized_ccat0.4491.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat/normalized_ccat0.4491.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat/normalized_ccat0.45396.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat/normalized_ccat0.45396.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat/normalized_ccat0.4591.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat/normalized_ccat0.4591.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat/normalized_ccat0.46401.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat/normalized_ccat0.46401.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat/normalized_ccat0.46898.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat/normalized_ccat0.46898.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat/normalized_ccat0.47393.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat/normalized_ccat0.47393.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat/normalized_ccat0.47892.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat/normalized_ccat0.47892.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat/normalized_ccat0.48382.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat/normalized_ccat0.48382.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat/normalized_ccat0.48902.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat/normalized_ccat0.48902.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat/normalized_ccat0.49402.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat/normalized_ccat0.49402.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat/normalized_ccat0.49902.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat/normalized_ccat0.49902.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat/normalized_ccat0.50394.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat/normalized_ccat0.50394.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat/normalized_ccat0.50893.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat/normalized_ccat0.50893.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat/normalized_ccat0.5138.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat/normalized_ccat0.5138.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat/normalized_ccat0.5189.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat/normalized_ccat0.5189.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat/normalized_ccat0.52428.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat/normalized_ccat0.52428.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat/normalized_ccat0.52932.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat/normalized_ccat0.52932.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat/normalized_ccat0.53468.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat/normalized_ccat0.53468.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat/normalized_ccat0.53976.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat/normalized_ccat0.53976.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat/normalized_ccat0.54515.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat/normalized_ccat0.54515.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat/normalized_ccat0.54982.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat/normalized_ccat0.54982.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat_sterol/ccat0.40818.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat_sterol/ccat0.40818.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat_sterol/ccat0.4137.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat_sterol/ccat0.4137.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat_sterol/ccat0.41865.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat_sterol/ccat0.41865.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat_sterol/ccat0.42421.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat_sterol/ccat0.42421.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat_sterol/ccat0.42902.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat_sterol/ccat0.42902.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat_sterol/ccat0.43418.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat_sterol/ccat0.43418.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat_sterol/ccat0.43906.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat_sterol/ccat0.43906.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat_sterol/ccat0.44399.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat_sterol/ccat0.44399.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat_sterol/ccat0.4491.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat_sterol/ccat0.4491.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat_sterol/ccat0.45396.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat_sterol/ccat0.45396.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat_sterol/ccat0.4591.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat_sterol/ccat0.4591.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat_sterol/ccat0.46401.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat_sterol/ccat0.46401.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat_sterol/ccat0.46898.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat_sterol/ccat0.46898.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat_sterol/ccat0.47393.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat_sterol/ccat0.47393.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat_sterol/ccat0.47892.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat_sterol/ccat0.47892.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat_sterol/ccat0.48382.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat_sterol/ccat0.48382.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat_sterol/ccat0.48902.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat_sterol/ccat0.48902.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat_sterol/ccat0.49402.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat_sterol/ccat0.49402.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat_sterol/ccat0.49902.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat_sterol/ccat0.49902.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat_sterol/ccat0.50394.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat_sterol/ccat0.50394.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat_sterol/ccat0.50394.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat_sterol/ccat0.50394.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat_sterol/ccat0.50893.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat_sterol/ccat0.50893.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat_sterol/ccat0.5138.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat_sterol/ccat0.5138.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat_sterol/ccat0.5189.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat_sterol/ccat0.5189.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat_sterol/ccat0.52428.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat_sterol/ccat0.52428.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat_sterol/ccat0.52932.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat_sterol/ccat0.52932.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat_sterol/ccat0.53468.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat_sterol/ccat0.53468.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat_sterol/ccat0.53976.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat_sterol/ccat0.53976.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat_sterol/ccat0.54515.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat_sterol/ccat0.54515.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat_sterol/ccat0.54982.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat_sterol/ccat0.54982.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat_sterol/normalized_ccat0.50394.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat_sterol/normalized_ccat0.50394.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat的副本/ccat0.4137.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat的副本/ccat0.4137.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat的副本/ccat0.4137.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat的副本/ccat0.4137.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat的副本/ccat0.41865.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat的副本/ccat0.41865.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat的副本/ccat0.41865.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat的副本/ccat0.41865.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat的副本/ccat0.42421.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat的副本/ccat0.42421.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat的副本/ccat0.42421.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat的副本/ccat0.42421.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat的副本/ccat0.42902.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat的副本/ccat0.42902.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat的副本/ccat0.42902.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat的副本/ccat0.42902.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat的副本/ccat0.43418.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat的副本/ccat0.43418.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat的副本/ccat0.43418.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat的副本/ccat0.43418.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat的副本/ccat0.43906.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat的副本/ccat0.43906.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat的副本/ccat0.43906.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat的副本/ccat0.43906.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat的副本/ccat0.44399.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat的副本/ccat0.44399.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat的副本/ccat0.44399.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat的副本/ccat0.44399.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat的副本/ccat0.4491.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat的副本/ccat0.4491.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat的副本/ccat0.4491.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat的副本/ccat0.4491.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat的副本/ccat0.45396.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat的副本/ccat0.45396.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat的副本/ccat0.45396.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat的副本/ccat0.45396.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat的副本/ccat0.4591.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat的副本/ccat0.4591.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat的副本/ccat0.4591.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat的副本/ccat0.4591.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat的副本/ccat0.46401.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat的副本/ccat0.46401.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat的副本/ccat0.46401.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat的副本/ccat0.46401.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat的副本/ccat0.46898.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat的副本/ccat0.46898.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat的副本/ccat0.46898.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat的副本/ccat0.46898.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat的副本/ccat0.47393.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat的副本/ccat0.47393.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat的副本/ccat0.47393.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat的副本/ccat0.47393.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat的副本/ccat0.47892.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat的副本/ccat0.47892.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat的副本/ccat0.47892.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat的副本/ccat0.47892.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat的副本/ccat0.48382.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat的副本/ccat0.48382.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat的副本/ccat0.48382.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat的副本/ccat0.48382.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat的副本/ccat0.48902.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat的副本/ccat0.48902.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat的副本/ccat0.48902.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat的副本/ccat0.48902.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat的副本/ccat0.49402.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat的副本/ccat0.49402.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat的副本/ccat0.49402.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat的副本/ccat0.49402.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat的副本/ccat0.49902.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat的副本/ccat0.49902.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat的副本/ccat0.49902.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat的副本/ccat0.49902.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat的副本/ccat0.50394.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat的副本/ccat0.50394.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat的副本/ccat0.50394.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat的副本/ccat0.50394.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat的副本/ccat0.50893.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat的副本/ccat0.50893.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat的副本/ccat0.50893.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat的副本/ccat0.50893.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat的副本/ccat0.5138.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat的副本/ccat0.5138.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat的副本/ccat0.5138.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat的副本/ccat0.5138.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat的副本/ccat0.5189.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat的副本/ccat0.5189.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat的副本/ccat0.5189.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat的副本/ccat0.5189.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat的副本/ccat0.52428.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat的副本/ccat0.52428.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat的副本/ccat0.52428.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat的副本/ccat0.52428.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat的副本/ccat0.52932.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat的副本/ccat0.52932.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat的副本/ccat0.52932.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat的副本/ccat0.52932.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat的副本/ccat0.53468.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat的副本/ccat0.53468.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat的副本/ccat0.53468.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat的副本/ccat0.53468.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat的副本/lr_normalized_ccat0.4137.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat的副本/lr_normalized_ccat0.4137.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat的副本/lr_normalized_ccat0.41865.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat的副本/lr_normalized_ccat0.41865.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat的副本/lr_normalized_ccat0.42421.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat的副本/lr_normalized_ccat0.42421.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat的副本/lr_normalized_ccat0.42902.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat的副本/lr_normalized_ccat0.42902.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat的副本/lr_normalized_ccat0.43418.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat的副本/lr_normalized_ccat0.43418.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat的副本/lr_normalized_ccat0.43906.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat的副本/lr_normalized_ccat0.43906.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat的副本/lr_normalized_ccat0.44399.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat的副本/lr_normalized_ccat0.44399.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat的副本/lr_normalized_ccat0.4491.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat的副本/lr_normalized_ccat0.4491.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat的副本/lr_normalized_ccat0.45396.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat的副本/lr_normalized_ccat0.45396.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat的副本/lr_normalized_ccat0.4591.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat的副本/lr_normalized_ccat0.4591.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat的副本/lr_normalized_ccat0.46401.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat的副本/lr_normalized_ccat0.46401.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat的副本/lr_normalized_ccat0.46898.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat的副本/lr_normalized_ccat0.46898.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat的副本/lr_normalized_ccat0.47393.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat的副本/lr_normalized_ccat0.47393.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat的副本/lr_normalized_ccat0.47892.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat的副本/lr_normalized_ccat0.47892.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat的副本/lr_normalized_ccat0.48382.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat的副本/lr_normalized_ccat0.48382.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat的副本/lr_normalized_ccat0.48902.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat的副本/lr_normalized_ccat0.48902.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat的副本/lr_normalized_ccat0.49402.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat的副本/lr_normalized_ccat0.49402.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat的副本/lr_normalized_ccat0.49902.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat的副本/lr_normalized_ccat0.49902.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat的副本/lr_normalized_ccat0.50394.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat的副本/lr_normalized_ccat0.50394.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat的副本/lr_normalized_ccat0.50893.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat的副本/lr_normalized_ccat0.50893.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat的副本/lr_normalized_ccat0.5138.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat的副本/lr_normalized_ccat0.5138.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat的副本/lr_normalized_ccat0.5189.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat的副本/lr_normalized_ccat0.5189.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat的副本/lr_normalized_ccat0.52428.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat的副本/lr_normalized_ccat0.52428.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat的副本/lr_normalized_ccat0.52932.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat的副本/lr_normalized_ccat0.52932.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat的副本/lr_normalized_ccat0.53468.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat的副本/lr_normalized_ccat0.53468.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat的副本/normalized_ccat0.4137.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat的副本/normalized_ccat0.4137.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat的副本/normalized_ccat0.41865.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat的副本/normalized_ccat0.41865.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat的副本/normalized_ccat0.42421.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat的副本/normalized_ccat0.42421.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat的副本/normalized_ccat0.42902.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat的副本/normalized_ccat0.42902.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat的副本/normalized_ccat0.43418.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat的副本/normalized_ccat0.43418.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat的副本/normalized_ccat0.43906.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat的副本/normalized_ccat0.43906.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat的副本/normalized_ccat0.44399.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat的副本/normalized_ccat0.44399.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat的副本/normalized_ccat0.4491.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat的副本/normalized_ccat0.4491.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat的副本/normalized_ccat0.45396.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat的副本/normalized_ccat0.45396.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat的副本/normalized_ccat0.4591.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat的副本/normalized_ccat0.4591.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat的副本/normalized_ccat0.46401.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat的副本/normalized_ccat0.46401.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat的副本/normalized_ccat0.46898.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat的副本/normalized_ccat0.46898.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat的副本/normalized_ccat0.47393.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat的副本/normalized_ccat0.47393.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat的副本/normalized_ccat0.47892.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat的副本/normalized_ccat0.47892.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat的副本/normalized_ccat0.48382.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat的副本/normalized_ccat0.48382.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat的副本/normalized_ccat0.48902.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat的副本/normalized_ccat0.48902.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat的副本/normalized_ccat0.49402.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat的副本/normalized_ccat0.49402.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat的副本/normalized_ccat0.49902.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat的副本/normalized_ccat0.49902.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat的副本/normalized_ccat0.50394.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat的副本/normalized_ccat0.50394.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat的副本/normalized_ccat0.50893.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat的副本/normalized_ccat0.50893.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat的副本/normalized_ccat0.5138.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat的副本/normalized_ccat0.5138.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat的副本/normalized_ccat0.5189.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat的副本/normalized_ccat0.5189.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat的副本/normalized_ccat0.52428.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat的副本/normalized_ccat0.52428.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat的副本/normalized_ccat0.52932.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat的副本/normalized_ccat0.52932.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/grouped_by_ccat的副本/normalized_ccat0.53468.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/grouped_by_ccat的副本/normalized_ccat0.53468.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/line_test.pkl" beforeDir="false" afterPath="$PROJECT_DIR$/Data/line_test.pkl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/pixel.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/Data/pixel.xlsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/regdata.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/Data/regdata.xlsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/regdata2.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/regdata2.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/regdata2.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/Data/regdata2.xlsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/samples_line_test.p" beforeDir="false" afterPath="$PROJECT_DIR$/Data/samples_line_test.p" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/sterol_loadings.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/sterol_loadings.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/sterol_loadings.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/Data/sterol_loadings.xlsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/sterol_pca_results.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/Data/sterol_pca_results.xlsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/sterol_rawdata.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/sterol_rawdata.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/target1340.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/Data/target1340.xlsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/target1340_all.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/Data/target1340_all.xlsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/target1345_all.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/Data/target1345_all.xlsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dict/ccat_avg_dict.json" beforeDir="false" afterPath="$PROJECT_DIR$/Dict/ccat_avg_dict.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dict/ccat_dict.json" beforeDir="false" afterPath="$PROJECT_DIR$/Dict/ccat_dict.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dict/gdgt_excluded_mass_list.json" beforeDir="false" afterPath="$PROJECT_DIR$/Dict/gdgt_excluded_mass_list.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dict/group_by_ccat.json" beforeDir="false" afterPath="$PROJECT_DIR$/Dict/group_by_ccat.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dict/pixel_dict.json" beforeDir="false" afterPath="$PROJECT_DIR$/Dict/pixel_dict.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/sterol_ccat_classification.py" beforeDir="false" afterPath="$PROJECT_DIR$/sterol_ccat_classification.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target1316.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/targeting.py" beforeDir="false" afterPath="$PROJECT_DIR$/targeting.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sterol_regression.py" beforeDir="false" afterPath="$PROJECT_DIR$/sterol_regression.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/targeting.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -58,7 +330,7 @@
       <recent name="$PROJECT_DIR$/PCA Tools" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.target1316">
+  <component name="RunManager" selected="Python.mean_spectrum">
     <configuration default="true" type="PythonConfigurationType" factoryName="Python">
       <module name="polaris" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -81,7 +353,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="depth_vs_ccat" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="mass_bining" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="polaris" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -91,7 +363,7 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/depth_vs_ccat.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/mass_bining.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="true" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -100,20 +372,17 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="group_by_ccat" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="mean_spectrum" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="polaris" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
       <option name="SDK_HOME" value="" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/group_by_ccat.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/mean_spectrum.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="true" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -164,6 +433,9 @@
       <module name="polaris" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
       <option name="SDK_HOME" value="" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <option name="IS_MODULE_SDK" value="true" />
@@ -181,11 +453,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.target1316" />
+        <item itemvalue="Python.mean_spectrum" />
+        <item itemvalue="Python.mass_bining" />
         <item itemvalue="Python.sterol_ccat_classification" />
-        <item itemvalue="Python.depth_vs_ccat" />
         <item itemvalue="Python.sterol_regression" />
-        <item itemvalue="Python.group_by_ccat" />
+        <item itemvalue="Python.target1316" />
       </list>
     </recent_temporary>
   </component>
@@ -306,7 +578,8 @@
       <workItem from="1591618670166" duration="233000" />
       <workItem from="1591706545694" duration="804000" />
       <workItem from="1591707688475" duration="629000" />
-      <workItem from="1591773197112" duration="8728000" />
+      <workItem from="1591773197112" duration="12835000" />
+      <workItem from="1591877066108" duration="15904000" />
     </task>
     <servers />
   </component>
@@ -359,11 +632,13 @@
       <screen x="49" y="0" width="1999" height="1152" />
     </state>
     <state x="709" y="312" key="FileChooserDialogImpl/-399.1440.1256.720/49.0.1999.1152@49.0.1999.1152" timestamp="1584017848882" />
-    <state width="1878" height="263" key="GridCell.Tab.0.bottom" timestamp="1591789083865">
+    <state width="1878" height="456" key="GridCell.Tab.0.bottom" timestamp="1591897110138">
       <screen x="1440" y="-596" width="1920" height="1057" />
     </state>
     <state width="1957" height="392" key="GridCell.Tab.0.bottom/-399.1440.1256.720/49.0.1999.1152@49.0.1999.1152" timestamp="1584027657015" />
-    <state width="1878" height="263" key="GridCell.Tab.0.bottom/1440.-596.1920.1057/39.23.1401.787@1440.-596.1920.1057" timestamp="1591707286779" />
+    <state width="1878" height="456" key="GridCell.Tab.0.bottom/1440.-596.1920.1057/39.23.1401.787@1440.-596.1920.1057" timestamp="1591897110138" />
+    <state width="1878" height="249" key="GridCell.Tab.0.bottom/1440.-596.1920.1057/40.23.1400.787@1440.-596.1920.1057" timestamp="1591888702077" />
+    <state width="1878" height="381" key="GridCell.Tab.0.bottom/1440.-596.1920.1057/41.23.1399.787@1440.-596.1920.1057" timestamp="1591879309353" />
     <state width="1878" height="263" key="GridCell.Tab.0.bottom/1440.-596.1920.1057/42.23.1398.787@1440.-596.1920.1057" timestamp="1591789083865" />
     <state width="1878" height="263" key="GridCell.Tab.0.bottom/1440.-596.1920.1057/45.23.1395.787@1440.-596.1920.1057" timestamp="1591777322614" />
     <state width="1878" height="263" key="GridCell.Tab.0.bottom/1440.-596.1920.1057/47.23.1393.787@1440.-596.1920.1057" timestamp="1591775491257" />
@@ -371,11 +646,13 @@
     <state width="1350" height="182" key="GridCell.Tab.0.bottom/1440.-596.1920.1057/48.23.1392.787@48.23.1392.787" timestamp="1591615215702" />
     <state width="1537" height="808" key="GridCell.Tab.0.bottom/32.0.1248.720/3200.0.1536.864@32.0.1248.720" timestamp="1584045168454" />
     <state width="1830" height="353" key="GridCell.Tab.0.bottom/435.1080.1440.810/0.23.1872.1057@0.23.1872.1057" timestamp="1583853834797" />
-    <state width="1878" height="263" key="GridCell.Tab.0.center" timestamp="1591789083864">
+    <state width="1878" height="456" key="GridCell.Tab.0.center" timestamp="1591897110137">
       <screen x="1440" y="-596" width="1920" height="1057" />
     </state>
     <state width="1957" height="392" key="GridCell.Tab.0.center/-399.1440.1256.720/49.0.1999.1152@49.0.1999.1152" timestamp="1584027657015" />
-    <state width="1878" height="263" key="GridCell.Tab.0.center/1440.-596.1920.1057/39.23.1401.787@1440.-596.1920.1057" timestamp="1591707286777" />
+    <state width="1878" height="456" key="GridCell.Tab.0.center/1440.-596.1920.1057/39.23.1401.787@1440.-596.1920.1057" timestamp="1591897110137" />
+    <state width="1878" height="249" key="GridCell.Tab.0.center/1440.-596.1920.1057/40.23.1400.787@1440.-596.1920.1057" timestamp="1591888702076" />
+    <state width="1878" height="381" key="GridCell.Tab.0.center/1440.-596.1920.1057/41.23.1399.787@1440.-596.1920.1057" timestamp="1591879309352" />
     <state width="1878" height="263" key="GridCell.Tab.0.center/1440.-596.1920.1057/42.23.1398.787@1440.-596.1920.1057" timestamp="1591789083864" />
     <state width="1878" height="263" key="GridCell.Tab.0.center/1440.-596.1920.1057/45.23.1395.787@1440.-596.1920.1057" timestamp="1591777322612" />
     <state width="1878" height="263" key="GridCell.Tab.0.center/1440.-596.1920.1057/47.23.1393.787@1440.-596.1920.1057" timestamp="1591775491255" />
@@ -383,11 +660,13 @@
     <state width="1350" height="182" key="GridCell.Tab.0.center/1440.-596.1920.1057/48.23.1392.787@48.23.1392.787" timestamp="1591615215701" />
     <state width="1537" height="808" key="GridCell.Tab.0.center/32.0.1248.720/3200.0.1536.864@32.0.1248.720" timestamp="1584045168454" />
     <state width="1830" height="353" key="GridCell.Tab.0.center/435.1080.1440.810/0.23.1872.1057@0.23.1872.1057" timestamp="1583853834796" />
-    <state width="1878" height="263" key="GridCell.Tab.0.left" timestamp="1591789083864">
+    <state width="1878" height="456" key="GridCell.Tab.0.left" timestamp="1591897110136">
       <screen x="1440" y="-596" width="1920" height="1057" />
     </state>
     <state width="1957" height="392" key="GridCell.Tab.0.left/-399.1440.1256.720/49.0.1999.1152@49.0.1999.1152" timestamp="1584027657015" />
-    <state width="1878" height="263" key="GridCell.Tab.0.left/1440.-596.1920.1057/39.23.1401.787@1440.-596.1920.1057" timestamp="1591707286777" />
+    <state width="1878" height="456" key="GridCell.Tab.0.left/1440.-596.1920.1057/39.23.1401.787@1440.-596.1920.1057" timestamp="1591897110136" />
+    <state width="1878" height="249" key="GridCell.Tab.0.left/1440.-596.1920.1057/40.23.1400.787@1440.-596.1920.1057" timestamp="1591888702076" />
+    <state width="1878" height="381" key="GridCell.Tab.0.left/1440.-596.1920.1057/41.23.1399.787@1440.-596.1920.1057" timestamp="1591879309352" />
     <state width="1878" height="263" key="GridCell.Tab.0.left/1440.-596.1920.1057/42.23.1398.787@1440.-596.1920.1057" timestamp="1591789083864" />
     <state width="1878" height="263" key="GridCell.Tab.0.left/1440.-596.1920.1057/45.23.1395.787@1440.-596.1920.1057" timestamp="1591777322612" />
     <state width="1878" height="263" key="GridCell.Tab.0.left/1440.-596.1920.1057/47.23.1393.787@1440.-596.1920.1057" timestamp="1591775491254" />
@@ -395,11 +674,13 @@
     <state width="1350" height="182" key="GridCell.Tab.0.left/1440.-596.1920.1057/48.23.1392.787@48.23.1392.787" timestamp="1591615215700" />
     <state width="1537" height="808" key="GridCell.Tab.0.left/32.0.1248.720/3200.0.1536.864@32.0.1248.720" timestamp="1584045168438" />
     <state width="1830" height="353" key="GridCell.Tab.0.left/435.1080.1440.810/0.23.1872.1057@0.23.1872.1057" timestamp="1583853834796" />
-    <state width="1878" height="263" key="GridCell.Tab.0.right" timestamp="1591789083864">
+    <state width="1878" height="456" key="GridCell.Tab.0.right" timestamp="1591897110137">
       <screen x="1440" y="-596" width="1920" height="1057" />
     </state>
     <state width="1957" height="392" key="GridCell.Tab.0.right/-399.1440.1256.720/49.0.1999.1152@49.0.1999.1152" timestamp="1584027657015" />
-    <state width="1878" height="263" key="GridCell.Tab.0.right/1440.-596.1920.1057/39.23.1401.787@1440.-596.1920.1057" timestamp="1591707286778" />
+    <state width="1878" height="456" key="GridCell.Tab.0.right/1440.-596.1920.1057/39.23.1401.787@1440.-596.1920.1057" timestamp="1591897110137" />
+    <state width="1878" height="249" key="GridCell.Tab.0.right/1440.-596.1920.1057/40.23.1400.787@1440.-596.1920.1057" timestamp="1591888702076" />
+    <state width="1878" height="381" key="GridCell.Tab.0.right/1440.-596.1920.1057/41.23.1399.787@1440.-596.1920.1057" timestamp="1591879309352" />
     <state width="1878" height="263" key="GridCell.Tab.0.right/1440.-596.1920.1057/42.23.1398.787@1440.-596.1920.1057" timestamp="1591789083864" />
     <state width="1878" height="263" key="GridCell.Tab.0.right/1440.-596.1920.1057/45.23.1395.787@1440.-596.1920.1057" timestamp="1591777322613" />
     <state width="1878" height="263" key="GridCell.Tab.0.right/1440.-596.1920.1057/47.23.1393.787@1440.-596.1920.1057" timestamp="1591775491256" />
@@ -407,11 +688,13 @@
     <state width="1350" height="182" key="GridCell.Tab.0.right/1440.-596.1920.1057/48.23.1392.787@48.23.1392.787" timestamp="1591615215701" />
     <state width="1537" height="808" key="GridCell.Tab.0.right/32.0.1248.720/3200.0.1536.864@32.0.1248.720" timestamp="1584045168454" />
     <state width="1830" height="353" key="GridCell.Tab.0.right/435.1080.1440.810/0.23.1872.1057@0.23.1872.1057" timestamp="1583853834796" />
-    <state width="1878" height="263" key="GridCell.Tab.1.bottom" timestamp="1591789083865">
+    <state width="1878" height="456" key="GridCell.Tab.1.bottom" timestamp="1591897110139">
       <screen x="1440" y="-596" width="1920" height="1057" />
     </state>
     <state width="1957" height="392" key="GridCell.Tab.1.bottom/-399.1440.1256.720/49.0.1999.1152@49.0.1999.1152" timestamp="1584027657016" />
-    <state width="1878" height="263" key="GridCell.Tab.1.bottom/1440.-596.1920.1057/39.23.1401.787@1440.-596.1920.1057" timestamp="1591707286781" />
+    <state width="1878" height="456" key="GridCell.Tab.1.bottom/1440.-596.1920.1057/39.23.1401.787@1440.-596.1920.1057" timestamp="1591897110139" />
+    <state width="1878" height="249" key="GridCell.Tab.1.bottom/1440.-596.1920.1057/40.23.1400.787@1440.-596.1920.1057" timestamp="1591888702078" />
+    <state width="1878" height="381" key="GridCell.Tab.1.bottom/1440.-596.1920.1057/41.23.1399.787@1440.-596.1920.1057" timestamp="1591879309353" />
     <state width="1878" height="263" key="GridCell.Tab.1.bottom/1440.-596.1920.1057/42.23.1398.787@1440.-596.1920.1057" timestamp="1591789083865" />
     <state width="1878" height="263" key="GridCell.Tab.1.bottom/1440.-596.1920.1057/45.23.1395.787@1440.-596.1920.1057" timestamp="1591777322617" />
     <state width="1878" height="263" key="GridCell.Tab.1.bottom/1440.-596.1920.1057/47.23.1393.787@1440.-596.1920.1057" timestamp="1591775491259" />
@@ -419,11 +702,13 @@
     <state width="1350" height="182" key="GridCell.Tab.1.bottom/1440.-596.1920.1057/48.23.1392.787@48.23.1392.787" timestamp="1591615215703" />
     <state width="1537" height="808" key="GridCell.Tab.1.bottom/32.0.1248.720/3200.0.1536.864@32.0.1248.720" timestamp="1584045168454" />
     <state width="1830" height="353" key="GridCell.Tab.1.bottom/435.1080.1440.810/0.23.1872.1057@0.23.1872.1057" timestamp="1583853834798" />
-    <state width="1878" height="263" key="GridCell.Tab.1.center" timestamp="1591789083865">
+    <state width="1878" height="456" key="GridCell.Tab.1.center" timestamp="1591897110139">
       <screen x="1440" y="-596" width="1920" height="1057" />
     </state>
     <state width="1957" height="392" key="GridCell.Tab.1.center/-399.1440.1256.720/49.0.1999.1152@49.0.1999.1152" timestamp="1584027657016" />
-    <state width="1878" height="263" key="GridCell.Tab.1.center/1440.-596.1920.1057/39.23.1401.787@1440.-596.1920.1057" timestamp="1591707286780" />
+    <state width="1878" height="456" key="GridCell.Tab.1.center/1440.-596.1920.1057/39.23.1401.787@1440.-596.1920.1057" timestamp="1591897110139" />
+    <state width="1878" height="249" key="GridCell.Tab.1.center/1440.-596.1920.1057/40.23.1400.787@1440.-596.1920.1057" timestamp="1591888702077" />
+    <state width="1878" height="381" key="GridCell.Tab.1.center/1440.-596.1920.1057/41.23.1399.787@1440.-596.1920.1057" timestamp="1591879309353" />
     <state width="1878" height="263" key="GridCell.Tab.1.center/1440.-596.1920.1057/42.23.1398.787@1440.-596.1920.1057" timestamp="1591789083865" />
     <state width="1878" height="263" key="GridCell.Tab.1.center/1440.-596.1920.1057/45.23.1395.787@1440.-596.1920.1057" timestamp="1591777322615" />
     <state width="1878" height="263" key="GridCell.Tab.1.center/1440.-596.1920.1057/47.23.1393.787@1440.-596.1920.1057" timestamp="1591775491258" />
@@ -431,11 +716,13 @@
     <state width="1350" height="182" key="GridCell.Tab.1.center/1440.-596.1920.1057/48.23.1392.787@48.23.1392.787" timestamp="1591615215702" />
     <state width="1537" height="808" key="GridCell.Tab.1.center/32.0.1248.720/3200.0.1536.864@32.0.1248.720" timestamp="1584045168454" />
     <state width="1830" height="353" key="GridCell.Tab.1.center/435.1080.1440.810/0.23.1872.1057@0.23.1872.1057" timestamp="1583853834797" />
-    <state width="1878" height="263" key="GridCell.Tab.1.left" timestamp="1591789083865">
+    <state width="1878" height="456" key="GridCell.Tab.1.left" timestamp="1591897110139">
       <screen x="1440" y="-596" width="1920" height="1057" />
     </state>
     <state width="1957" height="392" key="GridCell.Tab.1.left/-399.1440.1256.720/49.0.1999.1152@49.0.1999.1152" timestamp="1584027657015" />
-    <state width="1878" height="263" key="GridCell.Tab.1.left/1440.-596.1920.1057/39.23.1401.787@1440.-596.1920.1057" timestamp="1591707286779" />
+    <state width="1878" height="456" key="GridCell.Tab.1.left/1440.-596.1920.1057/39.23.1401.787@1440.-596.1920.1057" timestamp="1591897110139" />
+    <state width="1878" height="249" key="GridCell.Tab.1.left/1440.-596.1920.1057/40.23.1400.787@1440.-596.1920.1057" timestamp="1591888702077" />
+    <state width="1878" height="381" key="GridCell.Tab.1.left/1440.-596.1920.1057/41.23.1399.787@1440.-596.1920.1057" timestamp="1591879309353" />
     <state width="1878" height="263" key="GridCell.Tab.1.left/1440.-596.1920.1057/42.23.1398.787@1440.-596.1920.1057" timestamp="1591789083865" />
     <state width="1878" height="263" key="GridCell.Tab.1.left/1440.-596.1920.1057/45.23.1395.787@1440.-596.1920.1057" timestamp="1591777322615" />
     <state width="1878" height="263" key="GridCell.Tab.1.left/1440.-596.1920.1057/47.23.1393.787@1440.-596.1920.1057" timestamp="1591775491257" />
@@ -443,11 +730,13 @@
     <state width="1350" height="182" key="GridCell.Tab.1.left/1440.-596.1920.1057/48.23.1392.787@48.23.1392.787" timestamp="1591615215702" />
     <state width="1537" height="808" key="GridCell.Tab.1.left/32.0.1248.720/3200.0.1536.864@32.0.1248.720" timestamp="1584045168454" />
     <state width="1830" height="353" key="GridCell.Tab.1.left/435.1080.1440.810/0.23.1872.1057@0.23.1872.1057" timestamp="1583853834797" />
-    <state width="1878" height="263" key="GridCell.Tab.1.right" timestamp="1591789083865">
+    <state width="1878" height="456" key="GridCell.Tab.1.right" timestamp="1591897110139">
       <screen x="1440" y="-596" width="1920" height="1057" />
     </state>
     <state width="1957" height="392" key="GridCell.Tab.1.right/-399.1440.1256.720/49.0.1999.1152@49.0.1999.1152" timestamp="1584027657016" />
-    <state width="1878" height="263" key="GridCell.Tab.1.right/1440.-596.1920.1057/39.23.1401.787@1440.-596.1920.1057" timestamp="1591707286780" />
+    <state width="1878" height="456" key="GridCell.Tab.1.right/1440.-596.1920.1057/39.23.1401.787@1440.-596.1920.1057" timestamp="1591897110139" />
+    <state width="1878" height="249" key="GridCell.Tab.1.right/1440.-596.1920.1057/40.23.1400.787@1440.-596.1920.1057" timestamp="1591888702077" />
+    <state width="1878" height="381" key="GridCell.Tab.1.right/1440.-596.1920.1057/41.23.1399.787@1440.-596.1920.1057" timestamp="1591879309353" />
     <state width="1878" height="263" key="GridCell.Tab.1.right/1440.-596.1920.1057/42.23.1398.787@1440.-596.1920.1057" timestamp="1591789083865" />
     <state width="1878" height="263" key="GridCell.Tab.1.right/1440.-596.1920.1057/45.23.1395.787@1440.-596.1920.1057" timestamp="1591777322616" />
     <state width="1878" height="263" key="GridCell.Tab.1.right/1440.-596.1920.1057/47.23.1393.787@1440.-596.1920.1057" timestamp="1591775491258" />
@@ -460,18 +749,18 @@
     </state>
     <state x="475" y="214" key="SettingsEditor/-399.1440.1256.720/49.0.1999.1152@49.0.1999.1152" timestamp="1584018164225" />
     <state x="1746" y="-430" key="SettingsEditor/1440.-596.1920.1057/40.23.1400.787@1440.-596.1920.1057" timestamp="1590583381941" />
-    <state width="944" height="523" key="XDebugger.FullValuePopup" timestamp="1591789468242">
+    <state width="944" height="523" key="XDebugger.FullValuePopup" timestamp="1591898349317">
       <screen x="1440" y="-596" width="1920" height="1057" />
     </state>
     <state width="982" height="569" key="XDebugger.FullValuePopup/-399.1440.1256.720/49.0.1999.1152@49.0.1999.1152" timestamp="1584018226126" />
-    <state width="944" height="523" key="XDebugger.FullValuePopup/1440.-596.1920.1057/39.23.1401.787@1440.-596.1920.1057" timestamp="1591707230753" />
+    <state width="944" height="523" key="XDebugger.FullValuePopup/1440.-596.1920.1057/39.23.1401.787@1440.-596.1920.1057" timestamp="1591898349317" />
+    <state width="944" height="523" key="XDebugger.FullValuePopup/1440.-596.1920.1057/40.23.1400.787@1440.-596.1920.1057" timestamp="1591888098706" />
     <state width="944" height="523" key="XDebugger.FullValuePopup/1440.-596.1920.1057/42.23.1398.787@1440.-596.1920.1057" timestamp="1591789468242" />
     <state width="944" height="523" key="XDebugger.FullValuePopup/1440.-596.1920.1057/45.23.1395.787@1440.-596.1920.1057" timestamp="1591777107977" />
     <state width="944" height="523" key="XDebugger.FullValuePopup/1440.-596.1920.1057/47.23.1393.787@1440.-596.1920.1057" timestamp="1591776776340" />
     <state width="944" height="523" key="XDebugger.FullValuePopup/1440.-596.1920.1057/48.23.1392.787@1440.-596.1920.1057" timestamp="1591606734582" />
     <state width="919" height="521" key="XDebugger.FullValuePopup/435.1080.1440.810/0.23.1872.1057@0.23.1872.1057" timestamp="1583767823652" />
     <state width="707" height="400" key="XDebugger.FullValuePopup/435.1080.1440.810/0.23.1872.1057@435.1080.1440.810" timestamp="1583848851002" />
-    <state width="920" height="521" key="XDebugger.FullValuePopup/435.1080.1440.810/0.23.1873.1057@0.23.1873.1057" timestamp="1583144265056" />
     <state width="685" height="390" key="XDebugger.FullValuePopup/48.23.1392.787@48.23.1392.787" timestamp="1591363754417" />
     <state x="1894" y="-356" key="com.intellij.execution.console.ConsoleHistoryController$MyBrowseAction$1" timestamp="1591083353777">
       <screen x="1440" y="-596" width="1920" height="1057" />
@@ -498,8 +787,8 @@
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/sterol_regression.py</url>
-          <line>50</line>
-          <option name="timeStamp" value="2" />
+          <line>72</line>
+          <option name="timeStamp" value="13" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -510,19 +799,22 @@
     </watches-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/polaris$mean_spectrum.coverage" NAME="mean_spectrum Coverage Results" MODIFIED="1591897086835" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/polaris$ldr.coverage" NAME="ldr Coverage Results" MODIFIED="1583853832127" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/polaris$test.coverage" NAME="test Coverage Results" MODIFIED="1582038112679" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/polaris$sterol_ccat_classification.coverage" NAME="sterol_ccat_classification Coverage Results" MODIFIED="1591789045788" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/polaris$sterol.coverage" NAME="sterol Coverage Results" MODIFIED="1591777258477" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/polaris$sterol_ccat_classification.coverage" NAME="sterol_ccat_classification Coverage Results" MODIFIED="1591879532775" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/polaris$sterol.coverage" NAME="sterol_regression Coverage Results" MODIFIED="1591864253936" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/polaris$MergeTables.coverage" NAME="MergeTables Coverage Results" MODIFIED="1574324886141" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/polaris$group_by_ccat.coverage" NAME="group_by_ccat Coverage Results" MODIFIED="1591105219878" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/polaris$exclude_mass.coverage" NAME="exclude_mass Coverage Results" MODIFIED="1583756219180" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/polaris$SelectCompounds.coverage" NAME="SelectCompounds Coverage Results" MODIFIED="1579080509708" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/PCA Tools" />
     <SUITE FILE_PATH="coverage/polaris$Polaris.coverage" NAME="Polaris Coverage Results" MODIFIED="1580739955226" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/polaris$sterol_regression.coverage" NAME="sterol_regression Coverage Results" MODIFIED="1591879623771" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/polaris$mergeMass.coverage" NAME="mergeMass Coverage Results" MODIFIED="1581066074659" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/polaris$chemcaljs.coverage" NAME="chemcaljs Coverage Results" MODIFIED="1581018188683" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/polaris$gold_tube_analysis.coverage" NAME="gold_tube_analysis Coverage Results" MODIFIED="1584045008699" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/polaris$111.coverage" NAME="111 Coverage Results" MODIFIED="1583767222196" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/polaris$mass_bining.coverage" NAME="mass_bining Coverage Results" MODIFIED="1591888671745" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/polaris$depth_vs_ccat.coverage" NAME="depth_vs_ccat Coverage Results" MODIFIED="1591788073641" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

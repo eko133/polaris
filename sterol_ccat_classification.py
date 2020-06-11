@@ -1,4 +1,4 @@
-import targeting
+import main
 import json
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -41,20 +41,21 @@ def colinear_finder(packed_arg):
     LR.fit(np.array(X_train).reshape(-1, 1), y_train)
     score = LR.score(np.array(X_test).reshape(-1, 1), y_test)
     print(x,y,score)
-    with open('./colinear.txt', 'a') as f:
+    with open('./SharedStorage/colinear.txt', 'a') as f:
         f.writelines(f'{x, y,score} \n')
 
 
 # classify laser points with high and low ccat values
-test_txt = r'/Users/siaga/Git/polaris/Y053.txt'
-# test_txt = r'/Users/siaga/Documents/gdgt/sbb_sterol.txt'
-raw_data = targeting.align(test_txt)
+# test_txt = r'./TestData/Y050053.txt'
+test_txt = r'/Users/siaga/Documents/gdgt/sbb_sterol.txt'
+raw_data = main.align(test_txt)
 raw_data = raw_data.set_index('m/z')
 # for column in raw_data.columns:
 #     raw_data[column] = (raw_data[column] - raw_data[column].min()) / (raw_data[column].max() - raw_data[column].min())
 raw_data = raw_data.T
-raw_data = raw_data.dropna(axis =1, thresh=0.5*raw_data.shape[0])
+raw_data = raw_data.dropna(axis =1, thresh=0.8*raw_data.shape[0])
 raw_data = raw_data.dropna(thresh=0.5*raw_data.shape[1])
+raw_data = raw_data.dropna(subset=[433.38])
 
 # mass_lists_combinations =list(itertools.combinations(raw_data.columns,2))
 #
@@ -64,8 +65,8 @@ raw_data = raw_data.dropna(thresh=0.5*raw_data.shape[1])
 #     executor.map(colinear_finder, args)
 
 ##exclude colinear m/z
-colinear = pd.read_csv('./colinear.csv')
-colinear = colinear[colinear['score']>=0.25]
+colinear = pd.read_csv('./SharedStorage/colinear.csv')
+colinear = colinear[colinear['score']>=0.7]
 colinear_list = colinear['y'].tolist()
 for mass in tuple(colinear_list):
     try:
@@ -73,11 +74,12 @@ for mass in tuple(colinear_list):
     except KeyError:
         continue
 
+raw_data = raw_data.T
 for column in raw_data.columns:
-    raw_data[column] = (raw_data[column] - raw_data[column].min()) / (raw_data[column].max() - raw_data[column].min())
-
+    raw_data[column] = raw_data[column]/raw_data[column].sum()
+raw_data = raw_data.T
 ##add ccat info
-with open ('./dict/ccat_avg_dict.json') as f:
+with open ('Dict/ccat_avg_dict.json') as f:
     ccat_dict = json.load(f)
 raw_data['ccat'] = raw_data.index.map(ccat_dict)
 raw_data = raw_data.dropna(subset=['ccat'])
@@ -85,7 +87,7 @@ raw_data = raw_data.dropna(subset=['ccat'])
 raw_data['label'] = raw_data['ccat'].round(2)
 raw_data = raw_data.drop(columns=['ccat'])
 
-raw_data = raw_data[raw_data['label'].isin([0.44, 0.48, 0.51])]
+raw_data = raw_data[raw_data['label'].isin([0.44,0.51])]
 raw_data['label'] = raw_data['label'].astype(str)
 ## cut ccat ranges
 # cuts = 4
@@ -96,7 +98,7 @@ raw_data['label'] = raw_data['label'].astype(str)
 # raw_data['label'] = raw_data['ccat'].apply(ccat_label,args=(ccat_label_list,))
 
 raw_data  = raw_data.replace(np.nan, 0)
-X_train, X_test, y_train, y_test = train_test_split(raw_data.drop(columns='label'), raw_data['label'], test_size=0.2)
+X_train, X_test, y_train, y_test = train_test_split(raw_data.drop(columns='label'), raw_data['label'], test_size=0.2,random_state=0)
 clf = LinearDiscriminantAnalysis()
 # clf = QuadraticDiscriminantAnalysis()
 clf.fit(X_train,y_train)
@@ -106,9 +108,9 @@ ax = fig.add_subplot(111, projection='3d')
 ax.scatter(xda[:,0], xda[:,1], xda[:,2], s=50,c=y_train,cmap='rainbow', alpha=0.7,edgecolors='black')
 plt.show()
 
-# scalings of each variable
-scalings = pd.DataFrame(clf.scalings_,columns = [f'LD{i}' for i in range(0,cuts-1)] )
-scalings.index = raw_data.drop(columns='label').T.index
+# # scalings of each variable
+# scalings = pd.DataFrame(clf.scalings_,columns = [f'LD{i}' for i in range(0,cuts-1)] )
+# scalings.index = raw_data.drop(columns='label').T.index
 
 
 
