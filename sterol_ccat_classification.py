@@ -30,12 +30,13 @@ def ccat_label(ccat, ccat_label_list):
             return i
 
 
+
 def colinear_finder(packed_arg):
     data, mass = packed_arg
     x, y = mass
     tmp = data[[x, y]].copy()
     tmp = tmp.dropna(how='any', axis=0)
-    X_train, X_test, y_train, y_test = train_test_split(np.array(tmp[x]).reshape(-1,1), tmp[y], test_size=0.3, random_state=0)
+    X_train, X_test, y_train, y_test = train_test_split(np.array(tmp[x]).reshape(-1,1), tmp[y], test_size=0.2, random_state=0)
     LR = linear_model.LinearRegression()
     LR.fit(np.array(X_train).reshape(-1, 1), y_train)
     score = LR.score(np.array(X_test).reshape(-1, 1), y_test)
@@ -76,29 +77,39 @@ for column in raw_data.columns:
     raw_data[column] = (raw_data[column] - raw_data[column].min()) / (raw_data[column].max() - raw_data[column].min())
 
 ##add ccat info
-with open ('./dict/ccat_dict.json') as f:
+with open ('./dict/ccat_avg_dict.json') as f:
     ccat_dict = json.load(f)
 raw_data['ccat'] = raw_data.index.map(ccat_dict)
 raw_data = raw_data.dropna(subset=['ccat'])
 
+raw_data['label'] = raw_data['ccat'].round(2)
+raw_data = raw_data.drop(columns=['ccat'])
+
+raw_data = raw_data[raw_data['label'].isin([0.44, 0.48, 0.51])]
+raw_data['label'] = raw_data['label'].astype(str)
 ## cut ccat ranges
-ccat_label_list = cut_ccat(raw_data,7)
+# cuts = 4
+# ccat_label_list = cut_ccat(raw_data,cuts)
+#
+#
+# ## classify the points to ccat_labels
+# raw_data['label'] = raw_data['ccat'].apply(ccat_label,args=(ccat_label_list,))
 
-
-## classify the points to <0.4, 0.4-0.45, 0.45-0.5, 0.5-0.55, >0.5
-raw_data['label'] = raw_data['ccat'].apply(ccat_label,args=(ccat_label_list,))
-
-raw_data  = raw_data.drop(columns = 'ccat')
 raw_data  = raw_data.replace(np.nan, 0)
-X_train, X_test, y_train, y_test = train_test_split(raw_data.drop(columns='label'), raw_data['label'], test_size=0.1, random_state=0)
+X_train, X_test, y_train, y_test = train_test_split(raw_data.drop(columns='label'), raw_data['label'], test_size=0.2)
 clf = LinearDiscriminantAnalysis()
 # clf = QuadraticDiscriminantAnalysis()
 clf.fit(X_train,y_train)
 xda = clf.fit_transform(X_train,y_train)
 fig = plt.figure()
 ax = fig.add_subplot(111, projection='3d')
-ax.scatter(xda[:,0], xda[:,1], xda[:,2], s=100,c=y_train,cmap='rainbow', alpha=0.7,edgecolors='black')
+ax.scatter(xda[:,0], xda[:,1], xda[:,2], s=50,c=y_train,cmap='rainbow', alpha=0.7,edgecolors='black')
 plt.show()
+
+# scalings of each variable
+scalings = pd.DataFrame(clf.scalings_,columns = [f'LD{i}' for i in range(0,cuts-1)] )
+scalings.index = raw_data.drop(columns='label').T.index
+
 
 
 # plt.xlabel('LD1')
