@@ -5,20 +5,21 @@ import json
 import math
 import os
 from itertools import combinations
-
+import itertools
 import numpy as np
 import pandas as pd
 from sklearn import linear_model
 from sklearn.decomposition import PCA
 from sklearn.model_selection import train_test_split
+from mendeleev import element
+
 
 # Set dir for different OS
 if os.sys.platform == 'darwin':
     os.chdir(r'/Users/siaga/Git/polaris/')
 
-
-# if 'win' in os.sys.platform:
-#     dir = r'C:/Users/siaga/Git/polaris/'
+if os.sys.platform == 'win32':
+    dir = r'C:/Users/siaga/REPO/polaris/'
 
 
 def raw_txt_filter(path, filter1):
@@ -29,6 +30,34 @@ def raw_txt_filter(path, filter1):
             if filter1 in line:
                 f.write(line)
 
+def generate_possible_formula():
+    compound = dict()
+    mono_isotope_mass_dict =dict()
+    for i in ['C','H','O','N','S','Cl','Na','K']:
+        mono_isotope_mass_dict[i] = element(i).isotopes[0].mass
+    min_mass, max_mass = 520, 580
+    max_element_dict = {
+        'C': int(max_mass/mono_isotope_mass_dict['C'])+1,
+        'O': 6,
+        'N': 6,
+        'Na': 2,
+        'K': 1,
+        'DBE': 20
+    }
+    max_element_dict['H_max'] = 2 * max_element_dict['C'] + 3
+    tmp = [range(max_element_dict[i]) for i in ['C','H_max','O','N','Na','K']]
+    for c,h,o,n,na,k in itertools.product(tmp[0],tmp[1],tmp[2],tmp[3],tmp[4],tmp[5]):
+        if (c >=10) & ((na+k)==1):
+            dbe = c + 1 + n / 2 - h / 2
+            if (0.3 <= h / c <= 3.0) & (o / c <= 3.0) & (n / c <= 0.5) & (dbe%1==0) & (0 <= dbe <=20) & (
+                    (h + n) % 2 == 0):
+                em = na *mono_isotope_mass_dict['Na']
+                em = c * mono_isotope_mass_dict['C'] + h * mono_isotope_mass_dict['H'] + o * mono_isotope_mass_dict[
+                    'O'] + n * mono_isotope_mass_dict['N'] + na * mono_isotope_mass_dict['Na']+ k * mono_isotope_mass_dict['K']-0.0005485799
+                if min_mass <= em <= max_mass:
+                    formula = f'C{c}H{h}O{o}N{n}Na{na}K{k}'
+                    compound[em] = formula + ',' + str(dbe)
+    return compound
 
 def exclude_mass_list():
     gdgt0 = '1301.3154	1302.3187	1302.3227	1303.3260	1319.3492	1320.3526	651.6650	652.6683	668.6915	669.6949	660.1782	661.1816	1324.3046	1325.3080	1340.2785	1341.2819'

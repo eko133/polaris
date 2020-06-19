@@ -26,7 +26,8 @@ def accurate_mass_finder(packed_args):
 
 
 target_mass = [392.15,517.27,393.3,433.26,405.19,460.25]
-test_txt = r'/Users/siaga/Dropbox/Documents/MALDI/sbb_sterol.txt'
+# test_txt = r'/Users/siaga/Dropbox/Documents/MALDI/sbb_sterol.txt'
+test_txt=r'/Users/siaga/Git/polaris/TestData/Y053.txt'
 with open(test_txt) as f:
     lines = f.readlines()
 n_proc = 8

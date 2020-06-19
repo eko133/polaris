@@ -127,12 +127,12 @@ for mass in tuple(colinear_list):
 tmp = pd.DataFrame(data.ccat,columns=['ccat'])
 data = data.drop(columns=['ccat',539.24])
 
-# #median normalization
-# data['median'] = data.median(axis=1)
-# for row in data.index:
-#     scal = data.loc[row,'median']
-#     data.loc[row,:] = data.loc[row,:]/scal
-# data=data.drop(columns=['median'])
+#median normalization
+data['median'] = data.median(axis=1)
+for row in data.index:
+    scal = data.loc[row,'median']
+    data.loc[row,:] = data.loc[row,:]/scal
+data=data.drop(columns=['median'])
 
 # data = data.T
 # for column in data.columns:
@@ -156,12 +156,12 @@ for column in data.columns:
     data.loc[data[column]>data[column].quantile(0.99),column] = median
     data.loc[data[column]<data[column].quantile(0.01),column] = median
 
-# # median normalization
-# data['median'] = data.median(axis=1)
-# for row in data.index:
-#     scal = data.loc[row,'median']
-#     data.loc[row,:] = data.loc[row,:]/scal
-# data=data.drop(columns=['median'])
+# median normalization
+data['median'] = data.median(axis=1)
+for row in data.index:
+    scal = data.loc[row,'median']
+    data.loc[row,:] = data.loc[row,:]/scal
+data=data.drop(columns=['median'])
 
 # for i in [(392.15,517.27),(392.15,460.25),(393.3,433.26),(405.19,517.27)]:
 #     data[f'{i[0]}/{i[1]}'] = data[i[0]]/(data[i[0]]+data[i[1]])
@@ -173,17 +173,17 @@ for column in data.columns:
 scaled_features = StandardScaler().fit_transform(data.values)
 scaled_data = pd.DataFrame(scaled_features,index=data.index,columns=data.columns)
 
-pca = PCA(n_components=10)
-pComponents = pca.fit_transform(scaled_data)
-print(pca.explained_variance_ratio_)
-pcaData = pd.DataFrame(data=pComponents, columns=[[f'principal component {i}' for i in range(1,11)]])
-pcaData.index = data.index
-loadings = pca.components_
-loadings = loadings.T
-loadings = pd.DataFrame(loadings)
-loadings.index = data.T.index
-loadings.to_csv(r'Data/sterol_loadings.csv')
-pcaData.to_csv(r'Data/sterol_pca_results.csv')
+# pca = PCA(n_components=10)
+# pComponents = pca.fit_transform(scaled_data)
+# print(pca.explained_variance_ratio_)
+# pcaData = pd.DataFrame(data=pComponents, columns=[[f'principal component {i}' for i in range(1,11)]])
+# pcaData.index = data.index
+# loadings = pca.components_
+# loadings = loadings.T
+# loadings = pd.DataFrame(loadings)
+# loadings.index = data.T.index
+# loadings.to_csv(r'Data/sterol_loadings.csv')
+# pcaData.to_csv(r'Data/sterol_pca_results.csv')
 #
 # mass_lists_combinations =list(combinations(data.columns,2))
 #
@@ -198,18 +198,18 @@ pcaData.to_csv(r'Data/sterol_pca_results.csv')
 # lasso = linear_model.LassoCV()
 # lasso.fit(data.drop(columns='ccat'),data['ccat'])
 
-# tmp['label'] = tmp['ccat'].apply(ccat_label)
-# # # data = data.drop(columns=['ccat'])
-# # # data = data.dropna(subset=['label'])
-# # #
-#
-# data = data.replace(np.nan,0)
-# tmp = tmp.replace(np.nan,0)
-# tmp['label'] = tmp['label'].astype(str)
-# X_train, X_test, y_train, y_test = train_test_split(data, tmp['label'], test_size=0.1)
-# regr = svm.SVC()
-# regr.fit(X_train,y_train)
-# regr.score(X_test,y_test)
+tmp['label'] = tmp['ccat'].apply(ccat_label)
+# # data = data.drop(columns=['ccat'])
+# # data = data.dropna(subset=['label'])
+# #
+
+data = data.replace(np.nan,0)
+tmp = tmp.replace(np.nan,0)
+tmp['label'] = tmp['label'].astype(str)
+X_train, X_test, y_train, y_test = train_test_split(data, tmp['label'], test_size=0.1)
+regr = svm.SVC()
+regr.fit(X_train,y_train)
+regr.score(X_test,y_test)
 # #
 # # Z = hierarchy.linkage(scaled_data)
 # hierarchy.dendrogram(Z,labels=scaled_data.index)
