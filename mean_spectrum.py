@@ -124,21 +124,6 @@ for mass in tuple(colinear_list):
     except KeyError:
         continue
 
-tmp = pd.DataFrame(data.ccat,columns=['ccat'])
-data = data.drop(columns=['ccat',539.24])
-
-#median normalization
-data['median'] = data.median(axis=1)
-for row in data.index:
-    scal = data.loc[row,'median']
-    data.loc[row,:] = data.loc[row,:]/scal
-data=data.drop(columns=['median'])
-
-# data = data.T
-# for column in data.columns:
-#     data[column] = data[column]/data[column].sum()
-# data = data.T
-# data['ccat'] = tmp
 # #
 # # with open('./SterolMean.pkl','wb') as f:
 # #     pickle.dump(data,f)
@@ -151,17 +136,7 @@ data=data.drop(columns=['median'])
 # #
 # # clf = linear_model.LogisticRegressionCV()
 # # clf.fit(data.drop(columns='label'), data['label'])
-for column in data.columns:
-    median = data[column][data[column].between(data[column].quantile(0.01),data[column].quantile(0.99))].median()
-    data.loc[data[column]>data[column].quantile(0.99),column] = median
-    data.loc[data[column]<data[column].quantile(0.01),column] = median
 
-# median normalization
-data['median'] = data.median(axis=1)
-for row in data.index:
-    scal = data.loc[row,'median']
-    data.loc[row,:] = data.loc[row,:]/scal
-data=data.drop(columns=['median'])
 
 # for i in [(392.15,517.27),(392.15,460.25),(393.3,433.26),(405.19,517.27)]:
 #     data[f'{i[0]}/{i[1]}'] = data[i[0]]/(data[i[0]]+data[i[1]])
