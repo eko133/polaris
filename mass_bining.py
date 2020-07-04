@@ -6,7 +6,7 @@ from main import mp_mass_bining
 
 mass = [i for i in np.arange(37500,52500,1)/100]
 
-test_txt = r'/Users/siaga/Seafile/Documents/MALDI/SBB0-5_sterol.txt'
+test_txt = r'/Users/siaga/Dropbox/Documents/MALDI/SBB0-5_alkenone.txt'
 with open(test_txt) as f:
     lines = f.readlines()
 n_proc = 8
