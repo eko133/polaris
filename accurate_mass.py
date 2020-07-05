@@ -1,6 +1,11 @@
 import pandas as pd
 import numpy as np
 import concurrent.futures
+import platform
+import os
+
+if platform.system() == 'Darwin':
+    shared_storage = '/Users/siaga/Dropbox/SharedStorage/polaris'
 
 def accurate_mass_finder(packed_args):
     lines,target_mass, datan = packed_args
@@ -25,10 +30,9 @@ def accurate_mass_finder(packed_args):
     return datan
 
 
-target_mass = [392.15,517.27,393.3,433.26,405.19,460.25]
-# test_txt = r'/Users/siaga/Dropbox/Documents/MALDI/sbb_sterol.txt'
-test_txt=r'/Users/siaga/Git/polaris/TestData/Y053.txt'
-with open(test_txt) as f:
+target_mass = [533.43]
+raw_txt = os.path.join(shared_storage,'SBB0-5_alkenone.txt')
+with open(raw_txt) as f:
     lines = f.readlines()
 n_proc = 8
 line_dict = dict()

@@ -18,8 +18,11 @@ def factorize(data, method='pca', n_components = 100):
     components = factorization.fit_transform(scaled_data)
     factorized_data = pd.DataFrame(data=components, columns=[f'F{i}' for i in range(1,n_components+1)])
     factorized_data.index = data.index
-    # loadings = pca.components_
-    # loadings = loadings.T
-    # loadings = pd.DataFrame(loadings, columns=[f'PC{i}' for i in range(1,n_components+1)])
-    # loadings.index = data.T.index
-    return factorized_data
+    if method == 'pca' or method == 'ica'or method == 'fa':
+        loadings = factorization.components_
+        loadings = loadings.T
+        loadings = pd.DataFrame(loadings, columns=[f'F{i}' for i in range(1,n_components+1)])
+        loadings.index = data.T.index
+        return factorized_data, loadings
+    else:
+        return factorized_data

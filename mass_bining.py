@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 import concurrent.futures
-from main import mp_mass_bining
+from util.preprocessing import mp_mass_bining
 
 
 mass = [i for i in np.arange(37500,52500,1)/100]

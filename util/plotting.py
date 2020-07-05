@@ -31,3 +31,15 @@ def show_x_ray(data):
     im = Image.fromarray(grid_z0, 'L')
     return im.show()
 
+
+def extract_coordinates(data, cor = 'index'):
+    """
+    extract coordinates from series/index
+    """
+    if cor == 'index':
+        data['x'] = data.index.str.extract(r'R00X(.*?)Y').astype(int).values
+        data['y'] = data.index.str.extract(r'Y(.*?)$').astype(int).values
+    else:
+        data['x'] = data[cor].values.str.extract(r'R00X(.*?)Y').astype(int)
+        data['y'] = data[cor].values.str.extract(r'Y(.*?)$').astype(int)
+    return data['x'].values, data['y'].values

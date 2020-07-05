@@ -76,3 +76,4 @@ def mp_colinear_finder(packed_arg):
             f.writelines(f'{x, y,score} \n')
 
 
+
