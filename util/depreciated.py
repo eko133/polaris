@@ -9,18 +9,6 @@ from sklearn import linear_model
 from sklearn.model_selection import train_test_split
 
 
-def coordinates_transform(x,y,data='gdgt'):
-    if data == 'gdgt':
-        a = 4.676282051
-        b = -260.2083333
-        c = -5.163934426
-        d = 532.7377049
-    elif data == 'sterol':
-        a = 4.660282258
-        b = -377.9351478
-        c = -4.614285714
-        d = 461.5142857
-    return c*y+d, a*x+b
 
 
 def exclude_mass_list():

@@ -7,9 +7,65 @@ from util.decomposition import factorize
 import platform
 import os
 from util.plotting import extract_coordinates
+from util.plotting import coordinates_transform
+from util.plotting import image_warping
+from util.plotting import enhance_contrast
+import pickle
+
 
 if platform.system() == 'Darwin':
     shared_storage = '/Users/siaga/Dropbox/SharedStorage/polaris'
+
+
+def color(bin_data,xray):
+    x = bin_data.pixel_x
+    y = bin_data.pixel_y
+    return xray.loc[(xray.x==x)&(xray.y==y),'z']
+
+
+with open(r'../Dict/affine_trans_dict.pkl','rb') as f:
+    affine_trans_dict = pickle.load(f)
+
+
+def trans(x,y):
+    pixel = np.dot(affine_trans_dict['uk']['A'],[x,y])+affine_trans_dict['uk']['t']
+    return pixel
+
+
+bin_data = pd.read_pickle(os.path.join(shared_storage,'alkenone_bin.pkl'))
+bin_data = bin_data.T
+bin_data = bin_data.dropna(axis=1,thresh=0.1*bin_data.shape[0])
+bin_data = peak_normalize(bin_data,normalize='tic')
+bin_data = bin_data.replace(np.nan,0)
+pca_data, loadings = factorize(bin_data,method='ica',n_components=10)
+bin_data['x'],bin_data['y'] = extract_coordinates(bin_data)
+pca_data['x'],pca_data['y'] = extract_coordinates(bin_data)
+pc=dict()
+for i in range(1,11):
+    pc[i] = pca_data[['x','y',f'F{i}']]
+    plt.imshow(pc[i].pivot('x','y',f'F{i}'),cmap='gray')
+    plt.show()
+
+# bin_data['xy'] = bin_data.index
+# bin_data['x'] = bin_data.xy.str.extract(r'R00X(.*?)Y').astype(int)
+# bin_data['y'] = bin_data.xy.str.extract(r'Y(.*?)$').astype(int)
+#
+# for i in range(1,21):
+#     mass = loadings[f'PC{i}'].idxmax()
+#     plt.imshow(bin_data.pivot('x','y',mass))
+#     plt.show()
+
+# bin_data['x_warped'] = image_warping(bin_data,0.4)
+xray = pd.read_pickle(os.path.join(shared_storage,'X-Ray_pixel.pkl'))
+bin_data['pixel'] = bin_data.apply(lambda m: trans(m.x, m.y), axis=1)
+bin_data[['pixel_x','pixel_y']] = pd.DataFrame(bin_data.pixel.tolist(), index= bin_data.index)
+
+with open(os.path.join(shared_storage,'pixel_dict.pkl'),'rb') as f:
+    pixel_dict = pickle.load(f)
+
+bin_data['pixel_xy'] = bin_data.apply(lambda x: f'{int(x.pixel_x)},{int(x.pixel_y)}',axis=1)
+bin_data['color'] = bin_data.pixel_xy.map(pixel_dict['color'])
+bin_data['age'] = bin_data.pixel_xy.map(pixel_dict['age'])
 
 
 # def mass_correction(x, coef, intercept, mass_min, mass_max):
@@ -108,49 +164,6 @@ if platform.system() == 'Darwin':
 # print(len(tmp))
 # print(len(tmp.loc[tmp['m/z'].between(551,570),'ppm']))
 
-def color(bin_data,xray):
-    x = bin_data.pixel_x
-    y = bin_data.pixel_y
-    return xray.loc[(xray.x==x)&(xray.y==y),'z']
-
-bin_data = pd.read_pickle(os.path.join(shared_storage,'alkenone_bin.pkl'))
-bin_data = bin_data.T
-bin_data = bin_data.dropna(axis=1,thresh=0.1*bin_data.shape[0])
-bin_data = peak_normalize(bin_data,normalize='tic')
-bin_data = bin_data.replace(np.nan,0)
-pca_data, loadings = factorize(bin_data,method='ica',n_components=10)
-bin_data['x'],bin_data['y'] = extract_coordinates(bin_data)
-pca_data['x'],pca_data['y'] = extract_coordinates(bin_data)
-pc=dict()
-for i in range(1,11):
-    pc[i] = pca_data[['x','y',f'F{i}']]
-    plt.imshow(pc[i].pivot('x','y',f'F{i}'),cmap='gray')
-    plt.show()
-
-# bin_data['xy'] = bin_data.index
-# bin_data['x'] = bin_data.xy.str.extract(r'R00X(.*?)Y').astype(int)
-# bin_data['y'] = bin_data.xy.str.extract(r'Y(.*?)$').astype(int)
-#
-# for i in range(1,21):
-#     mass = loadings[f'PC{i}'].idxmax()
-#     plt.imshow(bin_data.pivot('x','y',mass))
-#     plt.show()
-
-# xray = pd.read_pickle(r'~/Downloads/SBB_DataProcessing/X-Ray_pixel.pkl')
-# bin_data['xy'] = bin_data.index
-# bin_data['x'] = bin_data.xy.str.extract(r'R00X(.*?)Y').astype(int)
-# bin_data['y'] = bin_data.xy.str.extract(r'Y(.*?)$').astype(int)
-# bin_data['pixel_x'], bin_data['pixel_y'] = main.coordinates_transform(bin_data['x'], bin_data['y'],data='sterol')
-# bin_data['pixel_x'] = bin_data['pixel_x'].astype(int)
-# bin_data['pixel_y'] = bin_data['pixel_y'].astype(int)
-# bin_data['pixel_xy'] = bin_data.apply(lambda x: f'{x.pixel_x},{x.pixel_y}',axis=1)
-# xray = xray[xray.x.between(bin_data.pixel_x.min(),bin_data.pixel_x.max())]
-# xray = xray[xray.y.between(bin_data.pixel_y.min(),bin_data.pixel_y.max())]
-# xray =xray.astype(int)
-# xray['pixel_xy'] = xray.apply(lambda m: f'{m.x},{m.y}',axis=1)
-# pixel_dict = pd.Series(xray.z.values,index=xray.pixel_xy).to_dict()
-# bin_data['color'] = bin_data.pixel_xy.map(pixel_dict)
-# bin_data['color'] = bin_data['color'].apply(enhance_contrast)
 # show_im(bin_data)
 # #
 # X = bin_data.drop(columns = {'xy','x','y','pixel_x','pixel_y','pixel_xy','color'})

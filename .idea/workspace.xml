@@ -2,17 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d6c82dfc-5e86-4d8b-9536-806bb1b9fb62" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/affine_transform.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/util/aggregation.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TestCode/test.py" beforeDir="false" afterPath="$PROJECT_DIR$/TestCode/test.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/accurate_mass.py" beforeDir="false" afterPath="$PROJECT_DIR$/accurate_mass.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/find_colinear_peaks.py" beforeDir="false" afterPath="$PROJECT_DIR$/find_colinear_peaks.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mass_bining.py" beforeDir="false" afterPath="$PROJECT_DIR$/mass_bining.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mean_spectrum.py" beforeDir="false" afterPath="$PROJECT_DIR$/mean_spectrum.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mp_formula_finder.py" beforeDir="false" afterPath="$PROJECT_DIR$/mp_formula_finder.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/util/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/util/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/util/decomposition.py" beforeDir="false" afterPath="$PROJECT_DIR$/util/decomposition.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/util/plot.py" beforeDir="false" afterPath="$PROJECT_DIR$/util/plotting.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/util/preprocessing.py" beforeDir="false" afterPath="$PROJECT_DIR$/util/preprocessing.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/util/depreciated.py" beforeDir="false" afterPath="$PROJECT_DIR$/util/depreciated.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/util/plotting.py" beforeDir="false" afterPath="$PROJECT_DIR$/util/plotting.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -49,7 +44,7 @@
     <property name="node.js.path.for.package.eslint" value="project" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="restartRequiresConfirmation" value="false" />
-    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+    <property name="settings.editor.selected.configurable" value="PyScientificConfigurable" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -73,6 +68,25 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="true" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="affine_transform" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="polaris" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/affine_transform.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="true" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -125,28 +139,6 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="mean_spectrum" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="polaris" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/mean_spectrum.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="true" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
     <configuration name="mean_spectrum_multivariate_analysis" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="polaris" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -191,10 +183,10 @@
     <recent_temporary>
       <list>
         <item itemvalue="Python.test" />
+        <item itemvalue="Python.affine_transform" />
         <item itemvalue="Python.find_colinear_peaks" />
         <item itemvalue="Python.image_reader" />
         <item itemvalue="Python.mean_spectrum_multivariate_analysis" />
-        <item itemvalue="Python.mean_spectrum" />
       </list>
     </recent_temporary>
   </component>
@@ -369,6 +361,11 @@
       <workItem from="1593694897804" duration="6109000" />
       <workItem from="1593763379575" duration="19745000" />
       <workItem from="1593933362985" duration="7214000" />
+      <workItem from="1593953085648" duration="144000" />
+      <workItem from="1593959204702" duration="18250000" />
+      <workItem from="1594106835234" duration="120000" />
+      <workItem from="1594106965291" duration="18108000" />
+      <workItem from="1594281676948" duration="23321000" />
     </task>
     <servers />
   </component>
@@ -401,9 +398,10 @@
     </state>
     <state x="1864" y="-406" key="#com.intellij.execution.impl.EditConfigurationsDialog/1440.-596.1920.1057/45.23.1395.787@1440.-596.1920.1057" timestamp="1592115985409" />
     <state x="1864" y="-406" key="#com.intellij.execution.impl.EditConfigurationsDialog/1440.-596.1920.1057/48.23.1392.787@1440.-596.1920.1057" timestamp="1591185078980" />
-    <state x="571" y="-725" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1592653414852">
+    <state x="571" y="-725" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1594295636957">
       <screen x="0" y="-1057" width="1920" height="1057" />
     </state>
+    <state x="571" y="-725" key="#com.intellij.fileTypes.FileTypeChooser/0.-1057.1920.1057/39.23.1401.787@0.-1057.1920.1057" timestamp="1594295636957" />
     <state x="571" y="-725" key="#com.intellij.fileTypes.FileTypeChooser/0.-1057.1920.1057/48.23.1392.787@0.-1057.1920.1057" timestamp="1592653414852" />
     <state x="456" y="270" key="#com.intellij.fileTypes.FileTypeChooser/1440.-596.1920.1057/39.23.1401.787@39.23.1401.787" timestamp="1591901802779" />
     <state x="2011" y="-264" key="#com.intellij.fileTypes.FileTypeChooser/1440.-596.1920.1057/48.23.1392.787@1440.-596.1920.1057" timestamp="1592036314839" />
@@ -411,13 +409,15 @@
       <screen x="0" y="-1057" width="1920" height="1057" />
     </state>
     <state width="1920" height="438" key="DebuggerActiveHint/0.-1057.1920.1057/48.23.1392.787@0.-1057.1920.1057" timestamp="1592723791696" />
-    <state width="1878" height="360" key="GridCell.Tab.0.bottom" timestamp="1593933938101">
+    <state width="1878" height="360" key="GridCell.Tab.0.bottom" timestamp="1594299853367">
       <screen x="0" y="-1057" width="1920" height="1057" />
     </state>
-    <state width="1878" height="360" key="GridCell.Tab.0.bottom/0.-1057.1920.1057/38.23.1402.787@0.-1057.1920.1057" timestamp="1593933938101" />
+    <state width="1878" height="360" key="GridCell.Tab.0.bottom/0.-1057.1920.1057/37.23.1403.787@0.-1057.1920.1057" timestamp="1594299853367" />
+    <state width="1878" height="360" key="GridCell.Tab.0.bottom/0.-1057.1920.1057/38.23.1402.787@0.-1057.1920.1057" timestamp="1594299447580" />
     <state width="1878" height="360" key="GridCell.Tab.0.bottom/0.-1057.1920.1057/39.23.1401.787@0.-1057.1920.1057" timestamp="1593933690995" />
     <state width="1878" height="442" key="GridCell.Tab.0.bottom/0.-1057.1920.1057/41.23.1399.787@0.-1057.1920.1057" timestamp="1592822979836" />
     <state width="1878" height="442" key="GridCell.Tab.0.bottom/0.-1057.1920.1057/42.23.1398.787@0.-1057.1920.1057" timestamp="1592810340729" />
+    <state width="1878" height="360" key="GridCell.Tab.0.bottom/0.-1057.1920.1057/44.23.1396.787@0.-1057.1920.1057" timestamp="1594023271893" />
     <state width="1878" height="442" key="GridCell.Tab.0.bottom/0.-1057.1920.1057/45.23.1395.787@0.-1057.1920.1057" timestamp="1593159483213" />
     <state width="1878" height="267" key="GridCell.Tab.0.bottom/0.-1057.1920.1057/47.23.1393.787@0.-1057.1920.1057" timestamp="1592742082992" />
     <state width="1878" height="342" key="GridCell.Tab.0.bottom/0.-1057.1920.1057/48.23.1392.787@0.-1057.1920.1057" timestamp="1592730029764" />
@@ -429,13 +429,15 @@
     <state width="1878" height="263" key="GridCell.Tab.0.bottom/1440.-596.1920.1057/47.23.1393.787@1440.-596.1920.1057" timestamp="1591775491257" />
     <state width="1878" height="289" key="GridCell.Tab.0.bottom/1440.-596.1920.1057/48.23.1392.787@1440.-596.1920.1057" timestamp="1592036283532" />
     <state width="1350" height="182" key="GridCell.Tab.0.bottom/1440.-596.1920.1057/48.23.1392.787@48.23.1392.787" timestamp="1591615215702" />
-    <state width="1878" height="360" key="GridCell.Tab.0.center" timestamp="1593933938101">
+    <state width="1878" height="360" key="GridCell.Tab.0.center" timestamp="1594299853363">
       <screen x="0" y="-1057" width="1920" height="1057" />
     </state>
-    <state width="1878" height="360" key="GridCell.Tab.0.center/0.-1057.1920.1057/38.23.1402.787@0.-1057.1920.1057" timestamp="1593933938101" />
+    <state width="1878" height="360" key="GridCell.Tab.0.center/0.-1057.1920.1057/37.23.1403.787@0.-1057.1920.1057" timestamp="1594299853363" />
+    <state width="1878" height="360" key="GridCell.Tab.0.center/0.-1057.1920.1057/38.23.1402.787@0.-1057.1920.1057" timestamp="1594299447579" />
     <state width="1878" height="360" key="GridCell.Tab.0.center/0.-1057.1920.1057/39.23.1401.787@0.-1057.1920.1057" timestamp="1593933690994" />
     <state width="1878" height="442" key="GridCell.Tab.0.center/0.-1057.1920.1057/41.23.1399.787@0.-1057.1920.1057" timestamp="1592822979834" />
     <state width="1878" height="442" key="GridCell.Tab.0.center/0.-1057.1920.1057/42.23.1398.787@0.-1057.1920.1057" timestamp="1592810340728" />
+    <state width="1878" height="360" key="GridCell.Tab.0.center/0.-1057.1920.1057/44.23.1396.787@0.-1057.1920.1057" timestamp="1594023271892" />
     <state width="1878" height="442" key="GridCell.Tab.0.center/0.-1057.1920.1057/45.23.1395.787@0.-1057.1920.1057" timestamp="1593159483212" />
     <state width="1878" height="267" key="GridCell.Tab.0.center/0.-1057.1920.1057/47.23.1393.787@0.-1057.1920.1057" timestamp="1592742082991" />
     <state width="1878" height="342" key="GridCell.Tab.0.center/0.-1057.1920.1057/48.23.1392.787@0.-1057.1920.1057" timestamp="1592730029763" />
@@ -447,13 +449,15 @@
     <state width="1878" height="263" key="GridCell.Tab.0.center/1440.-596.1920.1057/47.23.1393.787@1440.-596.1920.1057" timestamp="1591775491255" />
     <state width="1878" height="289" key="GridCell.Tab.0.center/1440.-596.1920.1057/48.23.1392.787@1440.-596.1920.1057" timestamp="1592036283531" />
     <state width="1350" height="182" key="GridCell.Tab.0.center/1440.-596.1920.1057/48.23.1392.787@48.23.1392.787" timestamp="1591615215701" />
-    <state width="1878" height="360" key="GridCell.Tab.0.left" timestamp="1593933938101">
+    <state width="1878" height="360" key="GridCell.Tab.0.left" timestamp="1594299853361">
       <screen x="0" y="-1057" width="1920" height="1057" />
     </state>
-    <state width="1878" height="360" key="GridCell.Tab.0.left/0.-1057.1920.1057/38.23.1402.787@0.-1057.1920.1057" timestamp="1593933938101" />
+    <state width="1878" height="360" key="GridCell.Tab.0.left/0.-1057.1920.1057/37.23.1403.787@0.-1057.1920.1057" timestamp="1594299853361" />
+    <state width="1878" height="360" key="GridCell.Tab.0.left/0.-1057.1920.1057/38.23.1402.787@0.-1057.1920.1057" timestamp="1594299447578" />
     <state width="1878" height="360" key="GridCell.Tab.0.left/0.-1057.1920.1057/39.23.1401.787@0.-1057.1920.1057" timestamp="1593933690993" />
     <state width="1878" height="442" key="GridCell.Tab.0.left/0.-1057.1920.1057/41.23.1399.787@0.-1057.1920.1057" timestamp="1592822979833" />
     <state width="1878" height="442" key="GridCell.Tab.0.left/0.-1057.1920.1057/42.23.1398.787@0.-1057.1920.1057" timestamp="1592810340728" />
+    <state width="1878" height="360" key="GridCell.Tab.0.left/0.-1057.1920.1057/44.23.1396.787@0.-1057.1920.1057" timestamp="1594023271892" />
     <state width="1878" height="442" key="GridCell.Tab.0.left/0.-1057.1920.1057/45.23.1395.787@0.-1057.1920.1057" timestamp="1593159483212" />
     <state width="1878" height="267" key="GridCell.Tab.0.left/0.-1057.1920.1057/47.23.1393.787@0.-1057.1920.1057" timestamp="1592742082990" />
     <state width="1878" height="342" key="GridCell.Tab.0.left/0.-1057.1920.1057/48.23.1392.787@0.-1057.1920.1057" timestamp="1592730029763" />
@@ -465,13 +469,15 @@
     <state width="1878" height="263" key="GridCell.Tab.0.left/1440.-596.1920.1057/47.23.1393.787@1440.-596.1920.1057" timestamp="1591775491254" />
     <state width="1878" height="289" key="GridCell.Tab.0.left/1440.-596.1920.1057/48.23.1392.787@1440.-596.1920.1057" timestamp="1592036283530" />
     <state width="1350" height="182" key="GridCell.Tab.0.left/1440.-596.1920.1057/48.23.1392.787@48.23.1392.787" timestamp="1591615215700" />
-    <state width="1878" height="360" key="GridCell.Tab.0.right" timestamp="1593933938101">
+    <state width="1878" height="360" key="GridCell.Tab.0.right" timestamp="1594299853365">
       <screen x="0" y="-1057" width="1920" height="1057" />
     </state>
-    <state width="1878" height="360" key="GridCell.Tab.0.right/0.-1057.1920.1057/38.23.1402.787@0.-1057.1920.1057" timestamp="1593933938101" />
+    <state width="1878" height="360" key="GridCell.Tab.0.right/0.-1057.1920.1057/37.23.1403.787@0.-1057.1920.1057" timestamp="1594299853365" />
+    <state width="1878" height="360" key="GridCell.Tab.0.right/0.-1057.1920.1057/38.23.1402.787@0.-1057.1920.1057" timestamp="1594299447579" />
     <state width="1878" height="360" key="GridCell.Tab.0.right/0.-1057.1920.1057/39.23.1401.787@0.-1057.1920.1057" timestamp="1593933690995" />
     <state width="1878" height="442" key="GridCell.Tab.0.right/0.-1057.1920.1057/41.23.1399.787@0.-1057.1920.1057" timestamp="1592822979835" />
     <state width="1878" height="442" key="GridCell.Tab.0.right/0.-1057.1920.1057/42.23.1398.787@0.-1057.1920.1057" timestamp="1592810340728" />
+    <state width="1878" height="360" key="GridCell.Tab.0.right/0.-1057.1920.1057/44.23.1396.787@0.-1057.1920.1057" timestamp="1594023271893" />
     <state width="1878" height="442" key="GridCell.Tab.0.right/0.-1057.1920.1057/45.23.1395.787@0.-1057.1920.1057" timestamp="1593159483213" />
     <state width="1878" height="267" key="GridCell.Tab.0.right/0.-1057.1920.1057/47.23.1393.787@0.-1057.1920.1057" timestamp="1592742082991" />
     <state width="1878" height="342" key="GridCell.Tab.0.right/0.-1057.1920.1057/48.23.1392.787@0.-1057.1920.1057" timestamp="1592730029764" />
@@ -483,13 +489,15 @@
     <state width="1878" height="263" key="GridCell.Tab.0.right/1440.-596.1920.1057/47.23.1393.787@1440.-596.1920.1057" timestamp="1591775491256" />
     <state width="1878" height="289" key="GridCell.Tab.0.right/1440.-596.1920.1057/48.23.1392.787@1440.-596.1920.1057" timestamp="1592036283531" />
     <state width="1350" height="182" key="GridCell.Tab.0.right/1440.-596.1920.1057/48.23.1392.787@48.23.1392.787" timestamp="1591615215701" />
-    <state width="1878" height="360" key="GridCell.Tab.1.bottom" timestamp="1593933938102">
+    <state width="1878" height="360" key="GridCell.Tab.1.bottom" timestamp="1594299853370">
       <screen x="0" y="-1057" width="1920" height="1057" />
     </state>
-    <state width="1878" height="360" key="GridCell.Tab.1.bottom/0.-1057.1920.1057/38.23.1402.787@0.-1057.1920.1057" timestamp="1593933938102" />
+    <state width="1878" height="360" key="GridCell.Tab.1.bottom/0.-1057.1920.1057/37.23.1403.787@0.-1057.1920.1057" timestamp="1594299853370" />
+    <state width="1878" height="360" key="GridCell.Tab.1.bottom/0.-1057.1920.1057/38.23.1402.787@0.-1057.1920.1057" timestamp="1594299520685" />
     <state width="1878" height="360" key="GridCell.Tab.1.bottom/0.-1057.1920.1057/39.23.1401.787@0.-1057.1920.1057" timestamp="1593933684338" />
     <state width="1878" height="442" key="GridCell.Tab.1.bottom/0.-1057.1920.1057/41.23.1399.787@0.-1057.1920.1057" timestamp="1592822979838" />
     <state width="1878" height="442" key="GridCell.Tab.1.bottom/0.-1057.1920.1057/42.23.1398.787@0.-1057.1920.1057" timestamp="1592810340729" />
+    <state width="1878" height="360" key="GridCell.Tab.1.bottom/0.-1057.1920.1057/44.23.1396.787@0.-1057.1920.1057" timestamp="1594023271893" />
     <state width="1878" height="442" key="GridCell.Tab.1.bottom/0.-1057.1920.1057/45.23.1395.787@0.-1057.1920.1057" timestamp="1593159483213" />
     <state width="1878" height="267" key="GridCell.Tab.1.bottom/0.-1057.1920.1057/47.23.1393.787@0.-1057.1920.1057" timestamp="1592742082993" />
     <state width="1878" height="342" key="GridCell.Tab.1.bottom/0.-1057.1920.1057/48.23.1392.787@0.-1057.1920.1057" timestamp="1592730029765" />
@@ -501,13 +509,15 @@
     <state width="1878" height="263" key="GridCell.Tab.1.bottom/1440.-596.1920.1057/47.23.1393.787@1440.-596.1920.1057" timestamp="1591775491259" />
     <state width="1878" height="289" key="GridCell.Tab.1.bottom/1440.-596.1920.1057/48.23.1392.787@1440.-596.1920.1057" timestamp="1592036283534" />
     <state width="1350" height="182" key="GridCell.Tab.1.bottom/1440.-596.1920.1057/48.23.1392.787@48.23.1392.787" timestamp="1591615215703" />
-    <state width="1878" height="360" key="GridCell.Tab.1.center" timestamp="1593933938102">
+    <state width="1878" height="360" key="GridCell.Tab.1.center" timestamp="1594299853369">
       <screen x="0" y="-1057" width="1920" height="1057" />
     </state>
-    <state width="1878" height="360" key="GridCell.Tab.1.center/0.-1057.1920.1057/38.23.1402.787@0.-1057.1920.1057" timestamp="1593933938102" />
+    <state width="1878" height="360" key="GridCell.Tab.1.center/0.-1057.1920.1057/37.23.1403.787@0.-1057.1920.1057" timestamp="1594299853369" />
+    <state width="1878" height="360" key="GridCell.Tab.1.center/0.-1057.1920.1057/38.23.1402.787@0.-1057.1920.1057" timestamp="1594299520684" />
     <state width="1878" height="360" key="GridCell.Tab.1.center/0.-1057.1920.1057/39.23.1401.787@0.-1057.1920.1057" timestamp="1593933684335" />
     <state width="1878" height="442" key="GridCell.Tab.1.center/0.-1057.1920.1057/41.23.1399.787@0.-1057.1920.1057" timestamp="1592822979837" />
     <state width="1878" height="442" key="GridCell.Tab.1.center/0.-1057.1920.1057/42.23.1398.787@0.-1057.1920.1057" timestamp="1592810340729" />
+    <state width="1878" height="360" key="GridCell.Tab.1.center/0.-1057.1920.1057/44.23.1396.787@0.-1057.1920.1057" timestamp="1594023271893" />
     <state width="1878" height="442" key="GridCell.Tab.1.center/0.-1057.1920.1057/45.23.1395.787@0.-1057.1920.1057" timestamp="1593159483213" />
     <state width="1878" height="267" key="GridCell.Tab.1.center/0.-1057.1920.1057/47.23.1393.787@0.-1057.1920.1057" timestamp="1592742082992" />
     <state width="1878" height="342" key="GridCell.Tab.1.center/0.-1057.1920.1057/48.23.1392.787@0.-1057.1920.1057" timestamp="1592730029764" />
@@ -519,13 +529,15 @@
     <state width="1878" height="263" key="GridCell.Tab.1.center/1440.-596.1920.1057/47.23.1393.787@1440.-596.1920.1057" timestamp="1591775491258" />
     <state width="1878" height="289" key="GridCell.Tab.1.center/1440.-596.1920.1057/48.23.1392.787@1440.-596.1920.1057" timestamp="1592036283533" />
     <state width="1350" height="182" key="GridCell.Tab.1.center/1440.-596.1920.1057/48.23.1392.787@48.23.1392.787" timestamp="1591615215702" />
-    <state width="1878" height="360" key="GridCell.Tab.1.left" timestamp="1593933938102">
+    <state width="1878" height="360" key="GridCell.Tab.1.left" timestamp="1594299853369">
       <screen x="0" y="-1057" width="1920" height="1057" />
     </state>
-    <state width="1878" height="360" key="GridCell.Tab.1.left/0.-1057.1920.1057/38.23.1402.787@0.-1057.1920.1057" timestamp="1593933938102" />
+    <state width="1878" height="360" key="GridCell.Tab.1.left/0.-1057.1920.1057/37.23.1403.787@0.-1057.1920.1057" timestamp="1594299853369" />
+    <state width="1878" height="360" key="GridCell.Tab.1.left/0.-1057.1920.1057/38.23.1402.787@0.-1057.1920.1057" timestamp="1594299520684" />
     <state width="1878" height="360" key="GridCell.Tab.1.left/0.-1057.1920.1057/39.23.1401.787@0.-1057.1920.1057" timestamp="1593933684334" />
     <state width="1878" height="442" key="GridCell.Tab.1.left/0.-1057.1920.1057/41.23.1399.787@0.-1057.1920.1057" timestamp="1592822979836" />
     <state width="1878" height="442" key="GridCell.Tab.1.left/0.-1057.1920.1057/42.23.1398.787@0.-1057.1920.1057" timestamp="1592810340729" />
+    <state width="1878" height="360" key="GridCell.Tab.1.left/0.-1057.1920.1057/44.23.1396.787@0.-1057.1920.1057" timestamp="1594023271893" />
     <state width="1878" height="442" key="GridCell.Tab.1.left/0.-1057.1920.1057/45.23.1395.787@0.-1057.1920.1057" timestamp="1593159483213" />
     <state width="1878" height="267" key="GridCell.Tab.1.left/0.-1057.1920.1057/47.23.1393.787@0.-1057.1920.1057" timestamp="1592742082992" />
     <state width="1878" height="342" key="GridCell.Tab.1.left/0.-1057.1920.1057/48.23.1392.787@0.-1057.1920.1057" timestamp="1592730029764" />
@@ -537,13 +549,15 @@
     <state width="1878" height="263" key="GridCell.Tab.1.left/1440.-596.1920.1057/47.23.1393.787@1440.-596.1920.1057" timestamp="1591775491257" />
     <state width="1878" height="289" key="GridCell.Tab.1.left/1440.-596.1920.1057/48.23.1392.787@1440.-596.1920.1057" timestamp="1592036283532" />
     <state width="1350" height="182" key="GridCell.Tab.1.left/1440.-596.1920.1057/48.23.1392.787@48.23.1392.787" timestamp="1591615215702" />
-    <state width="1878" height="360" key="GridCell.Tab.1.right" timestamp="1593933938102">
+    <state width="1878" height="360" key="GridCell.Tab.1.right" timestamp="1594299853370">
       <screen x="0" y="-1057" width="1920" height="1057" />
     </state>
-    <state width="1878" height="360" key="GridCell.Tab.1.right/0.-1057.1920.1057/38.23.1402.787@0.-1057.1920.1057" timestamp="1593933938102" />
+    <state width="1878" height="360" key="GridCell.Tab.1.right/0.-1057.1920.1057/37.23.1403.787@0.-1057.1920.1057" timestamp="1594299853370" />
+    <state width="1878" height="360" key="GridCell.Tab.1.right/0.-1057.1920.1057/38.23.1402.787@0.-1057.1920.1057" timestamp="1594299520685" />
     <state width="1878" height="360" key="GridCell.Tab.1.right/0.-1057.1920.1057/39.23.1401.787@0.-1057.1920.1057" timestamp="1593933684337" />
     <state width="1878" height="442" key="GridCell.Tab.1.right/0.-1057.1920.1057/41.23.1399.787@0.-1057.1920.1057" timestamp="1592822979837" />
     <state width="1878" height="442" key="GridCell.Tab.1.right/0.-1057.1920.1057/42.23.1398.787@0.-1057.1920.1057" timestamp="1592810340729" />
+    <state width="1878" height="360" key="GridCell.Tab.1.right/0.-1057.1920.1057/44.23.1396.787@0.-1057.1920.1057" timestamp="1594023271893" />
     <state width="1878" height="442" key="GridCell.Tab.1.right/0.-1057.1920.1057/45.23.1395.787@0.-1057.1920.1057" timestamp="1593159483213" />
     <state width="1878" height="267" key="GridCell.Tab.1.right/0.-1057.1920.1057/47.23.1393.787@0.-1057.1920.1057" timestamp="1592742082992" />
     <state width="1878" height="342" key="GridCell.Tab.1.right/0.-1057.1920.1057/48.23.1392.787@0.-1057.1920.1057" timestamp="1592730029765" />
@@ -555,16 +569,23 @@
     <state width="1878" height="263" key="GridCell.Tab.1.right/1440.-596.1920.1057/47.23.1393.787@1440.-596.1920.1057" timestamp="1591775491258" />
     <state width="1878" height="289" key="GridCell.Tab.1.right/1440.-596.1920.1057/48.23.1392.787@1440.-596.1920.1057" timestamp="1592036283534" />
     <state width="1350" height="182" key="GridCell.Tab.1.right/1440.-596.1920.1057/48.23.1392.787@48.23.1392.787" timestamp="1591615215703" />
-    <state x="1746" y="-430" key="SettingsEditor" timestamp="1592115905884">
-      <screen x="1440" y="-596" width="1920" height="1057" />
-    </state>
-    <state x="1746" y="-430" key="SettingsEditor/1440.-596.1920.1057/40.23.1400.787@1440.-596.1920.1057" timestamp="1590583381941" />
-    <state x="1746" y="-430" key="SettingsEditor/1440.-596.1920.1057/45.23.1395.787@1440.-596.1920.1057" timestamp="1592115905884" />
-    <state width="944" height="523" key="XDebugger.FullValuePopup" timestamp="1593784529205">
+    <state x="306" y="-891" key="SettingsEditor" timestamp="1594300625992">
       <screen x="0" y="-1057" width="1920" height="1057" />
     </state>
+    <state x="306" y="-891" key="SettingsEditor/0.-1057.1920.1057/37.23.1403.787@0.-1057.1920.1057" timestamp="1594300048582" />
+    <state x="306" y="-891" key="SettingsEditor/0.-1057.1920.1057/39.23.1401.787@0.-1057.1920.1057" timestamp="1594300625992" />
+    <state x="306" y="-891" key="SettingsEditor/0.-1057.1920.1057/44.23.1396.787@0.-1057.1920.1057" timestamp="1594113250547" />
+    <state x="306" y="-891" key="SettingsEditor/0.-1057.1920.1057/46.23.1394.787@0.-1057.1920.1057" timestamp="1594113459360" />
+    <state x="1746" y="-430" key="SettingsEditor/1440.-596.1920.1057/40.23.1400.787@1440.-596.1920.1057" timestamp="1590583381941" />
+    <state x="1746" y="-430" key="SettingsEditor/1440.-596.1920.1057/45.23.1395.787@1440.-596.1920.1057" timestamp="1592115905884" />
+    <state width="944" height="523" key="XDebugger.FullValuePopup" timestamp="1594388957792">
+      <screen x="-242" y="-1057" width="1920" height="1057" />
+    </state>
+    <state width="944" height="523" key="XDebugger.FullValuePopup/-242.-1057.1920.1057/37.23.1403.787@-242.-1057.1920.1057" timestamp="1594388957792" />
+    <state width="944" height="523" key="XDebugger.FullValuePopup/0.-1057.1920.1057/39.23.1401.787@0.-1057.1920.1057" timestamp="1594301014492" />
     <state width="944" height="523" key="XDebugger.FullValuePopup/0.-1057.1920.1057/41.23.1399.787@0.-1057.1920.1057" timestamp="1592405710230" />
-    <state width="944" height="523" key="XDebugger.FullValuePopup/0.-1057.1920.1057/44.23.1396.787@0.-1057.1920.1057" timestamp="1592405971302" />
+    <state width="944" height="523" key="XDebugger.FullValuePopup/0.-1057.1920.1057/42.23.1398.787@0.-1057.1920.1057" timestamp="1594133337612" />
+    <state width="944" height="523" key="XDebugger.FullValuePopup/0.-1057.1920.1057/44.23.1396.787@0.-1057.1920.1057" timestamp="1594021596534" />
     <state width="944" height="523" key="XDebugger.FullValuePopup/0.-1057.1920.1057/45.23.1395.787@0.-1057.1920.1057" timestamp="1593161450337" />
     <state width="944" height="523" key="XDebugger.FullValuePopup/0.-1057.1920.1057/46.23.1394.787@0.-1057.1920.1057" timestamp="1593784529205" />
     <state width="944" height="523" key="XDebugger.FullValuePopup/0.-1057.1920.1057/47.23.1393.787@0.-1057.1920.1057" timestamp="1592553188032" />
@@ -598,7 +619,7 @@
     <SUITE FILE_PATH="coverage/polaris$ldr.coverage" NAME="ldr Coverage Results" MODIFIED="1583853832127" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/polaris$mp_formula_finder.coverage" NAME="mp_formula_finder Coverage Results" MODIFIED="1592652106690" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/polaris$sterol_ccat_classification.coverage" NAME="sterol_ccat_classification Coverage Results" MODIFIED="1591879532775" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/polaris$test.coverage" NAME="test Coverage Results" MODIFIED="1593933790747" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/TestCode" />
+    <SUITE FILE_PATH="coverage/polaris$test.coverage" NAME="test Coverage Results" MODIFIED="1594299447432" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/TestCode" />
     <SUITE FILE_PATH="coverage/polaris$sterol.coverage" NAME="sterol_regression Coverage Results" MODIFIED="1591864253936" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/polaris$MergeTables.coverage" NAME="MergeTables Coverage Results" MODIFIED="1574324886141" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/polaris$group_by_ccat.coverage" NAME="group_by_ccat Coverage Results" MODIFIED="1591105219878" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
