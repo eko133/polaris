@@ -34,7 +34,7 @@ def trans(x,y):
 
 bin_data = pd.read_pickle(os.path.join(shared_storage,'alkenone_bin.pkl'))
 bin_data = bin_data.T
-bin_data = bin_data.dropna(axis=1,thresh=0.1*bin_data.shape[0])
+bin_data = bin_data.dropna(axis=1,thresh=0.001*bin_data.shape[0])
 bin_data = peak_normalize(bin_data,normalize='tic')
 bin_data = bin_data.replace(np.nan,0)
 pca_data, loadings = factorize(bin_data,method='ica',n_components=10)
@@ -42,8 +42,9 @@ bin_data['x'],bin_data['y'] = extract_coordinates(bin_data)
 pca_data['x'],pca_data['y'] = extract_coordinates(bin_data)
 pc=dict()
 for i in range(1,11):
+    plt.figure(figsize=(6,18))
     pc[i] = pca_data[['x','y',f'F{i}']]
-    plt.imshow(pc[i].pivot('x','y',f'F{i}'),cmap='gray')
+    plt.imshow(pc[i].pivot('x','y',f'F{i}'),cmap='hsv')
     plt.show()
 
 # bin_data['xy'] = bin_data.index

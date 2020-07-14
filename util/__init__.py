@@ -1,1 +1,1 @@
-import util.decomposition, util.depreciated, util.mass_calibration, util.preprocessing, util.plotting
+import util.decomposition, util.mass_calibration, util.preprocessing, util.plotting, util.aggregation
